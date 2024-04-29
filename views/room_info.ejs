@@ -1,0 +1,196 @@
+<main class="page-room">
+    <div class="page-room__gallery">
+        <div class="gallery">
+
+            <% data.imageURLs.forEach(imageURL => { %>
+                <figure class="gallery__item"><img class="gallery__img" src=" <%= imageURL %> " alt="Фотография номера"></figure>
+            <% }) %>
+
+        </div>
+    </div>
+    <div class="page-room__wrapper">
+        <div class="page-room__container">
+            <div class="page-room__info-grid">
+                <div class="page-room__advan-list">
+                    <h2 class="page-room__info-title">Сведения о номере</h2>
+                    <ul class="page-room__advantages">
+                        <ul class="advantages">
+                            <li class="advantages__item"><i class="material-icons advantages__icon">insert_emoticon</i>
+                                <div class="advantages__content"><b class="advantages__title">Комфорт</b>
+                                    <p class="advantages__text">Шумопоглощающие стены</p>
+                                </div>
+                            </li>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">location_city</i>
+                                <div class="advantages__content"><b class="advantages__title">Удобство</b>
+                                    <p class="advantages__text">Окно в каждой из спален</p>
+                                </div>
+                            </li>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">whatshot</i>
+                                <div class="advantages__content"><b class="advantages__title">Уют</b>
+                                    <p class="advantages__text">Номер оснащен камином</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+                <div class="page-room__impressions">
+                    <h2 class="page-room__info-title">Впечатления от номера</h2>
+                    <div class="donut">
+                        <div class="donut__circle">
+                            <svg class="donut__svg" width="100%" height="100%">
+                                <circle r="56" cx="60" cy="55" stroke="url(#orange-gradient)" stroke-width="5" fill="none" stroke-dasharray="172 400" transform="rotate(90 58 58)"></circle>
+                                <defs>
+                                    <linearGradient id="orange-gradient">
+                                        <stop offset="0" stop-color="#FFE29C"></stop>
+                                        <stop offset="1" stop-color="#FFBA9C"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <circle r="56" cx="54" cy="60" stroke="url(#purple-gradient)" stroke-width="10" fill="none" stroke-dasharray="79 300" transform="rotate(-90 58 58)"></circle>
+                                <defs>
+                                    <linearGradient id="purple-gradient">
+                                        <stop offset="0" stop-color="#BA9CFE"></stop>
+                                        <stop offset="1" stop-color="#A59FFC"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <circle r="60" cx="57" cy="56" fill="transparent" stroke="url(#green-gradient)" stroke-width="5" stroke-dasharray="87 400"></circle>
+                                <defs>
+                                    <linearGradient id="green-gradient">
+                                        <stop offset="0" stop-color="#6cd1c1"></stop>
+                                        <stop offset="1" stop-color="#6ecf99"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <g class="donut__text">
+                                    <text x="38px" y="60px">260</text>
+                                    <text x="29px" y="62px" transform="translate(0 19)">голосов</text>
+                                </g>
+                            </svg>
+                        </div>
+                        <ul class="donut__info">
+                            <li class="donut__char">
+                                <div class="donut__lap donut__lap_orange"></div>
+                                <div class="donut__lap-value">Великолепно</div>
+                            </li>
+                            <li class="donut__char">
+                                <div class="donut__lap donut__lap_green"></div>
+                                <div class="donut__lap-value">Хорошо</div>
+                            </li>
+                            <li class="donut__char">
+                                <div class="donut__lap donut__lap_purple"></div>
+                                <div class="donut__lap-value">Удовлетворительно</div>
+                            </li>
+                            <li class="donut__char">
+                                <div class="donut__lap donut__lap_black"></div>
+                                <div class="donut__lap-value">Разочарован</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="page-room__reviews">
+                    <div class="page-room__title-group">
+                        <h2 class="page-room__info-title">Отзывы посетителей номера</h2><span class="page-room__info-value">2 отзыва</span>
+                    </div>
+                    <ul class="reviews">
+                        <li class="reviews__item">
+                            <div class="reviews__dynamics"><img class="reviews__avatar" src="/img/svg/man-avatar.svg">
+                                <div class="reviews__likes">
+                                    <div class="like like_checked">
+                                        <div class="like__wrapper"><span class="like__icon">
+                                                <svg class="like__svg" width="12" height="10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5.93 8.887l-.605-.547A80.924 80.924 0 0 1 3.82 6.953c-.313-.3-.664-.67-1.055-1.113-.377-.443-.638-.84-.781-1.192a3.021 3.021 0 0 1-.214-1.113c0-.638.215-1.178.645-1.62.442-.444.99-.665 1.64-.665.755 0 1.38.293 1.875.879.495-.586 1.12-.879 1.875-.879.651 0 1.192.221 1.621.664.443.443.664.983.664 1.621 0 .508-.169 1.035-.507 1.582a7.84 7.84 0 0 1-1.114 1.426c-.39.404-1.035 1.01-1.933 1.816l-.606.528z" stroke="rgba(31, 32, 65, 0.25)"></path>
+                                                </svg></span><span class="like__count">12</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reviews__comment"><b class="reviews__author">Пользователь</b>
+                                <div class="reviews__date">5 дней назад</div>
+                                <div class="reviews__text">Великолепный матрас на кровати в основной спальне! А пуфик вообще потрясающий. И стены, действительно, шумоподавляющие. Выкрикивал комплименты повару — никто не жаловался из соседей.</div>
+                            </div>
+                        </li>
+                        <li class="reviews__item">
+                            <div class="reviews__dynamics"><img class="reviews__avatar" src="/img/svg/women-avatar.svg">
+                                <div class="reviews__likes">
+                                    <div class="like">
+                                        <div class="like__wrapper"><span class="like__icon">
+                                                <svg class="like__svg" width="12" height="10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5.93 8.887l-.605-.547A80.924 80.924 0 0 1 3.82 6.953c-.313-.3-.664-.67-1.055-1.113-.377-.443-.638-.84-.781-1.192a3.021 3.021 0 0 1-.214-1.113c0-.638.215-1.178.645-1.62.442-.444.99-.665 1.64-.665.755 0 1.38.293 1.875.879.495-.586 1.12-.879 1.875-.879.651 0 1.192.221 1.621.664.443.443.664.983.664 1.621 0 .508-.169 1.035-.507 1.582a7.84 7.84 0 0 1-1.114 1.426c-.39.404-1.035 1.01-1.933 1.816l-.606.528z" stroke="rgba(31, 32, 65, 0.25)"></path>
+                                                </svg></span><span class="like__count">2</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reviews__comment"><b class="reviews__author">Пользователь</b>
+                                <div class="reviews__date">Неделю назад</div>
+                                <div class="reviews__text">Обслуживание на высоте! Всё аккуратно, чисто. Завтраки в номер советую заказать, каждый день новое блюдо и десерт как комплимент</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="page-room__rules">
+                    <h2 class="page-room__info-title">Правила</h2>
+                    <div class="bullet-list">
+                        <li class="bullet-list__item">Нельзя с питомцами</li>
+                        <li class="bullet-list__item">Без вечеринок и мероприятий</li>
+                        <li class="bullet-list__item">Время прибытия — после 13:00, а выезд до 12:00</li>
+                    </div>
+                </div>
+                <div class="page-room__cancel">
+                    <h2 class="page-room__info-title">Отмена</h2>
+                    <p class="page-room__cancel-text">Бесплатная отмена в течение 48 ч. После этого при отмене не позднее чем за 5 дн. до прибытия вы получите полный возврат за вычетом сбора за услуги.</p>
+                </div>
+            </div>
+            <form class="check-form">
+                <div class="check-form__item">
+                    <div class="check-form__item-group">
+                        <h3 class="check-form__number"><span class="check-form__number-icon">№</span>888</h3><a class="btn btn_theme_link" href="#!">Люкс</a>
+                        <div class="check-form__price-default"><b class="check-form__price-text">9 990₽</b> в сутки</div>
+                    </div>
+                </div>
+                <div class="check-form__item check-form__item_with-calendar">
+                    <div class="check-form__group-field">
+                        <div class="check-form__field check-form__field_type-from">
+                            <div class="field field_type_dropdown">
+                                <label class="field__label">
+                                    <div class="field__title">Прибытие</div>
+                                </label>
+                                <input class="field__input" value="ДД.ММ.ГГГГ" readonly="" autocomplete="off" name="Прибытие">
+                            </div>
+                        </div>
+                        <div class="check-form__field check-form__field_type-to">
+                            <div class="field field_type_dropdown">
+                                <label class="field__label">
+                                    <div class="field__title">Выезд</div>
+                                </label>
+                                <input class="field__input" value="ДД.ММ.ГГГГ" readonly="" autocomplete="off" name="Выезд">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="check-form__item check-form__item_with-guests">
+                    <div class="field field_type_dropdown">
+                        <label class="field__label">
+                            <div class="field__title">Гости</div>
+                        </label>
+                        <input class="field__input" value="Сколько гостей" readonly="" autocomplete="off" name="Гости">
+                    </div>
+                </div>
+                <div class="check-form__item">
+                    <div class="check-form__conclusion"><span class="check-form__text">9990₽ х 4 суток</span><span class="check-form__text">39960₽</span></div>
+                    <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text">300₽</span></div>
+                </div>
+                <div class="check-form__item">
+                    <div class="check-form__final-price">
+                        <div class="check-form__item-group">
+                            <div class="check-form__final-price-text">Итого</div>
+                            <div class="check-form__price-line"></div>
+                            <div class="check-form__final-price-value">38081₽</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="check-form__item"><a class="btn btn_theme_gradient btn_with-arrow" href="#!">Забронировать
+                    <svg class="btn_with-arrow__svg" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 0.984375L17.0156 9L9 17.0156L7.59375 15.6094L13.1719 9.98438H0.984375V8.01562H13.1719L7.59375 2.39062L9 0.984375Z"></path>
+                    </svg></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

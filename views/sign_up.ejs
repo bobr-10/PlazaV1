@@ -1,0 +1,52 @@
+<main class="sign-up-page">
+    <div class="sign-up-page__container">
+        <form class="sign-up" action="/sign_up" method="post">
+            <div class="sign-up__wrapper">
+                <h1 class="sign-up__title">Регистрация аккаунта</h1>
+                <div class="sign-up__item" id="personData">
+                    <div class="sign-up__field">
+                        <div class="field">
+                            <input class="field__input" placeholder="Имя" name="name" aria-labelledby="personData">
+                        </div>
+                    </div>
+                    <div class="sign-up__field">
+                        <div class="field">
+                            <input class="field__input" placeholder="Фамилия" name="surname" aria-labelledby="personData">
+                        </div>
+                    </div>
+                </div>
+                <div class="sign-up__item">
+                    <div class="sign-up__field">
+                        <div class="field">
+                            <label class="field__label">
+                                <div class="field__title">Дата рождения</div>
+                                <input class="field__input field__input_with-date" autocomplete="off" name="birthday" type="date">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="sign-up__item" id="signUpData">
+                    <label class="sign-up__label">Данные для входа</label>
+                    <div class="sign-up__field">
+                        <div class="field">
+                            <input class="field__input" placeholder="Email" name="email" type="email" aria-labelledby="signUpData">
+                        </div>
+                    </div>
+                    <div class="sign-up__field">
+                        <div class="field">
+                            <input class="field__input" placeholder="Пароль" name="password" type="password" aria-labelledby="signUpData">
+                        </div>
+                    </div>
+                </div>
+                <div class="sign-up__item">
+                    <button class="btn btn_theme_gradient btn_with-arrow" type="submit">Зарегистрироваться</button>
+                </div>
+                <div class="sign-up__question">Уже есть аккаунт на Plaza?
+                    <div class="sign-up__sign-in-btn">
+                        <a class="btn btn_size_xl" href="#">Войти</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>

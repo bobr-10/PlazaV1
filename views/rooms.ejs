@@ -1,0 +1,183 @@
+<main class="rooms-page">
+    <div class="rooms-page__container">
+        <div class="rooms-filter">
+            <div class="rooms-filter__item">
+                <div class="rooms-filter__field rooms-filter__field_with-date">
+                    <div class="field field_type_dropdown">
+                        <label class="field__label">
+                            <div class="field__title">Даты пребывания в отеле</div>
+                        </label>
+                        <input class="field__input" value="Выберите дату" readonly="" autocomplete="off" name="Датыпребываниявотеле">
+                    </div>
+                </div>
+                <div class="rooms-filter__field rooms-filter__field_with-guests">
+                    <div class="field field_type_dropdown">
+                        <label class="field__label">
+                            <div class="field__title">Гости</div>
+                        </label>
+                        <input class="field__input" value="Сколько гостей" readonly="" autocomplete="off" name="Гости">
+                    </div>
+                </div>
+            </div>
+            <div class="rooms-filter__item rooms-filter__item_with-range-slider">
+                <label class="rooms-filter__label">Диапазон цены</label><span class="rooms-filter__values"></span>
+            </div>
+            <div class="rooms-filter__item">
+                <label class="rooms-filter__label">Привелегии</label>
+                <div class="rooms-filter__checkbox">
+                    <div class="checkbox-list">
+                        <ul class="checkbox-list__checkboxes">
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Можно курить</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox" checked=""><span class="checkbox__span">Можно с питомцами</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox" checked=""><span class="checkbox__span">Можно пригласить гостей (до 10 человек)</span>
+                                </label>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="rooms-filter__item">
+                <label class="rooms-filter__label">Доступность</label>
+                <div class="rooms-filter__checkbox">
+                    <div class="checkbox-list">
+                        <ul class="checkbox-list__checkboxes">
+                            <div class="checkbox checkbox_rich">
+                                <label class="checkbox__title_rich checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Широкий коридор</span>
+                                    <p class="checkbox__text_rich">Ширина коридоров в номере не менее 91 см.</p>
+                                </label>
+                            </div>
+                            <div class="checkbox checkbox_rich">
+                                <label class="checkbox__title_rich checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Помощник для инвалидов</span>
+                                    <p class="checkbox__text_rich">На 1 этаже вас встретит специалист и проводит до номера.</p>
+                                </label>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="rooms-filter__item rooms-filter__item_with-comfort-filter">
+                <div class="field field_type_dropdown">
+                    <label class="field__label">
+                        <div class="field__title">Удобства номера</div>
+                    </label>
+                    <input class="field__input" value="Выберите удобства" readonly="" autocomplete="off" name="Удобстваномера">
+                </div>
+            </div>
+            <div class="rooms-filter__item">
+                <div class="checkbox-list checkbox-list_expandable">
+                    <label class="checkbox-list__title">Дополнительные удобства
+                        <input class="checkbox-list__check" type="checkbox">
+                        <div class="checkbox-list__cap"></div>
+                        <ul class="checkbox-list__checkboxes">
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Завтрак</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox" checked=""><span class="checkbox__span">Письменный стол</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox" checked=""><span class="checkbox__span">Стул для кормления</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox" checked=""><span class="checkbox__span">Кроватка</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Телевизор</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Шампунь</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Интернет</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label class="checkbox__label">
+                                    <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Связь с космосом</span>
+                                </label>
+                            </div>
+                        </ul>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="rooms">
+            <h1 class="rooms__offer">Номера, которые мы для вас подобрали<span class="js-rooms__show-filters">Показать фильтры</span></h1>
+            <div class="rooms__grid">
+            <% data.forEach(hotel => { %>
+                <div class="rooms-item"><a class="rooms-item__link" href="/room/<%= hotel._id %>"></a><img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
+                    <div class="rooms-item__wrapper">
+                        <div class="rooms-item__info">
+                            <h2 class="rooms-item__num">
+                                <span class="rooms-item__num-ico">№</span>
+                                <span><%= hotel.RoomID %></span>
+                            </h2>
+                             
+                            <p class="rooms-item__price"><b class="rooms-item__price-text"><%= hotel.RoomPrice %></b> руб в сутки</p>
+                        </div>
+                        <div class="rooms-item__rating">
+                            <div class="rate">
+                                <% for( let i = 0; i < hotel.RoomStars; i++ ) { %>
+                                    <span class="rate__star rate__star_selected">
+                                        <svg class="rate__svg" width="21" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10.264 15.749l-6.188 3.75 1.64-7.031L.28 7.732l7.172-.61L10.264.515l2.812 6.61 7.172.61-5.438 4.733 1.641 7.032-6.187-3.75z"></path>
+                                            <defs>
+                                                <linearGradient id="paint0_linear" x1="10.264" y1="-1.501" x2="10.264" y2="22.499" gradientUnits="userSpaceOnUse">
+                                                    <stop offset="0" stop-color="#EEDAD2"></stop>
+                                                    <stop offset="1" stop-color="#F3C9B9"></stop>
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </span>
+                                <% } %>
+                            </div>
+
+                            <p class="rooms-item__reviews"><b class="rooms-item__reviews-text">145</b> Отзывов</p>
+                        </div>
+
+                        <% if (hotel.RoomStars === 5) { %>
+                            <a class="btn btn_theme_link btn_theme_lux" href="#!">Люкс</a>
+                        <% } else { %>
+                            <a class="btn btn_theme_link" href="#!">Стандарт</a>
+                        <% } %>
+                    </div>
+                </div>
+            <% }) %>
+            </div>
+            <div class="rooms__pagination">
+                <div class="pagination">
+                    <div class="pagination__pages"><a class="pagination__item pagination__item_current" href="#">1</a><a class="pagination__item" href="#">2</a><a class="pagination__item" href="#!">3</a><a class="pagination__item pagination__item_disabled" href="#!">...</a><a class="pagination__item" href="#!">15</a><a class="pagination__item pagination__item_next" href="#!">
+                            <svg class="pagination__arrow" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 0.984375L17.0156 9L9 17.0156L7.59375 15.6094L13.1719 9.98438H0.984375V8.01562H13.1719L7.59375 2.39062L9 0.984375Z"></path>
+                            </svg></a></div>
+                    <div class="pagination__result">1 – 12 из 100+ вариантов аренды</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

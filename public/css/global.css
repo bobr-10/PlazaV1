@@ -1,0 +1,172 @@
+@font-face {
+  font-family: "montserrat";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../fonts/montserrat-regular/montserrat-regular.eot");
+  src: url("../fonts/montserrat-regular/montserrat-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/montserrat-regular/montserrat-regular.woff") format("woff"), url("../fonts/montserrat-regular/montserrat-regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "montserrat";
+  font-weight: bold;
+  font-style: normal;
+  src: url("../fonts/montserrat-bold/montserrat-bold.eot");
+  src: url("../fonts/montserrat-bold/montserrat-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/montserrat-bold/montserrat-bold.woff") format("woff"), url("../fonts/montserrat-bold/montserrat-bold.woff") format("truetype");
+}
+
+@font-face {
+  font-family: "opensans-bold";
+  font-weight: bold;
+  font-style: normal;
+  src: url("../fonts/opensans-bold/opensans-bold.eot");
+  src: url("../fonts/opensans-bold/opensans-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/opensans-bold/opensans-bold.woff") format("woff"), url("../fonts/opensans-bold/opensans-bold.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v142/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-size: 14px;
+  height: 100%;
+}
+
+body {
+  min-width: 22.8571rem;
+  max-width: 137.1429rem;
+  margin: 0 auto;
+  position: relative;
+  font-family: "montserrat", sans-serif;
+  color: rgba(31, 32, 65, 0.75);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+main {
+  position: relative;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+}
+
+footer {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5714rem 1.3571rem 0.5rem 1.3571rem;
+  border-radius: 1.5714rem;
+  text-transform: uppercase;
+  font-size: 0.8571rem;
+  line-height: 1.0714rem;
+  font-weight: bold;
+  color: #EEDAD2;
+  text-decoration: none;
+  position: relative;
+  background-color: #fff;
+  border: none;
+}
+
+.btn:hover::after {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f5e9e5), to(#f7dacf));
+  background-image: -o-linear-gradient(top, #f5e9e5 0%, #f7dacf 100%);
+  background-image: linear-gradient(180deg, #f5e9e5 0%, #f7dacf 100%);
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 1.5714rem;
+  top: -0.1429rem;
+  left: -0.1429rem;
+  bottom: -0.1429rem;
+  right: -0.1429rem;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#EEDAD2), to(#F3C9B9));
+  background-image: -o-linear-gradient(top, #EEDAD2 0%, #F3C9B9 100%);
+  background-image: linear-gradient(180deg, #EEDAD2 0%, #F3C9B9 100%);
+}
+
+.btn_size_l {
+  padding: 1rem 1.2857rem;
+}
+
+.btn_size_xl {
+  padding: 13px 1.8571rem;
+}
+
+.btn_theme_gradient {
+  color: #fff;
+  background: -webkit-gradient(linear, left top, left bottom, from(#EEDAD2), to(#F3C9B9));
+  background: -o-linear-gradient(top, #EEDAD2 0%, #F3C9B9 100%);
+  background: linear-gradient(180deg, #EEDAD2 0%, #F3C9B9 100%);
+}
+
+.btn_theme_gradient:hover {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f2e3dd), to(#f5d3c6));
+  background-image: -o-linear-gradient(top, #f2e3dd 0%, #f5d3c6 100%);
+  background-image: linear-gradient(180deg, #f2e3dd 0%, #f5d3c6 100%);
+}
+
+.btn_theme_gradient-disable {
+  cursor: default;
+}
+
+.btn_theme_link {
+  padding: 0;
+}
+
+.btn_theme_lux {
+  background: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.btn_theme_link:after {
+  display: none;
+}
+
+.btn_theme_link:hover {
+  color: rgba(31, 32, 65, 0.5);
+}
+
+.btn_with-arrow {
+  width: 100%;
+  text-align: center;
+  padding: 1.0714rem 1.0714rem 1.0714rem 0.9286rem;
+  position: relative;
+}
+
+.btn_with-arrow__svg {
+  position: absolute;
+  top: 0.9286rem;
+  right: 0.8571rem;
+  fill: white;
+}
