@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { Room, Info } = require('../models/room');
+const User = require('../models/user');
+
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET;
 
 
 router.get('/', (req, res) => {
@@ -12,11 +17,19 @@ router.get('/', (req, res) => {
 });
 
 router.get('/sign_in', (req, res) => {
-    res.render('sign_in');
+    const locals = {
+        title: "Вход"
+    }
+
+    res.render('sign_in', { locals });
 });
 
 router.get('/sign_up', (req, res) => {
-    res.render('sign_up');
+    const locals = {
+        title: "Регистрация"
+    }
+
+    res.render('sign_up', { locals });
 });
 
 router.get('/search-rooms', async (req, res) => {
@@ -45,7 +58,76 @@ router.get('/room/:id', async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-})
+});
+
+
+router.post('/sign_up', async (req, res) =>{
+    try {
+        const locals = {
+            title: "Профиль"
+        }
+    
+        const { name, surname, birthday, email, password } = req.body;
+
+        const existingEmail = await User.findOne({ Email: email });
+
+        if (existingEmail) {
+            locals.emailMessage = 'Данный Email уже <b>зарегистрирован!</b>';
+            return res.render('sign_up', {locals});
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+
+        const newUser = new User ({
+            FirstName: name,
+            SecondName: surname,
+            DateOfBirth: birthday,
+            Email: email,
+            Password: hashedPassword,
+        });
+
+        await newUser.save();
+    
+        res.render('profile', { locals });
+        
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+router.post('/sign_in', async (req, res) =>{
+    try {
+        const locals = {
+            title: "Профиль"
+        }
+    
+        const { email, password } = req.body;
+
+        const existingUser = await User.findOne({ Email: email });
+
+        if (!existingUser) {
+            locals.emailMessage = 'Данный Email не <b>зарегистрирован!</b>';
+            return res.render('sign_in', {locals});
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, existingUser.Password);
+
+        if (!isPasswordCorrect) {
+            locals.passwordMessage = '<b>Неверный</b> пароль!';
+            return res.render('sign_in', {locals});
+        }
+
+        const token = jwt.sign({userId: existingUser._id}, jwtSecret)
+        res.cookie('token', token, {httpOnly: true});
+        
+        res.render('profile', { locals });
+        
+    } catch (error) {
+        console.error(error);
+    }
+});
 
 module.exports = router;
 

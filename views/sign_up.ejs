@@ -6,12 +6,12 @@
                 <div class="sign-up__item" id="personData">
                     <div class="sign-up__field">
                         <div class="field">
-                            <input class="field__input" placeholder="Имя" name="name" aria-labelledby="personData">
+                            <input required class="field__input" placeholder="Имя" name="name" aria-labelledby="personData">
                         </div>
                     </div>
                     <div class="sign-up__field">
                         <div class="field">
-                            <input class="field__input" placeholder="Фамилия" name="surname" aria-labelledby="personData">
+                            <input required class="field__input" placeholder="Фамилия" name="surname" aria-labelledby="personData">
                         </div>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                         <div class="field">
                             <label class="field__label">
                                 <div class="field__title">Дата рождения</div>
-                                <input class="field__input field__input_with-date" autocomplete="off" name="birthday" type="date">
+                                <input required class="field__input field__input_with-date" autocomplete="off" name="birthday" type="date">
                             </label>
                         </div>
                     </div>
@@ -29,21 +29,28 @@
                     <label class="sign-up__label">Данные для входа</label>
                     <div class="sign-up__field">
                         <div class="field">
-                            <input class="field__input" placeholder="Email" name="email" type="email" aria-labelledby="signUpData">
+                            <input required class="field__input" placeholder="Email" name="email" type="email" aria-labelledby="signUpData">
                         </div>
                     </div>
                     <div class="sign-up__field">
                         <div class="field">
-                            <input class="field__input" placeholder="Пароль" name="password" type="password" aria-labelledby="signUpData">
+                            <input required class="field__input" placeholder="Пароль" name="password" type="password" aria-labelledby="signUpData">
                         </div>
                     </div>
                 </div>
                 <div class="sign-up__item">
-                    <button class="btn btn_theme_gradient btn_with-arrow" type="submit">Зарегистрироваться</button>
+                    <button class="btn btn_theme_gradient btn_with-arrow" type="submit">Зарегистрироваться
+                        <svg class="btn_with-arrow__svg" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 0.984375L17.0156 9L9 17.0156L7.59375 15.6094L13.1719 9.98438H0.984375V8.01562H13.1719L7.59375 2.39062L9 0.984375Z"></path>
+                        </svg>
+                    </button>
                 </div>
+                <% if (locals.emailMessage) { %>
+                    <div class="emailMessage"><%- locals.emailMessage %></div>
+                <% } %>
                 <div class="sign-up__question">Уже есть аккаунт на Plaza?
                     <div class="sign-up__sign-in-btn">
-                        <a class="btn btn_size_xl" href="#">Войти</a>
+                        <a class="btn btn_size_xl" href="/sign_in">Войти</a>
                     </div>
                 </div>
             </div>
