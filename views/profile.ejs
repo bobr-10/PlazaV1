@@ -1,1 +1,26 @@
-<h1>Профиль</h1>
+<% function formatDate(date) {
+    const userDateOfBirth = new Date(date);
+    const formattedDate = `${userDateOfBirth.getDate()}.${userDateOfBirth.getMonth() + 1}.${userDateOfBirth.getFullYear()}`;
+    return formattedDate;
+} %>
+
+
+<main class="profile">
+    <div class="profile__content">
+        <h2>Данные профиля:</h2>
+        <div class="profile__info">
+            <div class="profile__item">
+                <h3>Email:</h3><p><%= locals.user.Email %></p>
+            </div>
+            <div class="profile__item">
+                <h3>Имя:</h3><p><%= locals.user.FirstName %></p>
+            </div>
+            <div class="profile__item">
+                <h3>Фамилия:</h3><p><%= locals.user.SecondName %></p>
+            </div>
+            <div class="profile__item">
+                <h3>Дата рождения:</h3><p><%= formatDate(locals.user.DateOfBirth) %></p>
+            </div>
+        </div>
+    </div>
+</main>

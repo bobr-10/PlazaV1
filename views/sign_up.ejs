@@ -48,6 +48,9 @@
                 <% if (locals.emailMessage) { %>
                     <div class="emailMessage"><%- locals.emailMessage %></div>
                 <% } %>
+                <% if (locals.birthMessage) { %>
+                    <div class="birthMessage"> <%- locals.birthMessage %> </div>
+                <% } %>
                 <div class="sign-up__question">Уже есть аккаунт на Plaza?
                     <div class="sign-up__sign-in-btn">
                         <a class="btn btn_size_xl" href="/sign_in">Войти</a>

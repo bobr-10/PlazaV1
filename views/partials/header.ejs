@@ -9,10 +9,19 @@
                 <li class="header__item"><a class="header__link" href="#">Новости</a></li>
                 <li class="header__item header__item_has-submenu"><a class="header__link" href="#">Соглашения</a></li>
             </ul>
-            <ul class="header__user-nav">
-                <li class="header__item"><a class="btn" href="/sign_in">Войти</a></li>
-                <li class="header__item"><a class="btn btn_theme_gradient" href="/sign_up">Зарегистрироваться</a></li>
-            </ul>
+
+            <% if (locals.isAuth) { %>
+                <ul class="header__user-log-in">
+                    <li class="header__item"><a class="btn" href="/sign_out">Выйти</a></li>
+                    <li class="header__item"><a href="/profile"><img height="50" width="50" src="/img/svg/man-avatar.svg" alt="avatar-man"></a></li>
+                </ul>
+            <% } else { %>
+                <ul class="header__user-nav">
+                    <li class="header__item"><a class="btn" href="/sign_in">Войти</a></li>
+                    <li class="header__item"><a class="btn btn_theme_gradient" href="/sign_up">Зарегистрироваться</a></li>
+                </ul>
+            <% } %>
+
         </nav>
     </div>
 </header>

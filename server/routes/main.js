@@ -8,33 +8,60 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
 
-router.get('/', (req, res) => {
+const reqireAuth = (req, res, next) => {
+
+    const token = req.cookies.token;
+
+    if(token) {
+        res.locals.isAuth = true;
+        return next();
+    } else {
+        res.locals.isAuth = false;
+    }
+
+    next();
+};
+
+const genToken = (userId) => {
+    return jwt.sign({ userId }, jwtSecret);
+};
+
+router.get('/', reqireAuth, (req, res) => {
     const locals = {
-        title: "Plaza Hotel"
+        title: "Plaza Hotel",
+        isAuth: res.locals.isAuth
     }
 
     res.render('home', { locals });
 });
 
-router.get('/sign_in', (req, res) => {
+router.get('/sign_in', reqireAuth, (req, res) => {
     const locals = {
-        title: "Вход"
+        title: "Вход",
+        isAuth: res.locals.isAuth
     }
 
     res.render('sign_in', { locals });
 });
 
-router.get('/sign_up', (req, res) => {
+router.get('/sign_up', reqireAuth, (req, res) => {
     const locals = {
-        title: "Регистрация"
+        title: "Регистрация",
+        isAuth: res.locals.isAuth
     }
 
     res.render('sign_up', { locals });
 });
 
-router.get('/search-rooms', async (req, res) => {
+router.get('/sign_out', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/');
+});
+
+router.get('/search-rooms', reqireAuth, async (req, res) => {
     const locals = {
-        title: "Результаты поиска"
+        title: "Результаты поиска",
+        isAuth: res.locals.isAuth
     }
 
     try {
@@ -46,14 +73,18 @@ router.get('/search-rooms', async (req, res) => {
 
 });
 
-router.get('/room/:id', async (req, res) => {
+router.get('/room/:id', reqireAuth, async (req, res) => {
+    const locals = {
+        title: "Подробно",
+        isAuth: res.locals.isAuth
+    }
 
     try {
 
         const ID = req.params.id;
         const data = await Info.findOne({roomId: ID});
 
-        res.render('room_info', {data});
+        res.render('room_info', {data, locals});
         
     } catch (error) {
         console.log(error);
@@ -61,11 +92,10 @@ router.get('/room/:id', async (req, res) => {
 });
 
 
-router.post('/sign_up', async (req, res) =>{
+router.post('/sign_up', reqireAuth, async (req, res) =>{
     try {
-        const locals = {
-            title: "Профиль"
-        }
+
+        const locals = {};
     
         const { name, surname, birthday, email, password } = req.body;
 
@@ -73,7 +103,16 @@ router.post('/sign_up', async (req, res) =>{
 
         if (existingEmail) {
             locals.emailMessage = 'Данный Email уже <b>зарегистрирован!</b>';
-            return res.render('sign_up', {locals});
+            return res.render('sign_up', { locals });
+        }
+
+        const dateOfBirth = new Date(birthday);
+        const today = new Date();
+        const checkYears = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+        if(dateOfBirth > checkYears) {
+            locals.birthMessage = 'Вы должны быть <b>старше 18 лет!</b>'
+            return res.render('sign_up', { locals });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -88,21 +127,19 @@ router.post('/sign_up', async (req, res) =>{
         });
 
         await newUser.save();
+
+        const token = genToken(newUser._id);
+        res.cookie('token', token, {httpOnly: true});
     
-        res.render('profile', { locals });
+        res.redirect('profile');
         
     } catch (error) {
         console.error(error);
     }
 });
 
-
-router.post('/sign_in', async (req, res) =>{
+router.post('/sign_in', reqireAuth, async (req, res) => {
     try {
-        const locals = {
-            title: "Профиль"
-        }
-    
         const { email, password } = req.body;
 
         const existingUser = await User.findOne({ Email: email });
@@ -119,15 +156,38 @@ router.post('/sign_in', async (req, res) =>{
             return res.render('sign_in', {locals});
         }
 
-        const token = jwt.sign({userId: existingUser._id}, jwtSecret)
+        const token = genToken(existingUser._id);
         res.cookie('token', token, {httpOnly: true});
         
-        res.render('profile', { locals });
+        res.redirect('profile');
         
     } catch (error) {
         console.error(error);
     }
 });
+
+router.get('/profile', reqireAuth, async (req, res) => {
+    
+    const token = req.cookies.token;
+    const decodeToken = jwt.verify(token, jwtSecret);
+    const userId = decodeToken.userId;
+
+    const user = await User.findById(userId);
+
+    const locals = {
+        title: "Профиль",
+        isAuth: res.locals.isAuth,
+        user: user
+    }
+
+    if (!locals.isAuth) {
+        return res.redirect('/');
+    }
+
+
+    res.render('profile', { locals });
+});
+
 
 module.exports = router;
 

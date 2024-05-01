@@ -1531,3 +1531,40 @@
 }
 
 /* room_info */
+
+
+/* profile */
+
+.profile {
+    display: flex;
+    justify-content: center;
+}
+
+.profile__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    max-width: 60%;
+    height: 50vh;
+}
+
+.profile__item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.profile__item h3 {
+    margin-right: 30px;
+}
+
+@media screen and (max-width: 699px){
+    .profile__item {
+        flex-direction: column;
+    }
+
+
+}
+
+/* profile */

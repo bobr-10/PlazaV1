@@ -33,11 +33,18 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    align-items: center;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     z-index: 0;
+  }
+
+  .header__user-log-in {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   @media screen and (max-width: 66.0714rem) {
@@ -84,18 +91,20 @@
               order: 0;
       margin-left: 0;
     }
+
+    .header__user-nav {
+      display: none;
+      margin-top: 0.3571rem;
+    }
+
+    .header__user-log-in {
+      display: none;
+    }
   }
 
   .header__user-nav {
     z-index: 0;
     padding: 0;
-  }
-
-  @media screen and (max-width: 66.0714rem) {
-    .header__user-nav {
-      display: none;
-      margin-top: 0.3571rem;
-    }
   }
 
   @media screen and (max-width: 23.6429rem) {
