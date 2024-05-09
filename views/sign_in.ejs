@@ -31,6 +31,12 @@
                 <% if (locals.passwordMessage) { %>
                     <div class="passwordMessage"><%- locals.passwordMessage %></div>
                 <% } %>
+
+                <% if (locals.authMessage) { %>
+                    <div class="auth-message">
+                        <p> <%- locals.authMessage %> </p>
+                    </div>
+                <% } %>
                 <div class="sign-in__question">Нет аккаунта на Plaza?
                     <a class="btn btn_size_l" href="/sign_up">Создать</a>
                 </div>

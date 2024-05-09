@@ -5,6 +5,7 @@ const User = require('../models/user');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const format  = require('path');
 const jwtSecret = process.env.JWT_SECRET;
 
 
@@ -58,19 +59,34 @@ router.get('/sign_out', (req, res) => {
     res.redirect('/');
 });
 
-router.get('/search-rooms', reqireAuth, async (req, res) => {
+router.post('/search-rooms', reqireAuth, async (req, res) => {
+    const { dateFrom, dateTo, numBeds} = req.body;
+
+    const arrivalDate = new Date(dateFrom);
+    const departureDate = new Date(dateTo);
+
     const locals = {
         title: "Результаты поиска",
-        isAuth: res.locals.isAuth
-    }
+        isAuth: res.locals.isAuth,
+        arrivalDate: dateFrom,
+        departureDate: dateTo,
+        numberOfGuests: numBeds
+    }; 
 
-    try {
-        const data = await Room.find();
-        res.render('rooms', {locals, data});
-    } catch (error) {
-        console.log('Error');
+    if (arrivalDate >= departureDate) {
+        locals.dateMessage = "Введите дату прибытия <b>корректно!"
+        res.render('home', {locals});
     }
+    else {
+        try {
 
+            const data = await Room.find();
+            res.render('rooms', {locals, data});  
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
 });
 
 router.get('/room/:id', reqireAuth, async (req, res) => {
@@ -89,6 +105,20 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+});
+
+
+router.post('/order', reqireAuth, async (req, res) => {
+    const locals = {
+        title: "Подробно",
+        isAuth: res.locals.isAuth
+    }
+
+    if (!reqireAuth.isAuth) {
+        locals.authMessage = 'Для оформления заказа<br> <b>авторизуйтесь!</b>';
+        return res.render('sign_in', {locals});
+    }
+
 });
 
 
