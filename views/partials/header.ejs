@@ -1,5 +1,5 @@
 <header class="header">
-    <div class="header__container"><a class="header__logo" href="/"><img src="/img/svg/logo.bd734071.svg" alt="Plaza"></a><a class="js-header__burger" href="#!"></a>
+    <div class="header__container"><a class="header__logo" href="/"><img src="/img/svg/logo.bd734071.svg" alt="Plaza"></a><a class="js-header__burger"></a>
         <nav class="header__nav">
             <ul class="header__site-nav">
                 <li class="header__item"></li>
@@ -21,7 +21,33 @@
                     <li class="header__item"><a class="btn btn_theme_gradient" href="/sign_up">Зарегистрироваться</a></li>
                 </ul>
             <% } %>
-
         </nav>
     </div>
 </header>
+
+<div class="mobile-container">
+    <div class="mobile-container__wrapper">
+        <nav class="mobile__nav">
+            <ul class="mobile__site-nav">
+                <li class="mobile__item"></li>
+                <li class="mobile__item"><a class="header__link" href="#">О нас</a></li>
+                <li class="mobile__item"><a class="header__link" href="#">Услуги</a></li>
+                <li class="mobile__item"><a class="header__link" href="#">Вакансии</a></li>
+                <li class="mobile__item"><a class="header__link" href="#">Новости</a></li>
+                <li class="mobile__item"><a class="header__link" href="#">Соглашения</a></li>
+            </ul>
+    
+            <% if (locals.isAuth) { %>
+                <ul class="mobile__user-log-in">
+                    <li class="mobile__item"><a href="/profile"><img height="50" width="50" src="/img/svg/man-avatar.svg" alt="avatar-man"></a></li>
+                    <li class="mobile__item"><a class="btn" href="/sign_out">Выйти</a></li>
+                </ul>
+            <% } else { %>
+                <ul class="mobile__user-nav">
+                    <li class="mobile__item"><a class="btn" href="/sign_in">Войти</a></li>
+                    <li class="mobile__item"><a class="btn btn_theme_gradient" href="/sign_up">Зарегистрироваться</a></li>
+                </ul>
+            <% } %>
+        </nav>
+    </div>
+</div>
