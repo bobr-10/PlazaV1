@@ -142,8 +142,16 @@
             <form class="check-form" method="post" action="/order">
                 <div class="check-form__item">
                     <div class="check-form__item-group">
-                        <h3 class="check-form__number"><span class="check-form__number-icon">№</span>888</h3><a class="btn btn_theme_link" href="#!">Люкс</a>
-                        <div class="check-form__price-default"><b class="check-form__price-text">9 990₽</b> в сутки</div>
+                        <h3 class="check-form__number" style="margin-right: 15px;">
+                            <span class="check-form__number-icon">№</span>
+                            <%= roomInfo.RoomID %>
+                        </h3>
+                        <% if (roomInfo.RoomStars === 5) { %>
+                            <a class="btn btn_theme_link btn_theme_lux">Люкс</a>
+                        <% } else { %>
+                            <a class="btn btn_theme_link">Стандарт</a>
+                        <% } %>
+                        <div class="check-form__price-default"><b class="check-form__price-text"><%= roomInfo.RoomPrice %>₽</b> в сутки</div>
                     </div>
                 </div>
                 <div class="check-form__item check-form__item_with-calendar">
@@ -153,7 +161,7 @@
                                 <label class="field__label">
                                     <div class="field__title">Прибытие</div>
                                 </label>
-                                <input class="field__input" value="ДД.ММ.ГГГГ" readonly="" autocomplete="off" name="Прибытие">
+                                <input class="field__input" value="<%= locals.arrivalDate %>" readonly="" name="dateFrom">
                             </div>
                         </div>
                         <div class="check-form__field check-form__field_type-to">
@@ -161,7 +169,7 @@
                                 <label class="field__label">
                                     <div class="field__title">Выезд</div>
                                 </label>
-                                <input class="field__input" value="ДД.ММ.ГГГГ" readonly="" autocomplete="off" name="Выезд">
+                                <input class="field__input" value="<%= locals.departureDate %>" readonly="" name="dateTo">
                             </div>
                         </div>
                     </div>
@@ -169,21 +177,21 @@
                 <div class="check-form__item check-form__item_with-guests">
                     <div class="field field_type_dropdown">
                         <label class="field__label">
-                            <div class="field__title">Гости</div>
+                            <div class="field__title">Кол-во кроватей</div>
                         </label>
-                        <input class="field__input" value="Сколько гостей" readonly="" autocomplete="off" name="Гости">
+                        <input class="field__input" value="<%= locals.numberOfGuests %>" readonly="" name="numBeds">
                     </div>
                 </div>
                 <div class="check-form__item">
-                    <div class="check-form__conclusion"><span class="check-form__text">9990₽ х 4 суток</span><span class="check-form__text">39960₽</span></div>
-                    <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text">300₽</span></div>
+                    <div class="check-form__conclusion"><span class="check-form__text"><%= roomInfo.RoomPrice %>₽ х <%= locals.daysToPay %> суток</span><span class="check-form__text"><%= locals.daysToPay * roomInfo.RoomPrice %>₽</span></div>
+                    <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text"><%= 300 * locals.numberOfGuests %>₽</span></div>
                 </div>
                 <div class="check-form__item">
                     <div class="check-form__final-price">
                         <div class="check-form__item-group">
                             <div class="check-form__final-price-text">Итого</div>
                             <div class="check-form__price-line"></div>
-                            <div class="check-form__final-price-value">38081₽</div>
+                            <div class="check-form__final-price-value"><%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>₽</div>
                         </div>
                     </div>
                 </div>

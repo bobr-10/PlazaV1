@@ -772,12 +772,16 @@
     cursor: pointer;
 }
 
+.filters-close {
+    display: none;
+}
+
 @media screen and (max-width: 65rem) {
     .rooms-filter {
         width: 100%;
         position: absolute;
         padding: 15px;
-        left: -950px;
+        left: -1050px;
         z-index: 99;
         background-color: #fff;
         border-bottom: 4px solid #EEDAD2;
@@ -800,11 +804,24 @@
         flex-direction: row;
         justify-content: space-around;
     }
+
+    .filters-close {
+        display: block;
+    }
 }
 
 .rooms-filter__on {
     left: 0px;
 }
+
+.rooms-filter .btn {
+    width: 120px;
+    height: 45px;
+}
+
+/* .filters-close {
+    display: none;
+} */
 
 .rooms-filter__values {
     position: absolute;
@@ -1233,7 +1250,7 @@
 }
 
 .check-form {
-    padding: 3.0714rem 2.1429rem 0.5714rem 2.1429rem;
+    padding: 3.0714rem 2.1429rem 3.0714rem 2.1429rem;
     border: 0.0714rem solid rgba(0, 0, 0, 0.12);
     -webkit-box-shadow: 0 0 1.7857rem rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 1.7857rem rgba(0, 0, 0, 0.2);

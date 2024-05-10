@@ -27,9 +27,9 @@
                     <div class="find-room__guests">
                         <div class="field field_type_dropdown">
                             <label class="field__label">
-                                <div class="field__title">Кол-во спальных мест (максимум 5)</div>
+                                <div class="field__title">Кол-во спальных мест (макc. 5)</div>
                             </label>
-                            <input class="field__input" type="number" value="1" name="numBeds" max="5" min="1" oninput="checkNumValue(this)">
+                            <input class="field__input" type="number" value="1" name="numBeds" max="5" min="1" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                         </div>
                     </div>
                 </div>

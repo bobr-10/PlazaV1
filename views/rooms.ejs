@@ -8,11 +8,11 @@
                             <label class="field__label">
                                 <div class="field__title">Прибытие</div>
                             </label>
-                            <input required class="field__input field__input_with-date" autocomplete="off" name="birthday" type="date" value="<%= locals.arrivalDate %>">
+                            <input required class="field__input field__input_with-date" autocomplete="off" name="dateFrom" type="date" value="<%= locals.arrivalDate %>">
                             <label class="field__label">
                                 <div class="field__title">Выезд</div>
                             </label>
-                            <input required class="field__input field__input_with-date" autocomplete="off" name="birthday" type="date" value="<%= locals.departureDate %>">
+                            <input required class="field__input field__input_with-date" autocomplete="off" name="dateTo" type="date" value="<%= locals.departureDate %>">
                         </div>
                     </div>
                     <div class="rooms-filter__field rooms-filter__field_with-guests">
@@ -20,7 +20,7 @@
                             <label class="field__label">
                                 <div class="field__title">Кол-во спальных мест</div>
                             </label>
-                            <input class="field__input" type="number" value="1" name="numBeds" max="5" min="1" oninput="checkNumValue(this)">
+                            <input class="field__input" type="number" value="1" name="numBeds" max="5" min="1" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                         </div>
                     </div>
                 </div>
@@ -29,11 +29,11 @@
                     <div class="wrapper-double-filter">
                         <div class="wrapper-double-filter__price-input">
                           <div class="field">
-                            <input type="number" class="input-min" value="3500" min="1" max="15000" oninput="checkNumValue(this)">
+                            <input type="number" class="input-min" value="3500" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                           </div>
                           <div class="separator">-</div>
                           <div class="field">
-                            <input type="number" class="input-max" value="12000" min="1" max="15000" oninput="checkNumValue(this)">
+                            <input type="number" class="input-max" value="11300" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                           </div>
                         </div>
                         <div class="wrapper-double-filter__slider">
@@ -41,7 +41,7 @@
                         </div>
                         <div class="wrapper-double-filter__range-input">
                           <input type="range" class="range-min" min="0" max="15000" value="3500" step="100">
-                          <input type="range" class="range-max" min="0" max="15000" value="12000" step="100">
+                          <input type="range" class="range-max" min="0" max="15000" value="11300" step="100">
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
             <h1 class="rooms__offer">Номера, которые мы для вас подобрали<span class="js-rooms__show-filters">Показать фильтры</span></h1>
             <div class="rooms__grid">
             <% data.forEach(hotel => { %>
-                <div class="rooms-item"><a class="rooms-item__link" href="/room/<%= hotel._id %>"></a><img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
+                <div class="rooms-item"><a class="rooms-item__link" href="/room/<%= hotel._id %>?dateFrom=<%= locals.arrivalDate %>&dateTo=<%= locals.departureDate %>&numBeds=<%= locals.numberOfGuests %>"></a><img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
                     <div class="rooms-item__wrapper">
                         <div class="rooms-item__info">
                             <h2 class="rooms-item__num">
@@ -262,5 +262,17 @@
                 range.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
             }
         });
+    });
+
+    const fitlerButton = document.querySelector('.js-rooms__show-filters');
+    const closeFilterButton = document.querySelector('.filters-close')
+    const filterMenu = document.querySelector('.rooms-filter');
+
+    fitlerButton.addEventListener('click', function() {
+        filterMenu.classList.toggle('rooms-filter__on');
+    });
+
+    closeFilterButton.addEventListener('click', function() {
+        filterMenu.classList.remove('rooms-filter__on');
     });
 </script>

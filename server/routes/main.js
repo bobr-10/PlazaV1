@@ -91,17 +91,30 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
 });
 
 router.get('/room/:id', reqireAuth, async (req, res) => {
+    const { dateFrom, dateTo, numBeds} = req.query;
+
+    const arrivalDate = new Date(dateFrom);
+    const departureDate = new Date(dateTo);
+
+    const differenceMs = departureDate - arrivalDate;
+    const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+
     const locals = {
-        title: "Подробно",
-        isAuth: res.locals.isAuth
+        title: "Оформление номера",
+        isAuth: res.locals.isAuth,
+        arrivalDate: dateFrom,
+        departureDate: dateTo,
+        numberOfGuests: numBeds,
+        daysToPay: differenceDays
     }
 
     try {
 
         const ID = req.params.id;
         const data = await Info.findOne({roomId: ID});
+        const roomInfo = await Room.findOne({_id: ID});
 
-        res.render('room_info', {data, locals});
+        res.render('room_info', {data, locals, roomInfo});
         
     } catch (error) {
         console.log(error);
