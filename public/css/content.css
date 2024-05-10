@@ -774,8 +774,36 @@
 
 @media screen and (max-width: 65rem) {
     .rooms-filter {
-        display: none;
+        width: 100%;
+        position: absolute;
+        padding: 15px;
+        left: -950px;
+        z-index: 99;
+        background-color: #fff;
+        border-bottom: 4px solid #EEDAD2;
+        border-right: 4px solid #EEDAD2;
+        border-left: 4px solid #EEDAD2;
+        border-radius: 30px;
+
+        -webkit-transition: 0.8s ease-in-out;
+        -o-transition: 0.8s ease ease-in-out;
+        transition: 0.8s ease-in-out;
     }
+
+    .rooms-filter .btn {
+        width: 130px;
+        height: 45px;
+    }
+
+    .rooms-filter .filters-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+
+.rooms-filter__on {
+    left: 0px;
 }
 
 .rooms-filter__values {

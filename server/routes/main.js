@@ -64,6 +64,7 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
 
     const arrivalDate = new Date(dateFrom);
     const departureDate = new Date(dateTo);
+    const today = new Date()
 
     const locals = {
         title: "Результаты поиска",
@@ -73,7 +74,7 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
         numberOfGuests: numBeds
     }; 
 
-    if (arrivalDate >= departureDate) {
+    if (arrivalDate >= departureDate || arrivalDate < today) {
         locals.dateMessage = "Введите дату прибытия <b>корректно!"
         res.render('home', {locals});
     }
@@ -81,7 +82,7 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
         try {
 
             const data = await Room.find();
-            res.render('rooms', {locals, data});  
+            res.render('rooms', {locals, data});
 
         } catch (err) {
             console.log(err);

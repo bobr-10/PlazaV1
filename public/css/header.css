@@ -244,9 +244,10 @@
 
 .mobile-container__wrapper {
   background-color: #fff;
+  font-size: 16px;
   position: absolute;
-  z-index: 99;
-  top: -440px;
+  z-index: 999;
+  top: -480px;
   width: 100%;
   text-align: center;
   border-bottom: 5px solid #F3C9B9;

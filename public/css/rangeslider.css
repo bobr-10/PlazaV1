@@ -17,7 +17,8 @@
   outline: none;
   border-radius: 5px;
   text-align: center;
-  border: 1px solid #999;
+  border: 1px solid rgba(31, 32, 65, 0.25);
+  color: rgba(31, 32, 65, 0.5);
   -moz-appearance: textfield;
 }
 
@@ -42,7 +43,7 @@
   right: 25%;
   position: absolute;
   border-radius: 5px;
-  background: #17A2B8;
+  background: #EEDAD2;
 }
 
 .wrapper-double-filter__range-input {
@@ -64,7 +65,7 @@ input[type="range"]::-webkit-slider-thumb {
   height: 17px;
   width: 17px;
   border-radius: 50%;
-  background: #17A2B8;
+  background: #cabebe;
   pointer-events: auto;
   -webkit-appearance: none;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
@@ -78,5 +79,4 @@ input[type="range"]::-moz-range-thumb {
   background: #17A2B8;
   pointer-events: auto;
   -moz-appearance: none;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
