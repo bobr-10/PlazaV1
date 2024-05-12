@@ -819,10 +819,6 @@
     height: 45px;
 }
 
-/* .filters-close {
-    display: none;
-} */
-
 .rooms-filter__values {
     position: absolute;
     right: 0;
@@ -1575,6 +1571,10 @@
     padding: 0;
 }
 
+.order-info {
+    display: none;
+}
+
 /* room_info */
 
 
@@ -1582,15 +1582,31 @@
 
 .profile {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
-.profile__content {
+.profile__about {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     max-width: 60%;
     height: 50vh;
+}
+
+.profile__orders {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile__orders h2 {
+    margin-bottom: 20px;
+}
+
+.orders {
+    max-height: 250px;
+    max-width: 300px;
+    overflow-y: auto;
 }
 
 .profile__item {
@@ -1604,12 +1620,16 @@
     margin-right: 30px;
 }
 
-@media screen and (max-width: 699px){
+@media screen and (max-width: 43rem){
     .profile__item {
         flex-direction: column;
     }
 
-
+    .profile {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 /* profile */

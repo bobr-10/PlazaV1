@@ -5,7 +5,6 @@ const User = require('../models/user');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const format  = require('path');
 const jwtSecret = process.env.JWT_SECRET;
 
 
@@ -26,6 +25,9 @@ const reqireAuth = (req, res, next) => {
 const genToken = (userId) => {
     return jwt.sign({ userId }, jwtSecret);
 };
+
+
+
 
 router.get('/', reqireAuth, (req, res) => {
     const locals = {
@@ -58,6 +60,9 @@ router.get('/sign_out', (req, res) => {
     res.clearCookie('token');
     res.redirect('/');
 });
+
+
+
 
 router.post('/search-rooms', reqireAuth, async (req, res) => {
     const { dateFrom, dateTo, numBeds} = req.body;
@@ -122,16 +127,31 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
 });
 
 
+
 router.post('/order', reqireAuth, async (req, res) => {
+
     const locals = {
-        title: "Подробно",
-        isAuth: res.locals.isAuth
+        title: "Оформление номера",
+        isAuth: res.locals.isAuth,
     }
 
-    if (!reqireAuth.isAuth) {
-        locals.authMessage = 'Для оформления заказа<br> <b>авторизуйтесь!</b>';
-        return res.render('sign_in', {locals});
+    if (!locals.isAuth) {
+        return res.redirect('sign_in');
     }
+
+    const { dateFrom, dateTo, numBeds, roomPrice, daysToPay, additionalServicesCost, totalPrice } = req.body;
+
+    setTimeout(async () => {
+
+        const token = req.cookies.token;
+        const decodeToken = jwt.verify(token, jwtSecret);
+        const userId = decodeToken.userId;
+
+        const user = await User.findById(userId);
+
+        res.redirect('/profile');
+
+    }, 5000);
 
 });
 

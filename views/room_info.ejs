@@ -195,12 +195,41 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn_theme_gradient btn_with-arrow" type="submit">Оформить заказ
+                <button class="btn btn_theme_gradient btn_with-arrow" id="makeOrder" type="submit">Оформить заказ
                     <svg class="btn_with-arrow__svg" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 0.984375L17.0156 9L9 17.0156L7.59375 15.6094L13.1719 9.98438H0.984375V8.01562H13.1719L7.59375 2.39062L9 0.984375Z"></path>
                     </svg>
                 </button>
             </form>
         </div>
+        <div class="success-container" id="modal">
+            <div class="success-content">
+                <img src="/img/svg/check-pay.svg" alt="check" width="50" height="50">
+                <h2>Аренда успешно оформлена!</h2>
+                <p>Уведомление с данными о заказе<br>отправлено на вашу электронную почту.</p>
+            </div>
+        </div>
+        <div class="order-info">
+            <form method="post" action="/order">
+                <input type="hidden" name="roomPrice" value="<%= roomInfo.RoomPrice %>">
+                <input type="hidden" name="daysToPay" value="<%= locals.daysToPay %>">
+                <input type="hidden" name="additionalServicesCost" value="<%= 300 * locals.numberOfGuests %>">
+                <input type="hidden" name="totalPrice" value="<%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>">
+            </form>
+        </div>
     </div>
 </main>
+
+<script>
+    const modal = document.querySelector(".success-container");
+    const orderButton = document.getElementById("makeOrder");
+
+    // orderButton.onclick = function() {
+    //     modal.style.display = "block";
+    // }
+
+    orderButton.addEventListener('click', function() {
+        modal.classList.toggle('success-container__on');
+    });
+
+</script>
