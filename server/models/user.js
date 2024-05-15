@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -29,6 +30,56 @@ const UserSchema = new Schema({
 });
 
 
-const User = mongoose.model('User', UserSchema);
+const OrderSchema = new Schema ({
+    userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: true
+    },
 
-module.exports = User;
+    roomNum: {
+        type: Number,
+        require: true
+    },
+
+    arrivalDate: {
+        type: Date,
+        require: true
+    },
+
+    departureDate: {
+        type: Date,
+        require: true
+    },
+
+    numberOfGuests: {
+        type: Number,
+        require: true
+    },
+
+    roomPricePerDay: {
+        type: Number,
+        require: true
+    },
+
+    roomDays: {
+        type: Number,
+        require: true
+    },
+
+    serviceCost: {
+        type: Number,
+        require: true
+    },
+
+    totalPrice: {
+        type: Number,
+        require: true
+    }
+});
+
+
+const User = mongoose.model('User', UserSchema);
+const UserOrder = mongoose.model('UserOrder', OrderSchema);
+
+module.exports = {User, UserOrder};

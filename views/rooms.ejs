@@ -20,7 +20,7 @@
                             <label class="field__label">
                                 <div class="field__title">Кол-во спальных мест</div>
                             </label>
-                            <input class="field__input" type="number" value="1" name="numBeds" max="5" min="1" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
+                            <input class="field__input" type="number" value="<%= locals.numberOfGuests %>" name="numBeds" max="5" min="1" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                         </div>
                     </div>
                 </div>

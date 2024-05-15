@@ -25,33 +25,27 @@
     </div>
     <div class="profile__orders">
         <h2>Данные о заказах:</h2>
-        <div class="orders">
-            <div class="order-item">
-                <div class="rooms-item"><a class="rooms-item__link" href=""></a><img class="rooms-item__img" src="/img/image-1.d22b3a1a.jpg" alt="Фотография номера">
-                    <div class="rooms-item__wrapper">
-                        <div class="rooms-item__info">
-                            <h2 class="rooms-item__num">
-                                <span class="rooms-item__num-ico">№</span>
-                                <span></span>
-                            </h2>                    
-                            <p class="rooms-item__price"><b class="rooms-item__price-text"></b></p>
+            <% if (!userOrder || userOrder.length === 0) { %>
+                <div class="profile__empty">
+                    <h4>Вы не сделали<br> ни одного заказа!</h4>
+                </div>
+            <% } else { %>
+                <% userOrder.forEach(order => { %>
+                    <div class="order-item">
+                        <div class="rooms-item"><a class="rooms-item__link" href=""></a><img class="rooms-item__img" src="/img/image-1.d22b3a1a.jpg" alt="Фотография номера">
+                            <div class="rooms-item__wrapper">
+                                <div class="rooms-item__info">
+                                    <h2 class="rooms-item__num">
+                                        <span class="rooms-item__num-ico">№</span>
+                                        <span></span>
+                                    </h2>                    
+                                    <p class="rooms-item__price"><b class="rooms-item__price-text"></b></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="order-item">
-                <div class="rooms-item"><a class="rooms-item__link" href=""></a><img class="rooms-item__img" src="/img/image-1.d22b3a1a.jpg" alt="Фотография номера">
-                    <div class="rooms-item__wrapper">
-                        <div class="rooms-item__info">
-                            <h2 class="rooms-item__num">
-                                <span class="rooms-item__num-ico">№</span>
-                                <span></span>
-                            </h2>                    
-                            <p class="rooms-item__price"><b class="rooms-item__price-text"></b></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <% }) %>
+            <% } %>
         </div>
     </div>
 </main>

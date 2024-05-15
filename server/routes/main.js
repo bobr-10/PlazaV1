@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Room, Info } = require('../models/room');
-const User = require('../models/user');
+const { User, UserOrder } = require('../models/user');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -44,6 +44,10 @@ router.get('/sign_in', reqireAuth, (req, res) => {
         isAuth: res.locals.isAuth
     }
 
+    if(locals.isAuth) {
+        res.redirect('/profile');
+    }
+
     res.render('sign_in', { locals });
 });
 
@@ -51,6 +55,10 @@ router.get('/sign_up', reqireAuth, (req, res) => {
     const locals = {
         title: "Регистрация",
         isAuth: res.locals.isAuth
+    }
+
+    if(locals.isAuth) {
+        res.redirect('/profile');
     }
 
     res.render('sign_up', { locals });
@@ -114,7 +122,6 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
     }
 
     try {
-
         const ID = req.params.id;
         const data = await Info.findOne({roomId: ID});
         const roomInfo = await Room.findOne({_id: ID});
@@ -130,6 +137,9 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
 
 router.post('/order', reqireAuth, async (req, res) => {
 
+    const { dateFrom, dateTo, numBeds } = req.query;
+    const { roomNumId, pricePerDay, daysToPay, additionalServicesCost, finalPrice} = req.body;
+
     const locals = {
         title: "Оформление номера",
         isAuth: res.locals.isAuth,
@@ -138,20 +148,32 @@ router.post('/order', reqireAuth, async (req, res) => {
     if (!locals.isAuth) {
         return res.redirect('sign_in');
     }
+    else {
+        setTimeout(async () => {
 
-    const { dateFrom, dateTo, numBeds, roomPrice, daysToPay, additionalServicesCost, totalPrice } = req.body;
+            const token = req.cookies.token;
+            const decodeToken = jwt.verify(token, jwtSecret);
+            const userId = decodeToken.userId;
 
-    setTimeout(async () => {
 
-        const token = req.cookies.token;
-        const decodeToken = jwt.verify(token, jwtSecret);
-        const userId = decodeToken.userId;
+            const newOrder = new UserOrder ({
+                userID: userId,
+                roomNum: roomNumId,
+                arrivalDate: dateFrom,
+                departureDate: dateTo,
+                numberOfGuests: numBeds,
+                roomPricePerDay: pricePerDay,
+                roomDays: daysToPay,
+                serviceCost: additionalServicesCost,
+                totalPrice: finalPrice
+            });
 
-        const user = await User.findById(userId);
-
-        res.redirect('/profile');
-
-    }, 5000);
+            await newOrder.save();
+    
+            res.redirect('/profile');
+    
+        }, 4000);
+    }
 
 });
 
@@ -204,6 +226,10 @@ router.post('/sign_up', reqireAuth, async (req, res) =>{
 
 router.post('/sign_in', reqireAuth, async (req, res) => {
     try {
+        const locals = {
+            title: "Профиль"
+        }
+
         const { email, password } = req.body;
 
         const existingUser = await User.findOne({ Email: email });
@@ -237,11 +263,12 @@ router.get('/profile', reqireAuth, async (req, res) => {
     const userId = decodeToken.userId;
 
     const user = await User.findById(userId);
+    const userOrder = await UserOrder.find({userID: user});
 
     const locals = {
         title: "Профиль",
         isAuth: res.locals.isAuth,
-        user: user
+        user: user,
     }
 
     if (!locals.isAuth) {
@@ -249,7 +276,7 @@ router.get('/profile', reqireAuth, async (req, res) => {
     }
 
 
-    res.render('profile', { locals });
+    res.render('profile', { locals, userOrder});
 });
 
 
