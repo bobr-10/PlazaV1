@@ -161,7 +161,7 @@
                                 <label class="field__label">
                                     <div class="field__title">Прибытие</div>
                                 </label>
-                                <input class="field__input" value="<%= locals.arrivalDate %>" readonly="" name="dateFrom">
+                                <input class="field__input" value="<%= locals.arrivalDate %>" readonly="">
                             </div>
                         </div>
                         <div class="check-form__field check-form__field_type-to">
@@ -169,7 +169,7 @@
                                 <label class="field__label">
                                     <div class="field__title">Выезд</div>
                                 </label>
-                                <input class="field__input" value="<%= locals.departureDate %>" readonly="" name="dateTo">
+                                <input class="field__input" value="<%= locals.departureDate %>" readonly="">
                             </div>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                         <label class="field__label">
                             <div class="field__title">Кол-во кроватей</div>
                         </label>
-                        <input class="field__input" value="<%= locals.numberOfGuests %>" readonly="" name="numBeds">
+                        <input class="field__input" value="<%= locals.numberOfGuests %>" readonly="">
                     </div>
                 </div>
                 <div class="check-form__item">
@@ -203,10 +203,14 @@
                 <div class="order-info">
                     <form method="post" action="/order">
                         <input type="hidden" name="roomNumId" value="<%= roomInfo.RoomID %>">
+                        <input type="hidden" name="roomID" value="<%= roomInfo._id %>">
                         <input type="hidden" name="pricePerDay" value="<%= roomInfo.RoomPrice %>">
                         <input type="hidden" name="daysToPay" value="<%= locals.daysToPay %>">
                         <input type="hidden" name="additionalServicesCost" value="<%= 300 * locals.numberOfGuests %>">
                         <input type="hidden" name="finalPrice" value="<%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>">
+                        <input type="hidden" name="dateFrom" value="<%= locals.arrivalDate %>">
+                        <input type="hidden" name="dateTo" value="<%= locals.departureDate %>">
+                        <input type="hidden" name="numBeds" value="<%= locals.numberOfGuests %>">
                     </form>
                 </div>
             </form>

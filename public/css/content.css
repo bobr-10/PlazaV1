@@ -1638,3 +1638,57 @@
 }
 
 /* profile */
+
+
+/* profile-order */
+
+.order-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.textarea-review {
+    resize: none;
+    width: 35vw;
+    height: 15rem;
+    max-width: 40rem;
+}
+
+.order-content h2 {
+    margin-bottom: 30px;
+}
+
+.order__review button {
+    width: 35vw;
+    max-width: 40rem;
+}
+
+.review__button button {
+    margin-top: 40px;
+}
+
+@media screen and (max-width: 43rem){
+    .order-content {
+        flex-direction: column;
+        justify-content: space-betweens;
+    }
+
+    .textarea-review {
+        width: 72vw;
+    }
+
+    .order__review button {
+        width: 72vw;
+    }
+
+    .order__review h2 {
+        margin-top: 90px;
+    }
+}
+
+/* profile-order */

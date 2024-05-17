@@ -1,0 +1,72 @@
+<% function formatDate(date) {
+    const userDateOfBirth = new Date(date);
+    const formattedDate = `${userDateOfBirth.getDate()}.${userDateOfBirth.getMonth() + 1}.${userDateOfBirth.getFullYear()}`;
+    return formattedDate;
+} %>
+
+<main>
+    <div class="order-content">
+        <div class="order__info">
+            <h2>Иноформация о заказе:</h2>
+            <form class="check-form">
+                <div class="check-form__item">
+                    <div class="check-form__item-group">
+                        <h3 class="check-form__number" style="margin-right: 15px;">
+                            <span class="check-form__number-icon">№</span>
+                            <%= data.roomNum %>
+                        </h3>
+                        <div class="check-form__price-default"><b class="check-form__price-text"><%= data.roomPricePerDay %>₽</b> в сутки</div>
+                    </div>
+                </div>
+                <div class="check-form__item check-form__item_with-calendar">
+                    <div class="check-form__group-field">
+                        <div class="check-form__field check-form__field_type-from">
+                            <div class="field field_type_dropdown">
+                                <label class="field__label">
+                                    <div class="field__title">Прибытие</div>
+                                </label>
+                                <input class="field__input" value="<%= formatDate(data.arrivalDate) %>" readonly="">
+                            </div>
+                        </div>
+                        <div class="check-form__field check-form__field_type-to">
+                            <div class="field field_type_dropdown">
+                                <label class="field__label">
+                                    <div class="field__title">Выезд</div>
+                                </label>
+                                <input class="field__input" value="<%= formatDate(data.departureDate) %>" readonly="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="check-form__item check-form__item_with-guests">
+                    <div class="field field_type_dropdown">
+                        <label class="field__label">
+                            <div class="field__title">Кол-во кроватей</div>
+                        </label>
+                        <input class="field__input" value="<%= data.numberOfGuests %>" readonly="">
+                    </div>
+                </div>
+                <div class="check-form__item">
+                    <div class="check-form__conclusion"><span class="check-form__text"><%= data.roomPricePerDay %>₽ х <%= data.roomDays %> суток</span><span class="check-form__text"><%= data.roomDays * data.roomPricePerDay %>₽</span></div>
+                    <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text"><%= data.serviceCost %>₽</span></div>
+                </div>
+                <div class="check-form__item">
+                    <div class="check-form__final-price">
+                        <div class="check-form__item-group">
+                            <div class="check-form__final-price-text">Итого</div>
+                            <div class="check-form__price-line"></div>
+                            <div class="check-form__final-price-value"><%= data.totalPrice %>₽</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="order__review">
+            <h2>Ваш отзыв:</h2>
+            <textarea class="textarea-review" placeholder="Введите свой отзыв..."></textarea>
+            <div class="review__button">
+                <button class="btn btn_theme_gsradient btn_with-arrow" id="makeReview" type="submit">Отправить отзыв</button>
+            </div>
+        </div>
+    </div>
+</main>

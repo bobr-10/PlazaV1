@@ -133,16 +133,30 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
     }
 });
 
+router.get('/profile/order/:id', reqireAuth, async(req, res) => {
+    
+    const locals = {
+        title: "Аренда",
+        isAuth: res.locals.isAuth
+    };
 
+    try {
+        const roomNum = req.params.id;
+        const data = await UserOrder.findOne({roomNum: roomNum})
+        res.render('order_info', {locals, data});
+
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 router.post('/order', reqireAuth, async (req, res) => {
 
-    const { dateFrom, dateTo, numBeds } = req.query;
-    const { roomNumId, pricePerDay, daysToPay, additionalServicesCost, finalPrice} = req.body;
+    const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
 
     const locals = {
         title: "Оформление номера",
-        isAuth: res.locals.isAuth,
+        isAuth: res.locals.isAuth
     }
 
     if (!locals.isAuth) {
@@ -159,6 +173,7 @@ router.post('/order', reqireAuth, async (req, res) => {
             const newOrder = new UserOrder ({
                 userID: userId,
                 roomNum: roomNumId,
+                roomID: roomID,
                 arrivalDate: dateFrom,
                 departureDate: dateTo,
                 numberOfGuests: numBeds,
@@ -263,20 +278,36 @@ router.get('/profile', reqireAuth, async (req, res) => {
     const userId = decodeToken.userId;
 
     const user = await User.findById(userId);
-    const userOrder = await UserOrder.find({userID: user});
+
+    const userOrders = await UserOrder.find({ userID: userId });
+
+    const ordersWithRoomImages = [];
+
+    for (const order of userOrders) {
+        const room = await Room.findOne({ RoomID: order.roomNum });
+
+        if (room) {
+            const roomImageURL = room.RoomURL;
+
+            ordersWithRoomImages.push({
+                order: order,
+                roomImageURL: roomImageURL
+            });
+        }
+    }
 
     const locals = {
         title: "Профиль",
         isAuth: res.locals.isAuth,
         user: user,
+        ordersWithRoomImages: ordersWithRoomImages
     }
 
     if (!locals.isAuth) {
         return res.redirect('/');
     }
 
-
-    res.render('profile', { locals, userOrder});
+    res.render('profile', { locals });
 });
 
 

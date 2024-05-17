@@ -37,6 +37,11 @@ const OrderSchema = new Schema ({
         require: true
     },
 
+    roomID: {
+        type: String, 
+        require: true
+    },
+
     roomNum: {
         type: Number,
         require: true
