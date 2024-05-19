@@ -8,14 +8,28 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
 
-const reqireAuth = (req, res, next) => {
-
+const reqireAuth = async (req, res, next) => {
     const token = req.cookies.token;
 
-    if(token) {
-        res.locals.isAuth = true;
+    if (!token) {
+        res.locals.isAuth = false;
         return next();
-    } else {
+    }
+
+    try {
+        const decodeToken = jwt.verify(token, jwtSecret);
+        const userId = decodeToken.userId;
+
+        const user = await User.findById(userId);
+
+        if (user) {
+            res.locals.isAuth = true;
+            res.locals.userGender = user.Gender;
+        } else {
+            res.locals.isAuth = false;
+        }
+    } catch (err) {
+        console.log('Error:', err);
         res.locals.isAuth = false;
     }
 
@@ -26,13 +40,11 @@ const genToken = (userId) => {
     return jwt.sign({ userId }, jwtSecret);
 };
 
-
-
-
 router.get('/', reqireAuth, (req, res) => {
     const locals = {
         title: "Plaza Hotel",
-        isAuth: res.locals.isAuth
+        isAuth: res.locals.isAuth,
+        userGender: res.locals.userGender
     }
 
     res.render('home', { locals });
@@ -54,7 +66,8 @@ router.get('/sign_in', reqireAuth, (req, res) => {
 router.get('/sign_up', reqireAuth, (req, res) => {
     const locals = {
         title: "Регистрация",
-        isAuth: res.locals.isAuth
+        isAuth: res.locals.isAuth,
+        userGender: res.locals.userGender
     }
 
     if(locals.isAuth) {
@@ -87,17 +100,22 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
     const locals = {
         title: "Результаты поиска",
         isAuth: res.locals.isAuth,
+        userGender: res.locals.userGender,
         arrivalDate: dateFrom,
         departureDate: dateTo,
         numberOfGuests: numBeds
     }; 
 
     if (arrivalDate < today) {
+
         locals.dateMessage = "Введите дату прибытия <b>корректно!</b>";
         res.render('home', { locals });
+
     } else if (departureDate <= arrivalDate) {
+
         locals.dateMessage = "Введите дату выезда <b>корректно!</b>";
         res.render('home', { locals });
+
     } else {
         try {
             const data = await Room.find();
@@ -120,6 +138,7 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
     const locals = {
         title: "Оформление номера",
         isAuth: res.locals.isAuth,
+        userGender: res.locals.userGender,
         arrivalDate: dateFrom,
         departureDate: dateTo,
         numberOfGuests: numBeds,
@@ -144,7 +163,8 @@ router.get('/profile/order/:id', reqireAuth, async(req, res) => {
     
     const locals = {
         title: "Аренда",
-        isAuth: res.locals.isAuth
+        isAuth: res.locals.isAuth,
+        userGender: res.locals.userGender
     };
 
     try {
@@ -160,6 +180,9 @@ router.get('/profile/order/:id', reqireAuth, async(req, res) => {
             return res.status(404).send('<h1>Не найдено (404)</h1>');
         }
 
+        const review = await Review.findOne({ roomId: data.roomID});
+        locals.review = review;
+
         res.render('order_info', {locals, data});
 
     } catch (error) {
@@ -173,7 +196,8 @@ router.post('/order', reqireAuth, async (req, res) => {
 
     const locals = {
         title: "Оформление номера",
-        isAuth: res.locals.isAuth
+        isAuth: res.locals.isAuth,
+        userGender: res.locals.userGender
     }
 
     if (!locals.isAuth) {
@@ -260,7 +284,8 @@ router.post('/sign_up', reqireAuth, async (req, res) =>{
 router.post('/sign_in', reqireAuth, async (req, res) => {
     try {
         const locals = {
-            title: "Профиль"
+            title: "Профиль",
+            userGender: res.locals.userGender
         }
 
         const { email, password } = req.body;
@@ -318,7 +343,8 @@ router.get('/profile', reqireAuth, async (req, res) => {
         title: "Профиль",
         isAuth: res.locals.isAuth,
         user: user,
-        ordersWithRoomImages: ordersWithRoomImages
+        ordersWithRoomImages: ordersWithRoomImages,
+        userGender: res.locals.userGender
     }
 
     if (!locals.isAuth) {
@@ -331,8 +357,6 @@ router.get('/profile', reqireAuth, async (req, res) => {
 
 router.post('/review', reqireAuth, async(req, res) => {
     const {rateNum, rateText} = req.body;
-
-   
 
     const token = req.cookies.token;
     const decodeToken = jwt.verify(token, jwtSecret);
@@ -361,8 +385,6 @@ router.get('/review', (req, res) => {
 
 
 module.exports = router;
-
-
 
 
 // async function insertRoomData() {

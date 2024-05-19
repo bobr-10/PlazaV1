@@ -1,5 +1,9 @@
 <header class="header">
-    <div class="header__container"><a class="header__logo" href="/"><img src="/img/svg/logo.bd734071.svg" alt="Plaza"></a><a class="js-header__burger"></a>
+    <div class="header__container">
+        <a class="header__logo" href="/">
+            <img src="/img/svg/logo.bd734071.svg" alt="Plaza">
+        </a>
+        <a class="js-header__burger"></a>
         <nav class="header__nav">
             <ul class="header__site-nav">
                 <li class="header__item"></li>
@@ -13,7 +17,11 @@
             <% if (locals.isAuth) { %>
                 <ul class="header__user-log-in">
                     <li class="header__item"><a class="btn" href="/sign_out">Выйти</a></li>
-                    <li class="header__item"><a href="/profile"><img height="50" width="50" src="/img/svg/man-avatar.svg" alt="avatar-man"></a></li>
+                    <% if (locals.userGender === 'male') { %>
+                        <li class="header__item"><a href="/profile"><img height="50" width="50" src="/img/svg/man-avatar.svg" alt="avatar-man"></a></li>
+                    <% } else if (locals.userGender === 'female') { %>
+                        <li class="header__item"><a href="/profile"><img height="50" width="50" src="/img/svg/women-avatar.svg" alt="women-man"></a></li>
+                    <% } %>
                 </ul>
             <% } else { %>
                 <ul class="header__user-nav">

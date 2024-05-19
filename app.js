@@ -35,6 +35,10 @@ app.set('view engine', 'ejs');
 
 app.use('/', require('./server/routes/main'));
 
+app.use((req, res, next) => {
+    res.status(404).send('Извините, такой страницы не существует.');
+});
+
 app.listen(PORT, () => {
     console.log(`Server is active on port: ${PORT}`);
 })
