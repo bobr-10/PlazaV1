@@ -1,6 +1,10 @@
 <% function formatDate(date) {
     const userDateOfBirth = new Date(date);
-    const formattedDate = `${userDateOfBirth.getDate()}.${userDateOfBirth.getMonth() + 1}.${userDateOfBirth.getFullYear()}`;
+    const formattedDate = userDateOfBirth.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    }).replace(/\//g, '.');
     return formattedDate;
 } %>
 
@@ -21,30 +25,41 @@
             <div class="profile__item">
                 <h3>Дата рождения:</h3><p><%= formatDate(locals.user.DateOfBirth) %></p>
             </div>
+            <div class="profile__item">
+                <% if (locals.user.Gender == "male") { %>
+                    <h3>Пол:</h3><p>Мужской</p>
+                <% } else { %>
+                    <h3>Пол:</h3><p>Женский</p>
+                <% } %>
+            </div>
         </div>
     </div>
     <div class="profile__orders">
     <h2>Данные о заказах:</h2>
     <div class="orders">
-        <% for (const orderWithRoomImage of locals.ordersWithRoomImages) { %>
-            <div class="order-item">
-                <div class="rooms-item">
-                    <a class="rooms-item__link" href="/profile/order/<%= orderWithRoomImage.order.roomNum %>"></a>
-                    <img class="rooms-item__img" src="<%= orderWithRoomImage.roomImageURL %>" alt="Фотография номера">
-                    <div class="rooms-item__wrapper">
-                        <div class="rooms-item__info">
-                            <h2 class="rooms-item__num">
-                                <span class="rooms-item__num-ico">№</span>
-                                <span><%= orderWithRoomImage.order.roomNum %></span>
-                            </h2>
-                            <p class="rooms-item__price">
-                                <b class="rooms-item__price-text"><%= orderWithRoomImage.order.roomPricePerDay %> ₽</b>
-                            </p>
+        <% if (locals.ordersWithRoomImages.length > 0) { %>
+            <% for (const orderWithRoomImage of locals.ordersWithRoomImages) { %>
+                <div class="order-item">
+                    <div class="rooms-item">
+                        <a class="rooms-item__link" href="/profile/order/<%= orderWithRoomImage.order.roomNum %>"></a>
+                        <img class="rooms-item__img" src="<%= orderWithRoomImage.roomImageURL %>" alt="Фотография номера">
+                        <div class="rooms-item__wrapper">
+                            <div class="rooms-item__info">
+                                <h2 class="rooms-item__num">
+                                    <span class="rooms-item__num-ico">№</span>
+                                    <span><%= orderWithRoomImage.order.roomNum %></span>
+                                </h2>
+                                <p class="rooms-item__price">
+                                    <b class="rooms-item__price-text"><%= orderWithRoomImage.order.roomPricePerDay %> ₽</b>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        <% } %>
+            <% } %>
+        <% } else { %>
+            <p>Не найдено ни одного заказа!</p>
+        <% } %>        
     </div>
 </div>
 </main>

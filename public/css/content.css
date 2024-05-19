@@ -1165,6 +1165,8 @@
 
 .reviews {
     padding: 0;
+    overflow-y: scroll;
+    height: 300px;
 }
 
 .reviews__item {
@@ -1172,7 +1174,9 @@
     display: -ms-flexbox;
     display: flex;
     list-style: none;
-    margin-bottom: 1.4286rem;
+    padding-bottom: 2.8286rem;
+    margin-bottom: 2.8286rem;
+    border-bottom: 1px solid #EEDAD2;
 }
 
 .reviews__item:last-child {
@@ -1534,6 +1538,14 @@
     grid-column: 1/-1;
 }
 
+.page-room__info-value {
+    margin-right: 1.5rem;
+}
+
+.page-room__count {
+    margin-right: 1rem;
+}
+
 .page-room__title-group {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1669,25 +1681,40 @@
 }
 
 .review__button button {
-    margin-top: 40px;
+    margin-top: 30px;
+    height: 3rem;
+}
+
+.review__rate {
+    margin-top: 20px;
+}
+
+.review__rate .field__input {
+    width: 100px;
 }
 
 @media screen and (max-width: 43rem){
     .order-content {
         flex-direction: column;
         justify-content: space-betweens;
+        padding: 20px;
     }
 
     .textarea-review {
-        width: 72vw;
+        width: 85vw;
+        font-size: 15px;
     }
 
     .order__review button {
-        width: 72vw;
+        width: 85vw;
     }
 
     .order__review h2 {
         margin-top: 90px;
+    }
+
+    .check-form {
+        width: auto;
     }
 }
 

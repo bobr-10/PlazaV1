@@ -7,8 +7,8 @@
 <main>
     <div class="order-content">
         <div class="order__info">
-            <h2>Иноформация о заказе:</h2>
             <form class="check-form">
+                <h2>Информация о заказе:</h2>
                 <div class="check-form__item">
                     <div class="check-form__item-group">
                         <h3 class="check-form__number" style="margin-right: 15px;">
@@ -62,11 +62,24 @@
             </form>
         </div>
         <div class="order__review">
-            <h2>Ваш отзыв:</h2>
-            <textarea class="textarea-review" placeholder="Введите свой отзыв..."></textarea>
-            <div class="review__button">
-                <button class="btn btn_theme_gsradient btn_with-arrow" id="makeReview" type="submit">Отправить отзыв</button>
-            </div>
+            <form class="review-make" action="/review" method="post">
+                <h2>Ваш отзыв:</h2>
+                <textarea minlength="50" class="textarea-review" name="rateText" placeholder="Введите свой отзыв..."></textarea>
+                <div class="review__rate">
+                    <label class="field__label">
+                        <div class="field__title">Оценка от 1 до 5</div>
+                    </label>
+                    <input width="50" class="field__input" type="number" value="1" name="rateNum" max="5" min="1" oninput="checkNumValue(this)" pattern="\d*" inputmode="numeric">
+                </div>
+                <div class="review__button">
+                    <button class="btn btn_theme_gsradient" id="makeReview" type="submit">Отправить отзыв</button>
+                </div>
+                <div class="review__message">
+                    <% if (locals.textMessage) { %>
+                        <p><%= locals.textMessage %></p>
+                    <% } %>
+                </div>
+            </form>
         </div>
     </div>
 </main>

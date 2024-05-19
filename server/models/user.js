@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { type } = require('os');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -15,6 +14,11 @@ const UserSchema = new Schema({
 
     DateOfBirth: {
         type: Date,
+        require: true
+    },
+
+    Gender: {
+        type: String,
         require: true
     },
 

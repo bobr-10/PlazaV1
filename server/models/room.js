@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
+const { text } = require('stream/consumers');
 
 const Schema = mongoose.Schema;
 const RoomSchema = new Schema({
@@ -36,8 +38,41 @@ const RoomInfo = new Schema({
     }]
 });
 
+const RoomReview = new Schema({
+    roomId: {
+        type: String,
+        require: true
+    },
+
+    reviewText: {
+        type: String,
+        require: true
+    },
+
+    reviewRate: {
+        type: Number,
+        require: true
+    },
+
+    reviewAuthorName: {
+        type: String,
+        require: true
+    },
+
+    reviewAuthorMale: {
+        type: String,
+        require: true
+    },
+
+    reviewDate: {
+        type: Date,
+        require: true
+    }
+});
+
 
 const Room = mongoose.model('Room', RoomSchema);
+const Review = mongoose.model('RoomReview', RoomReview);
 const Info = mongoose.model('RoomInfo', RoomInfo);
 
-module.exports = {Room, Info};
+module.exports = {Room, Info, Review};

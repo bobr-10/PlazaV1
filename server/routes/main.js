@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Room, Info } = require('../models/room');
+const { Room, Info, Review } = require('../models/room');
 const { User, UserOrder } = require('../models/user');
 
 const bcrypt = require('bcrypt');
@@ -69,15 +69,20 @@ router.get('/sign_out', (req, res) => {
     res.redirect('/');
 });
 
-
-
+router.get('/search-rooms', (req, res) => {
+    res.redirect('/');
+});
 
 router.post('/search-rooms', reqireAuth, async (req, res) => {
     const { dateFrom, dateTo, numBeds} = req.body;
 
     const arrivalDate = new Date(dateFrom);
     const departureDate = new Date(dateTo);
-    const today = new Date()
+    const today = new Date();
+
+    arrivalDate.setHours(0, 0, 0, 0);
+    departureDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
     const locals = {
         title: "Результаты поиска",
@@ -87,16 +92,16 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
         numberOfGuests: numBeds
     }; 
 
-    if (arrivalDate >= departureDate || arrivalDate < today) {
-        locals.dateMessage = "Введите дату прибытия <b>корректно!"
-        res.render('home', {locals});
-    }
-    else {
+    if (arrivalDate < today) {
+        locals.dateMessage = "Введите дату прибытия <b>корректно!</b>";
+        res.render('home', { locals });
+    } else if (departureDate <= arrivalDate) {
+        locals.dateMessage = "Введите дату выезда <b>корректно!</b>";
+        res.render('home', { locals });
+    } else {
         try {
-
             const data = await Room.find();
-            res.render('rooms', {locals, data});
-
+            res.render('rooms', { locals, data });
         } catch (err) {
             console.log(err);
         }
@@ -125,8 +130,10 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
         const ID = req.params.id;
         const data = await Info.findOne({roomId: ID});
         const roomInfo = await Room.findOne({_id: ID});
+        const roomReview = await Review.find({roomId: ID});
+        const reviewCount = roomReview.length;
 
-        res.render('room_info', {data, locals, roomInfo});
+        res.render('room_info', {data, locals, roomInfo, roomReview, reviewCount});
         
     } catch (error) {
         console.log(error);
@@ -142,7 +149,17 @@ router.get('/profile/order/:id', reqireAuth, async(req, res) => {
 
     try {
         const roomNum = req.params.id;
-        const data = await UserOrder.findOne({roomNum: roomNum})
+
+        const token = req.cookies.token;
+        const decodeToken = jwt.verify(token, jwtSecret);
+        const userId = decodeToken.userId;
+        
+        const data = await UserOrder.findOne({roomNum: roomNum, userID: userId});
+
+        if (!data) {
+            return res.status(404).send('<h1>Не найдено (404)</h1>');
+        }
+
         res.render('order_info', {locals, data});
 
     } catch (error) {
@@ -198,7 +215,7 @@ router.post('/sign_up', reqireAuth, async (req, res) =>{
 
         const locals = {};
     
-        const { name, surname, birthday, email, password } = req.body;
+        const { name, surname, birthday, email, password, gender } = req.body;
 
         const existingEmail = await User.findOne({ Email: email });
 
@@ -225,6 +242,7 @@ router.post('/sign_up', reqireAuth, async (req, res) =>{
             DateOfBirth: birthday,
             Email: email,
             Password: hashedPassword,
+            Gender: gender
         });
 
         await newUser.save();
@@ -308,6 +326,37 @@ router.get('/profile', reqireAuth, async (req, res) => {
     }
 
     res.render('profile', { locals });
+});
+
+
+router.post('/review', reqireAuth, async(req, res) => {
+    const {rateNum, rateText} = req.body;
+
+   
+
+    const token = req.cookies.token;
+    const decodeToken = jwt.verify(token, jwtSecret);
+    const userId = decodeToken.userId;
+    const today = new Date();
+
+    const user = await User.findById(userId);
+    const userOrders = await UserOrder.findOne({ userID: userId });
+
+    const newOrder = new Review({
+        roomId: userOrders.roomID,
+        reviewText: rateText,
+        reviewRate: rateNum,
+        reviewAuthorName: user.FirstName,
+        reviewAuthorMale: user.Gender,
+        reviewDate: today
+    });
+
+    await newOrder.save();
+    res.redirect('/profile');
+});
+
+router.get('/review', (req, res) => {
+    res.redirect('/');
 });
 
 
