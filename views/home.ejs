@@ -41,8 +41,8 @@
                     </button>
                 </div>
                 <div class="dateMessage">
-                    <% if (locals.dateMessage) { %>
-                        <p style="margin-top: 10px; text-align: center;"> <%- locals.dateMessage %> </p>
+                    <% if (messages.error) { %>
+                        <p style="margin-top: 10px; text-align: center;"> <%- messages.error %> </p>
                     <% } %>
                 </div>
             </form>

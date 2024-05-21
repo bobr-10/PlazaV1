@@ -104,17 +104,16 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
         arrivalDate: dateFrom,
         departureDate: dateTo,
         numberOfGuests: numBeds
-    }; 
+    };
 
     if (arrivalDate < today) {
-
-        locals.dateMessage = "Введите дату прибытия <b>корректно!</b>";
-        res.render('home', { locals });
+        req.flash('error', "Введите дату прибытия <b>корректно!</b>")
+        return res.redirect('back');
 
     } else if (departureDate <= arrivalDate) {
 
-        locals.dateMessage = "Введите дату выезда <b>корректно!</b>";
-        res.render('home', { locals });
+        req.flash('error', "Введите дату выезда <b>корректно!</b>")
+        return res.redirect('back');
 
     } else {
         try {
@@ -127,7 +126,7 @@ router.post('/search-rooms', reqireAuth, async (req, res) => {
 });
 
 router.get('/room/:id', reqireAuth, async (req, res) => {
-    const { dateFrom, dateTo, numBeds} = req.query;
+    const {dateFrom, dateTo, numBeds} = req.query;
 
     const arrivalDate = new Date(dateFrom);
     const departureDate = new Date(dateTo);
@@ -201,6 +200,7 @@ router.post('/order', reqireAuth, async (req, res) => {
     }
 
     if (!locals.isAuth) {
+        req.flash('error', "<b>Авторизуйтесь</b> для оформления заказа");
         return res.redirect('sign_in');
     }
     else {
@@ -225,6 +225,12 @@ router.post('/order', reqireAuth, async (req, res) => {
             });
 
             await newOrder.save();
+
+            const updateBooking = await Room.findOneAndUpdate (
+                {_id: roomID},
+                {RoomIsBooked: true},
+                {new: true}
+            );
     
             res.redirect('/profile');
     
@@ -244,8 +250,8 @@ router.post('/sign_up', reqireAuth, async (req, res) =>{
         const existingEmail = await User.findOne({ Email: email });
 
         if (existingEmail) {
-            locals.emailMessage = 'Данный Email уже <b>зарегистрирован!</b>';
-            return res.render('sign_up', { locals });
+            req.flash('error', 'Данный Email уже <b>зарегистрирован!</b>');
+            return res.redirect('back');
         }
 
         const dateOfBirth = new Date(birthday);
@@ -253,8 +259,8 @@ router.post('/sign_up', reqireAuth, async (req, res) =>{
         const checkYears = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
 
         if(dateOfBirth > checkYears) {
-            locals.birthMessage = 'Вы должны быть <b>старше 18 лет!</b>'
-            return res.render('sign_up', { locals });
+            req.flash('error', 'Вы должны быть <b> от 18 лет и старше!</b>');
+            return res.redirect('back');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -291,17 +297,19 @@ router.post('/sign_in', reqireAuth, async (req, res) => {
         const { email, password } = req.body;
 
         const existingUser = await User.findOne({ Email: email });
+        // req.flash('error', "<b>Авторизуйтесь</b> для оформления заказа");
+        // return res.redirect('sign_in');
 
         if (!existingUser) {
-            locals.emailMessage = 'Данный Email не <b>зарегистрирован!</b>';
-            return res.render('sign_in', {locals});
+            req.flash('error', 'Данный Email не <b>зарегистрирован!</b>')
+            return res.redirect('back');
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.Password);
 
         if (!isPasswordCorrect) {
-            locals.passwordMessage = '<b>Неверный</b> пароль!';
-            return res.render('sign_in', {locals});
+            req.flash('error', '<b>Неверный</b> пароль!')
+            return res.redirect('back');
         }
 
         const token = genToken(existingUser._id);
@@ -404,19 +412,22 @@ module.exports = router;
 //                 RoomID: 1,
 //                 RoomPrice: 3266,
 //                 RoomURL: "/img/room-img/room_1/room_1_intro.jpg",
-//                 RoomStars: 3
+//                 RoomStars: 3,
+//                 RoomIsBooked: false
 //             },
 //             {
 //                 RoomID: 2,
 //                 RoomPrice: 7856,
 //                 RoomURL: "/img/room-img/room_2/room_2_intro.jpg",
-//                 RoomStars: 5
+//                 RoomStars: 5,
+//                 RoomIsBooked: false
 //             },
 //             {
 //                 RoomID: 3,
 //                 RoomPrice: 5689,
 //                 RoomURL: "/img/room-img/room_3/room_3_intro.jpg",
-//                 RoomStars: 4
+//                 RoomStars: 4,
+//                 RoomIsBooked: false
 //             }
 //         ]);
 

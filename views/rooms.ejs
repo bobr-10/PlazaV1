@@ -162,7 +162,17 @@
 
                     <% data.forEach(hotel => { %>
                         
-                        <div class="rooms-item"><a class="rooms-item__link" href="/room/<%= hotel._id %>?dateFrom=<%= locals.arrivalDate %>&dateTo=<%= locals.departureDate %>&numBeds=<%= locals.numberOfGuests %>"></a><img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
+                        <div class="rooms-item">
+                            <a class="rooms-item__link" href="/room/<%= hotel._id %>?dateFrom=<%= locals.arrivalDate %>&dateTo=<%= locals.departureDate %>&numBeds=<%= locals.numberOfGuests %>"></a>
+
+                            <% if (hotel.RoomIsBooked == true) { %>
+                                <div class="img__booked">
+                                    <img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
+                                </div>
+                            <% } else { %>
+                                <img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
+                            <% } %>
+
                             <div class="rooms-item__wrapper">
                                 <div class="rooms-item__info">
                                     <h2 class="rooms-item__num">

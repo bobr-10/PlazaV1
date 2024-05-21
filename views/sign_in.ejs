@@ -24,12 +24,8 @@
                         </button>
                     </div>
                 </div>
-                <% if (locals.emailMessage) { %>
-                    <div class="emailMessage"><%- locals.emailMessage %></div>
-                <% } %>
-
-                <% if (locals.passwordMessage) { %>
-                    <div class="passwordMessage"><%- locals.passwordMessage %></div>
+                <% if (messages.error) { %>
+                    <div style="text-align: center;"><%- messages.error %></div>
                 <% } %>
                 <div class="sign-in__question">Нет аккаунта на Plaza?
                     <a class="btn btn_size_l" href="/sign_up">Создать</a>

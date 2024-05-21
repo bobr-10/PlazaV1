@@ -54,11 +54,8 @@
                         </svg>
                     </button>
                 </div>
-                <% if (locals.emailMessage) { %>
-                    <div class="emailMessage"><%- locals.emailMessage %></div>
-                <% } %>
-                <% if (locals.birthMessage) { %>
-                    <div class="birthMessage"> <%- locals.birthMessage %> </div>
+                <% if (messages.error) { %>
+                    <p style="text-align: center;"> <%- messages.error %> </p>
                 <% } %>
                 <div class="sign-up__question">Уже есть аккаунт на Plaza?
                     <div class="sign-up__sign-in-btn">
