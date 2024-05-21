@@ -69,7 +69,7 @@
 }
 
 .index {
-    background: rgba(31, 32, 65, 0.05) url("/img/index-bg.3b0f90de.jpg") no-repeat center/cover;
+    background: rgba(31, 32, 65, 0.05) url("/img/bg_main.jpg") no-repeat center/cover;
 }
 
 .index__container {
@@ -193,7 +193,7 @@
 }
 
 .sign-up-page {
-    background: rgba(31, 32, 65, 0.05) url("../img/bg.cfc33bae.jpg") no-repeat center/cover;
+    background: rgba(31, 32, 65, 0.05) url("../img/bg_sign_up.jpg") no-repeat center/cover;
     background-position-y: bottom;
     padding-top: 2.1429rem;
     padding-bottom: 1.8571rem;
@@ -263,7 +263,7 @@
 }
 
 .sign-in-page {
-    background: rgba(31, 32, 65, 0.05) url("/img/bg.jpg") no-repeat center/cover;
+    background: rgba(31, 32, 65, 0.05) url("/img/bg_sign_in.jpg") no-repeat center/cover;
     background-position-y: bottom;
     padding: 11.6429rem 0;
     z-index: 0;
@@ -894,6 +894,25 @@
     color: #1F2041;
     font-weight: bold;
     font-size: 1.6571rem;
+}
+
+.rooms__grid.with-rooms {
+    margin-top: 1.4286rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(19.2857rem, 1fr));
+    grid-column-gap: 0.8571rem;
+    grid-row-gap: 0.9286rem;
+}
+
+.rooms__grid.no-rooms {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+}
+
+.no-rooms-message {
+    text-align: center;
 }
 
 .rooms__pagination {
@@ -1727,3 +1746,12 @@
     }
 }
 /* profile-order */
+
+/* order_info */
+
+.error-message {
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* order_info */

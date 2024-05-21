@@ -22,7 +22,81 @@ const RoomSchema = new Schema({
     RoomStars: {
         type: Number,
         require: true
+    },
+
+    RoomIsBooked: {
+        type: Boolean,
+        require: true
     }
+});
+
+
+const RoomFilters = new Schema({
+    RoomID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Room',
+        require: true
+    },
+
+    isSmoke: {
+        type: Boolean,
+        require: true
+    },
+
+    isFitness: {
+        type: Boolean,
+        require: true
+    },
+
+    isAnimals: {
+        type: Boolean,
+        require: true
+    },
+
+    isBathroom: {
+        type: Boolean,
+        require: true
+    },
+
+    isParking: {
+        type: Boolean,
+        require: true
+    },
+
+    isGuests: {
+        type: Boolean,
+        require: true
+    },
+
+    isFullFood: {
+        type: Boolean,
+        require: true
+    },
+
+    isDesk: {
+        type: Boolean,
+        require: true
+    },
+
+    isTV: {
+        type: Boolean,
+        require: true
+    },
+
+    isInternet: {
+        type: Boolean,
+        require: true
+    },
+
+    isConditioner: {
+        type: Boolean,
+        require: true
+    },
+
+    isSwimming: {
+        type: Boolean,
+        require: true
+    },
 });
 
 
@@ -74,5 +148,6 @@ const RoomReview = new Schema({
 const Room = mongoose.model('Room', RoomSchema);
 const Review = mongoose.model('RoomReview', RoomReview);
 const Info = mongoose.model('RoomInfo', RoomInfo);
+const Filters = mongoose.model('RoomFilters', RoomFilters);
 
-module.exports = {Room, Info, Review};
+module.exports = {Room, Info, Review, Filters};

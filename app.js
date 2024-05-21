@@ -4,6 +4,7 @@ const express = require('express');
 const expressLayout = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./server/config/db');
+const flash = require('connect-flash');
 
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
@@ -29,6 +30,13 @@ app.use(
         })
     })
 );
+
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.messages = req.flash();
+    next();
+});
 
 app.set('layout', './layouts/main');
 app.set('view engine', 'ejs');

@@ -4,6 +4,7 @@
     return formattedDate;
 } %>
 
+
 <main>
     <div class="order-content">
         <div class="order__info">
@@ -74,6 +75,11 @@
                 <form class="review-make" action="/review" method="post">
                     <h2>Ваш отзыв:</h2>
                     <textarea minlength="50" class="textarea-review" name="rateText" placeholder="Введите свой отзыв..."></textarea>
+                    <div class="error-message">
+                        <% if (messages.error) { %>
+                            <p><%= messages.error %></p>
+                        <% } %>
+                    </div>
                     <div class="review__rate">
                         <label class="field__label">
                             <div class="field__title">Оценка от 1 до 5</div>

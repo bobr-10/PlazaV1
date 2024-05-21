@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Room, Info, Review } = require('../models/room');
+const { Room, Info, Review, Filters } = require('../models/room');
 const { User, UserOrder } = require('../models/user');
 
 const bcrypt = require('bcrypt');
@@ -358,6 +358,16 @@ router.get('/profile', reqireAuth, async (req, res) => {
 router.post('/review', reqireAuth, async(req, res) => {
     const {rateNum, rateText} = req.body;
 
+    if (!rateText || rateText.trim() === "") {
+        req.flash('error', "Текст отзыва не может быть пустым!");
+        return res.redirect('back');
+    }
+
+    if (!rateNum || rateNum == null) {
+        req.flash('error', "Оценка отзыва должна быть от 1 до 5");
+        return res.redirect('back');
+    }
+
     const token = req.cookies.token;
     const decodeToken = jwt.verify(token, jwtSecret);
     const userId = decodeToken.userId;
@@ -366,7 +376,7 @@ router.post('/review', reqireAuth, async(req, res) => {
     const user = await User.findById(userId);
     const userOrders = await UserOrder.findOne({ userID: userId });
 
-    const newOrder = new Review({
+    const newReview = new Review({
         roomId: userOrders.roomID,
         reviewText: rateText,
         reviewRate: rateNum,
@@ -375,7 +385,7 @@ router.post('/review', reqireAuth, async(req, res) => {
         reviewDate: today
     });
 
-    await newOrder.save();
+    await newReview.save();
     res.redirect('/profile');
 });
 
@@ -391,25 +401,41 @@ module.exports = router;
 //     try {
 //         const rooms = await Room.insertMany([
 //             {
-//                 RoomID: 222,
-//                 RoomPrice: 5664,
-//                 RoomURL: "/img/image-9.0f24218c.jpg",
+//                 RoomID: 1,
+//                 RoomPrice: 3266,
+//                 RoomURL: "/img/room-img/room_1/room_1_intro.jpg",
+//                 RoomStars: 3
+//             },
+//             {
+//                 RoomID: 2,
+//                 RoomPrice: 7856,
+//                 RoomURL: "/img/room-img/room_2/room_2_intro.jpg",
 //                 RoomStars: 5
+//             },
+//             {
+//                 RoomID: 3,
+//                 RoomPrice: 5689,
+//                 RoomURL: "/img/room-img/room_3/room_3_intro.jpg",
+//                 RoomStars: 4
 //             }
 //         ]);
 
-//         const roomId = rooms[0]._id;
 
-//         await Info.create({
-//             roomId: roomId,
-//             imageURLs: [
-//                 "/img/image-10.8da2e0d4.jpg",
-//                 "/img/image-12.fd11183b.jpg",
-//                 "/img/image-9.0f24218c.jpg"
-//             ]
-//         });
+//         for (let i = 0; i < rooms.length; i++) {
+//             const roomId = rooms[i]._id;
+//             const roomNumber = rooms[i].RoomID;
 
-//         console.log("Данные успешно добавлены.");
+//             await Info.create({
+//                 roomId: roomId,
+//                 imageURLs: [
+//                     `/img/room-img/room_${roomNumber}/room_${roomNumber}_info_1.jpg`,
+//                     `/img/room-img/room_${roomNumber}/room_${roomNumber}_info_2.jpg`,
+//                     `/img/room-img/room_${roomNumber}/room_${roomNumber}_info_3.jpg`
+//                 ]
+//             });
+
+//             console.log(`Данные успешно добавлены для комнаты с ID: ${rooms[i].RoomID}.`);
+//         }
 //     } catch (error) {
 //         console.error("Ошибка при вставке данных:", error);
 //     }
