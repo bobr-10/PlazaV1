@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
+const ITEMS_PER_PAGE = 9;
 
 const reqireAuth = async (req, res, next) => {
     const token = req.cookies.token;
@@ -82,51 +83,124 @@ router.get('/sign_out', (req, res) => {
     res.redirect('/');
 });
 
-router.get('/search-rooms', (req, res) => {
-    res.redirect('/');
-});
+// router.get('/search-rooms', (req, res) => {
+//     res.redirect('/');
+// });
 
-router.post('/search-rooms', reqireAuth, async (req, res) => {
-    const { dateFrom, dateTo, numBeds} = req.body;
+router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
+    const currentPage = parseInt(req.params.page) || 1;
 
-    const arrivalDate = new Date(dateFrom);
-    const departureDate = new Date(dateTo);
-    const today = new Date();
+    if (!req.session.searchParams) {
+        req.flash('error', "Параметры поиска не найдены. Пожалуйста, начните поиск заново.");
+        return res.redirect('/');
+    }
 
-    arrivalDate.setHours(0, 0, 0, 0);
-    departureDate.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
+    try {
+        const { dateFrom, dateTo, numBeds } = req.session.searchParams;
+        const arrivalDate = new Date(dateFrom);
+        const departureDate = new Date(dateTo);
+        const today = new Date();
 
-    const locals = {
-        title: "Результаты поиска",
-        isAuth: res.locals.isAuth,
-        userGender: res.locals.userGender,
-        arrivalDate: dateFrom,
-        departureDate: dateTo,
-        numberOfGuests: numBeds
-    };
+        arrivalDate.setHours(0, 0, 0, 0);
+        departureDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
 
-    if (arrivalDate < today) {
-        req.flash('error', "Введите дату прибытия <b>корректно!</b>")
-        return res.redirect('back');
+        const totalRooms = await Room.countDocuments();
 
-    } else if (departureDate <= arrivalDate) {
+        const locals = {
+            title: "Результаты поиска",
+            isAuth: res.locals.isAuth,
+            userGender: res.locals.userGender,
+            arrivalDate: dateFrom,
+            departureDate: dateTo,
+            numberOfGuests: numBeds,
+            currentPage: currentPage,
+            totalPages: Math.ceil(totalRooms / ITEMS_PER_PAGE),
+            maxItems: ITEMS_PER_PAGE,
+            roomsCount: totalRooms
+        };
 
-        req.flash('error', "Введите дату выезда <b>корректно!</b>")
-        return res.redirect('back');
+        if (arrivalDate < today) {
+            req.flash('error', "Введите дату прибытия <b>корректно!</b>")
+            return res.redirect('back');
+        } else if (departureDate <= arrivalDate) {
+            req.flash('error', "Введите дату выезда <b>корректно!</b>")
+            return res.redirect('back');
+        } else {
+            const data = await Room.find()
+                .skip((currentPage - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
 
-    } else {
-        try {
-            const data = await Room.find();
+            const remainingRooms = totalRooms - ((currentPage - 1) * ITEMS_PER_PAGE + data.length);
+            locals.remainingRooms = remainingRooms > 0 ? remainingRooms : 0;
+
             res.render('rooms', { locals, data });
-        } catch (err) {
-            console.log(err);
         }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Ошибка сервера");
     }
 });
 
+router.post('/search-rooms/page/:page', reqireAuth, async (req, res) => {
+    const currentPage = parseInt(req.params.page) || 1;
+    const { dateFrom, dateTo, numBeds } = req.body;
+
+    req.session.searchParams = {
+        dateFrom,
+        dateTo,
+        numBeds
+    }
+
+    try {
+        const arrivalDate = new Date(dateFrom);
+        const departureDate = new Date(dateTo);
+        const today = new Date();
+
+        arrivalDate.setHours(0, 0, 0, 0);
+        departureDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        const totalRooms = await Room.countDocuments();
+
+        const locals = {
+            title: "Результаты поиска",
+            isAuth: res.locals.isAuth,
+            userGender: res.locals.userGender,
+            arrivalDate: dateFrom,
+            departureDate: dateTo,
+            numberOfGuests: numBeds,
+            currentPage: currentPage,
+            totalPages: Math.ceil(totalRooms / ITEMS_PER_PAGE),
+            maxItems: ITEMS_PER_PAGE,
+            roomsCount: totalRooms
+        };
+
+        if (arrivalDate < today) {
+            req.flash('error', "Введите дату прибытия <b>корректно!</b>")
+            return res.redirect('back');
+        } else if (departureDate <= arrivalDate) {
+            req.flash('error', "Введите дату выезда <b>корректно!</b>")
+            return res.redirect('back');
+        } else {
+            const data = await Room.find()
+                .skip((currentPage - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+
+            const remainingRooms = totalRooms - ((currentPage - 1) * ITEMS_PER_PAGE + data.length);
+            locals.remainingRooms = remainingRooms > 0 ? remainingRooms : 0;
+
+            res.render('rooms', { locals, data });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Ошибка сервера");
+    }
+});
+
+
 router.get('/room/:id', reqireAuth, async (req, res) => {
-    const {dateFrom, dateTo, numBeds} = req.query;
+    const {dateFrom, dateTo, numBeds} = req.body;
 
     const arrivalDate = new Date(dateFrom);
     const departureDate = new Date(dateTo);
