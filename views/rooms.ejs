@@ -29,11 +29,11 @@
                     <div class="wrapper-double-filter">
                         <div class="wrapper-double-filter__price-input">
                           <div class="field">
-                            <input type="number" class="input-min" value="3500" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
+                            <input type="number" class="input-min" name="priceMin" value="3500" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                           </div>
                           <div class="separator">-</div>
                           <div class="field">
-                            <input type="number" class="input-max" value="11300" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
+                            <input type="number" class="input-max" name="priceMax" value="11300" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                           </div>
                         </div>
                         <div class="wrapper-double-filter__slider">
@@ -97,7 +97,7 @@
                                 <div class="checkbox checkbox_rich">
                                     <label class="checkbox__title_rich checkbox__label">
                                         <span>Звездность</span>
-                                        <input style="width: 70px; margin-left: 20px; padding: 10px; text-align: center;" class="field__input" type="number" value="1" name="numBeds" max="5" min="1" oninput="checkNumValue(this)">
+                                        <input style="width: 70px; margin-left: 20px; padding: 10px; text-align: center;" class="field__input" type="number" value="1" name="stars" max="5" min="1" oninput="checkNumValue(this)">
                                         <p class="checkbox__text_rich">От количества звезд зависит качество предоставляемых услуг</p>
                                     </label>
                                 </div>

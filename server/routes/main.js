@@ -60,7 +60,7 @@ router.get('/sign_in', reqireAuth, (req, res) => {
     if(locals.isAuth) {
         res.redirect('/profile');
     }
-
+    
     res.render('sign_in', { locals });
 });
 
@@ -82,10 +82,6 @@ router.get('/sign_out', (req, res) => {
     res.clearCookie('token');
     res.redirect('/');
 });
-
-// router.get('/search-rooms', (req, res) => {
-//     res.redirect('/');
-// });
 
 router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
     const currentPage = parseInt(req.params.page) || 1;
@@ -199,8 +195,24 @@ router.post('/search-rooms/page/:page', reqireAuth, async (req, res) => {
 });
 
 
+router.post('/apply-filters', async (req, res) => {
+
+    const { dateFrom, dateTo, numBeds, priceMin, priceMax, stars } = req.body;
+
+    req.session.searchParams = {
+        dateFrom,
+        dateTo,
+        numBeds,
+        priceMin,
+        priceMax,
+        stars
+    };
+
+});
+
+
 router.get('/room/:id', reqireAuth, async (req, res) => {
-    const {dateFrom, dateTo, numBeds} = req.body;
+    const { dateFrom, dateTo, numBeds } = req.session.searchParams;
 
     const arrivalDate = new Date(dateFrom);
     const departureDate = new Date(dateTo);
@@ -518,6 +530,22 @@ module.exports = router;
 //                     `/img/room-img/room_${roomNumber}/room_${roomNumber}_info_3.jpg`
 //                 ]
 //             });
+
+//             await Filters.create({
+//                 RoomID: roomId,
+//                 isSmoke: Math.random() < 0.5,
+//                 isFitness: Math.random() < 0.5,
+//                 isAnimals: Math.random() < 0.5,
+//                 isBathroom: Math.random() < 0.5,
+//                 isParking: Math.random() < 0.5,
+//                 isGuests: Math.random() < 0.5,
+//                 isFullFood: Math.random() < 0.5,
+//                 isDesk: Math.random() < 0.5,
+//                 isTV: Math.random() < 0.5,
+//                 isInternet: Math.random() < 0.5,
+//                 isConditioner: Math.random() < 0.5,
+//                 isSwimming: Math.random() < 0.5,
+//             })
 
 //             console.log(`Данные успешно добавлены для комнаты с ID: ${rooms[i].RoomID}.`);
 //         }
