@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Room, Info, Review, Filters } = require('../models/room');
+const { Room, Info, Review} = require('../models/room');
 const { User, UserOrder } = require('../models/user');
 
 const bcrypt = require('bcrypt');
@@ -92,7 +92,63 @@ router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
     }
 
     try {
-        const { dateFrom, dateTo, numBeds } = req.session.searchParams;
+        const { dateFrom, dateTo, numBeds, priceMin, priceMax, stars, smoke, fitness, animals, bathroom,
+            parking, guests, fullfood, desk, tv, internet, conditioner, swimming } = req.session.searchParams;
+
+        // Основной фильтр по цене и количеству звезд
+        let mainFilterQuery = {
+            $and: []
+        };
+
+        if (stars) {
+            mainFilterQuery.$and.push({ RoomStars: parseInt(stars) });
+        }
+
+        if (priceMin && priceMax) {
+            mainFilterQuery.$and.push({ RoomPrice: { $gte: parseFloat(priceMin), $lte: parseFloat(priceMax) } });
+        }
+
+        if (mainFilterQuery.$and.length === 0) {
+            delete mainFilterQuery.$and;
+        }
+
+        console.log('Main Filter Query:', mainFilterQuery);
+
+        const initialRooms = await Room.find(mainFilterQuery);
+        console.log('Initial Rooms:', initialRooms.length);
+
+        // Дополнительные фильтры по чекбоксам
+        const additionalFilters = [];
+
+        if (smoke) additionalFilters.push({ isSmoke: true });
+        if (fitness) additionalFilters.push({ isFitness: true });
+        if (animals) additionalFilters.push({ isAnimals: true });
+        if (bathroom) additionalFilters.push({ isBathroom: true });
+        if (parking) additionalFilters.push({ isParking: true });
+        if (guests) additionalFilters.push({ isGuests: true });
+        if (fullfood) additionalFilters.push({ isFullFood: true });
+        if (desk) additionalFilters.push({ isDesk: true });
+        if (tv) additionalFilters.push({ isTV: true });
+        if (internet) additionalFilters.push({ isInternet: true });
+        if (conditioner) additionalFilters.push({ isConditioner: true });
+        if (swimming) additionalFilters.push({ isSwimming: true });
+
+        let filteredRooms = initialRooms;
+
+        if (additionalFilters.length > 0) {
+            filteredRooms = initialRooms.filter(room => {
+                return additionalFilters.some(filter => {
+                    for (let key in filter) {
+                        if (filter[key] === room[key]) return true;
+                    }
+                    return false;
+                });
+            });
+        }
+
+        const totalRooms = filteredRooms.length;
+        console.log('Filtered Rooms:', totalRooms);
+
         const arrivalDate = new Date(dateFrom);
         const departureDate = new Date(dateTo);
         const today = new Date();
@@ -100,8 +156,6 @@ router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
         arrivalDate.setHours(0, 0, 0, 0);
         departureDate.setHours(0, 0, 0, 0);
         today.setHours(0, 0, 0, 0);
-
-        const totalRooms = await Room.countDocuments();
 
         const locals = {
             title: "Результаты поиска",
@@ -113,19 +167,21 @@ router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
             currentPage: currentPage,
             totalPages: Math.ceil(totalRooms / ITEMS_PER_PAGE),
             maxItems: ITEMS_PER_PAGE,
-            roomsCount: totalRooms
+            roomsCount: totalRooms,
+            searchParams: req.session.searchParams
         };
 
         if (arrivalDate < today) {
-            req.flash('error', "Введите дату прибытия <b>корректно!</b>")
+            req.flash('error', "Введите дату прибытия <b>корректно!</b>");
             return res.redirect('back');
         } else if (departureDate <= arrivalDate) {
-            req.flash('error', "Введите дату выезда <b>корректно!</b>")
+            req.flash('error', "Введите дату выезда <b>корректно!</b>");
             return res.redirect('back');
         } else {
-            const data = await Room.find()
-                .skip((currentPage - 1) * ITEMS_PER_PAGE)
-                .limit(ITEMS_PER_PAGE)
+            const data = filteredRooms.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+            // console.log('Data:', data);
+            console.log("Filter is: ", )
 
             const remainingRooms = totalRooms - ((currentPage - 1) * ITEMS_PER_PAGE + data.length);
             locals.remainingRooms = remainingRooms > 0 ? remainingRooms : 0;
@@ -140,76 +196,75 @@ router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
 
 router.post('/search-rooms/page/:page', reqireAuth, async (req, res) => {
     const currentPage = parseInt(req.params.page) || 1;
-    const { dateFrom, dateTo, numBeds } = req.body;
-
-    req.session.searchParams = {
-        dateFrom,
-        dateTo,
-        numBeds
-    }
-
-    try {
-        const arrivalDate = new Date(dateFrom);
-        const departureDate = new Date(dateTo);
-        const today = new Date();
-
-        arrivalDate.setHours(0, 0, 0, 0);
-        departureDate.setHours(0, 0, 0, 0);
-        today.setHours(0, 0, 0, 0);
-
-        const totalRooms = await Room.countDocuments();
-
-        const locals = {
-            title: "Результаты поиска",
-            isAuth: res.locals.isAuth,
-            userGender: res.locals.userGender,
-            arrivalDate: dateFrom,
-            departureDate: dateTo,
-            numberOfGuests: numBeds,
-            currentPage: currentPage,
-            totalPages: Math.ceil(totalRooms / ITEMS_PER_PAGE),
-            maxItems: ITEMS_PER_PAGE,
-            roomsCount: totalRooms
-        };
-
-        if (arrivalDate < today) {
-            req.flash('error', "Введите дату прибытия <b>корректно!</b>")
-            return res.redirect('back');
-        } else if (departureDate <= arrivalDate) {
-            req.flash('error', "Введите дату выезда <b>корректно!</b>")
-            return res.redirect('back');
-        } else {
-            const data = await Room.find()
-                .skip((currentPage - 1) * ITEMS_PER_PAGE)
-                .limit(ITEMS_PER_PAGE)
-
-            const remainingRooms = totalRooms - ((currentPage - 1) * ITEMS_PER_PAGE + data.length);
-            locals.remainingRooms = remainingRooms > 0 ? remainingRooms : 0;
-
-            res.render('rooms', { locals, data });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).send("Ошибка сервера");
-    }
-});
-
-
-router.post('/apply-filters', async (req, res) => {
-
-    const { dateFrom, dateTo, numBeds, priceMin, priceMax, stars } = req.body;
+    const { dateFrom, dateTo, numBeds, priceMin, priceMax, stars, smoke, fitness, animals, bathroom,
+        parking, guests, fullfood, desk, tv, internet, conditioner, swimming } = req.body;
 
     req.session.searchParams = {
         dateFrom,
         dateTo,
         numBeds,
-        priceMin,
-        priceMax,
-        stars
+        priceMin: parseFloat(priceMin),
+        priceMax: parseFloat(priceMax),
+        stars: parseInt(stars),
+        smoke: smoke === "on" ? true : false,
+        fitness: fitness === "on" ? true : false,
+        animals: animals === "on" ? true : false,
+        bathroom: bathroom === "on" ? true : false,
+        parking: parking === "on" ? true : false,
+        guests: guests === "on" ? true : false,
+        fullfood: fullfood === "on" ? true : false,
+        desk: desk === "on" ? true : false,
+        tv: tv === "on" ? true : false,
+        internet: internet === "on" ? true : false,
+        conditioner: conditioner === "on" ? true : false,
+        swimming: swimming === "on" ? true : false
     };
 
+    res.redirect(`/search-rooms/page/${currentPage}`);
 });
 
+
+router.post('/apply-filters', async (req, res) => {
+
+    const { dateFrom, dateTo, numBeds, priceMin, priceMax, stars, smoke, fitness, animals, bathroom,
+        parking, guests, fullfood, desk, tv, internet, conditioner, swimming } = req.body;
+
+    console.log('Apply Filters:', req.body);
+
+    req.session.searchParams = {
+        dateFrom,
+        dateTo,
+        numBeds,
+        priceMin: parseFloat(priceMin),
+        priceMax: parseFloat(priceMax),
+        stars: parseInt(stars),
+        smoke: smoke === "on" ? true : false,
+        fitness: fitness === "on" ? true : false,
+        animals: animals === "on" ? true : false,
+        bathroom: bathroom === "on" ? true : false,
+        parking: parking === "on" ? true : false,
+        guests: guests === "on" ? true : false,
+        fullfood: fullfood === "on" ? true : false,
+        desk: desk === "on" ? true : false,
+        tv: tv === "on" ? true : false,
+        internet: internet === "on" ? true : false,
+        conditioner: conditioner === "on" ? true : false,
+        swimming: swimming === "on" ? true : false
+    };
+
+    res.redirect('/search-rooms/page/1');
+});
+
+router.post('/reset-filters', reqireAuth, async (req, res) => {
+    req.session.searchParams = {
+        dateFrom: req.session.searchParams.dateFrom,
+        dateTo: req.session.searchParams.dateTo,
+        priceMin: req.session.searchParams.priceMin,
+        priceMax: req.session.searchParams.priceMax,
+        stars: req.session.searchParams.stars
+    };
+    res.redirect('/search-rooms/page/1');
+});
 
 router.get('/room/:id', reqireAuth, async (req, res) => {
     const { dateFrom, dateTo, numBeds } = req.session.searchParams;
@@ -499,21 +554,57 @@ module.exports = router;
 //                 RoomPrice: 3266,
 //                 RoomURL: "/img/room-img/room_1/room_1_intro.jpg",
 //                 RoomStars: 3,
-//                 RoomIsBooked: false
+//                 RoomIsBooked: false,
+//                 isSmoke: Math.random() < 0.5,
+//                 isFitness: Math.random() < 0.5,
+//                 isAnimals: Math.random() < 0.5,
+//                 isBathroom: Math.random() < 0.5,
+//                 isParking: Math.random() < 0.5,
+//                 isGuests: Math.random() < 0.5,
+//                 isFullFood: Math.random() < 0.5,
+//                 isDesk: Math.random() < 0.5,
+//                 isTV: Math.random() < 0.5,
+//                 isInternet: Math.random() < 0.5,
+//                 isConditioner: Math.random() < 0.5,
+//                 isSwimming: Math.random() < 0.5
 //             },
 //             {
 //                 RoomID: 2,
 //                 RoomPrice: 7856,
 //                 RoomURL: "/img/room-img/room_2/room_2_intro.jpg",
 //                 RoomStars: 5,
-//                 RoomIsBooked: false
+//                 RoomIsBooked: false,
+//                 isSmoke: Math.random() < 0.5,
+//                 isFitness: Math.random() < 0.5,
+//                 isAnimals: Math.random() < 0.5,
+//                 isBathroom: Math.random() < 0.5,
+//                 isParking: Math.random() < 0.5,
+//                 isGuests: Math.random() < 0.5,
+//                 isFullFood: Math.random() < 0.5,
+//                 isDesk: Math.random() < 0.5,
+//                 isTV: Math.random() < 0.5,
+//                 isInternet: Math.random() < 0.5,
+//                 isConditioner: Math.random() < 0.5,
+//                 isSwimming: Math.random() < 0.5
 //             },
 //             {
 //                 RoomID: 3,
 //                 RoomPrice: 5689,
 //                 RoomURL: "/img/room-img/room_3/room_3_intro.jpg",
 //                 RoomStars: 4,
-//                 RoomIsBooked: false
+//                 RoomIsBooked: false,
+//                 isSmoke: Math.random() < 0.5,
+//                 isFitness: Math.random() < 0.5,
+//                 isAnimals: Math.random() < 0.5,
+//                 isBathroom: Math.random() < 0.5,
+//                 isParking: Math.random() < 0.5,
+//                 isGuests: Math.random() < 0.5,
+//                 isFullFood: Math.random() < 0.5,
+//                 isDesk: Math.random() < 0.5,
+//                 isTV: Math.random() < 0.5,
+//                 isInternet: Math.random() < 0.5,
+//                 isConditioner: Math.random() < 0.5,
+//                 isSwimming: Math.random() < 0.5
 //             }
 //         ]);
 
@@ -530,22 +621,6 @@ module.exports = router;
 //                     `/img/room-img/room_${roomNumber}/room_${roomNumber}_info_3.jpg`
 //                 ]
 //             });
-
-//             await Filters.create({
-//                 RoomID: roomId,
-//                 isSmoke: Math.random() < 0.5,
-//                 isFitness: Math.random() < 0.5,
-//                 isAnimals: Math.random() < 0.5,
-//                 isBathroom: Math.random() < 0.5,
-//                 isParking: Math.random() < 0.5,
-//                 isGuests: Math.random() < 0.5,
-//                 isFullFood: Math.random() < 0.5,
-//                 isDesk: Math.random() < 0.5,
-//                 isTV: Math.random() < 0.5,
-//                 isInternet: Math.random() < 0.5,
-//                 isConditioner: Math.random() < 0.5,
-//                 isSwimming: Math.random() < 0.5,
-//             })
 
 //             console.log(`Данные успешно добавлены для комнаты с ID: ${rooms[i].RoomID}.`);
 //         }

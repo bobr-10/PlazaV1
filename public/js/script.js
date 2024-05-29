@@ -14,10 +14,6 @@ function checkNumValue(input) {
     }
 }
 
-document.querySelector('input[name="numBeds"]').addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-
 const burgerButton = document.querySelector('.js-header__burger');
 const navMenu = document.querySelector('.mobile-container__wrapper');
 

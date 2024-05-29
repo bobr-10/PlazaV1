@@ -269,4 +269,8 @@
 
     });
 
+    document.querySelector('input[name="numBeds"]').addEventListener('input', function() {
+        this.value = this.value.replace(/[^\d]/g, '');
+    });
+
 </script>

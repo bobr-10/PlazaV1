@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { type } = require('os');
-const { text } = require('stream/consumers');
 
 const Schema = mongoose.Schema;
 const RoomSchema = new Schema({
@@ -26,15 +24,6 @@ const RoomSchema = new Schema({
 
     RoomIsBooked: {
         type: Boolean,
-        require: true
-    }
-});
-
-
-const RoomFilters = new Schema({
-    RoomID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Room',
         require: true
     },
 
@@ -148,6 +137,5 @@ const RoomReview = new Schema({
 const Room = mongoose.model('Room', RoomSchema);
 const Review = mongoose.model('RoomReview', RoomReview);
 const Info = mongoose.model('RoomInfo', RoomInfo);
-const Filters = mongoose.model('RoomFilters', RoomFilters);
 
-module.exports = {Room, Info, Review, Filters};
+module.exports = {Room, Info, Review};

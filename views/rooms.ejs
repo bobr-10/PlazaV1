@@ -29,19 +29,19 @@
                     <div class="wrapper-double-filter">
                         <div class="wrapper-double-filter__price-input">
                           <div class="field">
-                            <input type="number" class="input-min" name="priceMin" value="3500" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
+                            <input type="number" class="input-min" name="priceMin" value="<%= locals.searchParams.priceMin || '' %>" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                           </div>
                           <div class="separator">-</div>
                           <div class="field">
-                            <input type="number" class="input-max" name="priceMax" value="11300" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
+                            <input type="number" class="input-max" name="priceMax" value="<%= locals.searchParams.priceMax || '' %>" min="1" max="15000" oninput="checkNumValue(this)" onkeydown="return event.key !== '-' && event.key !== '.' && event.key !== ','">
                           </div>
                         </div>
                         <div class="wrapper-double-filter__slider">
                           <div class="progress"></div>
                         </div>
                         <div class="wrapper-double-filter__range-input">
-                          <input type="range" class="range-min" min="0" max="15000" value="3500" step="100">
-                          <input type="range" class="range-max" min="0" max="15000" value="11300" step="100">
+                          <input type="range" class="range-min" min="0" max="15000" value="<%= locals.searchParams.priceMin || '0' %>" step="100">
+                          <input type="range" class="range-max" min="0" max="15000" value="<%= locals.searchParams.priceMax || '15000' %>" step="100">
                         </div>
                     </div>
                 </div>
@@ -52,37 +52,37 @@
                             <ul class="checkbox-list__checkboxes">
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Можно курить</span>
+                                        <input name="smoke" class="checkbox__input" type="checkbox" <% if (locals.searchParams.smoke) { %>checked<% } %>><span class="checkbox__span">Можно курить</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Фитнес</span>
+                                        <input name="fitness" class="checkbox__input" type="checkbox" <% if (locals.searchParams.fitness) { %>checked<% } %>><span class="checkbox__span">Фитнес</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Можно с животными</span>
+                                        <input name="animals" class="checkbox__input" type="checkbox" <% if (locals.searchParams.animals) { %>checked<% } %>><span class="checkbox__span">Можно с животными</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Наличие ванной комнаты</span>
+                                        <input name="bathroom" class="checkbox__input" type="checkbox" <% if (locals.searchParams.bathroom) { %>checked<% } %>><span class="checkbox__span">Наличие ванной комнаты</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Парковка</span>
+                                        <input name="parking" class="checkbox__input" type="checkbox" <% if (locals.searchParams.parking) { %>checked<% } %>><span class="checkbox__span">Парковка</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Можно пригласить гостей (до 5 человек)</span>
+                                        <input name="guests" class="checkbox__input" type="checkbox" <% if (locals.searchParams.guests) { %>checked<% } %>><span class="checkbox__span">Можно пригласить гостей (до 5 человек)</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Комплексный завтрак, обед и ужин</span>
+                                        <input name="fullfood" class="checkbox__input" type="checkbox" <% if (locals.searchParams.fullfood) { %>checked<% } %>><span class="checkbox__span">Комплексный завтрак, обед и ужин</span>
                                     </label>
                                 </div>
                             </ul>
@@ -97,8 +97,9 @@
                                 <div class="checkbox checkbox_rich">
                                     <label class="checkbox__title_rich checkbox__label">
                                         <span>Звездность</span>
-                                        <input style="width: 70px; margin-left: 20px; padding: 10px; text-align: center;" class="field__input" type="number" value="1" name="stars" max="5" min="1" oninput="checkNumValue(this)">
+                                        <input style="width: 70px; margin-left: 20px; padding: 10px; text-align: center;" class="field__input" type="number" value="<%= locals.searchParams.stars || '5' %>" name="stars" max="5" min="1" oninput="checkNumValue(this)">
                                         <p class="checkbox__text_rich">От количества звезд зависит качество предоставляемых услуг</p>
+                                        <p class="checkbox__text_rich">(Пустое поле - вывод всех номеров)</p>
                                     </label>
                                 </div>
                             </ul>
@@ -113,27 +114,27 @@
                             <ul class="checkbox-list__checkboxes">
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Письменный стол</span>
+                                        <input name="desk" class="checkbox__input" type="checkbox" <% if (locals.searchParams.desk) { %>checked<% } %>><span class="checkbox__span">Письменный стол</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Телевизор</span>
+                                        <input name="tv" class="checkbox__input" type="checkbox" <% if (locals.searchParams.tv) { %>checked<% } %>><span class="checkbox__span">Телевизор</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Интернет</span>
+                                        <input name="internet" class="checkbox__input" type="checkbox" <% if (locals.searchParams.internet) { %>checked<% } %>><span class="checkbox__span">Интернет</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Кондиционер</span>
+                                        <input name="conditioner" class="checkbox__input" type="checkbox" <% if (locals.searchParams.conditioner) { %>checked<% } %>><span class="checkbox__span">Кондиционер</span>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label class="checkbox__label">
-                                        <input class="checkbox__input" type="checkbox"><span class="checkbox__span">Бассейн</span>
+                                        <input name="swimming" class="checkbox__input" type="checkbox" <% if (locals.searchParams.swimming) { %>checked<% } %>><span class="checkbox__span">Бассейн</span>
                                     </label>
                                 </div>
                             </ul>
@@ -142,8 +143,11 @@
                 </div>
                 <div class="filters-buttons">
                     <div class="filters-apply">
-                        <button class="btn btn_theme_gradient" type="button">Применить</button>
+                        <button class="btn btn_theme_gradient" type="submit">Применить</button>
                     </div>
+
+                        <button id="resetFiltersButton" style="margin-top: 25px;" class="btn btn_theme_gradient" type="button">Сбросить фильтры</button>
+
                     <div class="filters-close">
                         <button class="btn btn_theme_gradient" type="button">Закрыть</button>
                     </div>
@@ -263,6 +267,10 @@
     range = document.querySelector(".wrapper-double-filter__slider .progress");
     let priceGap = 500;
 
+    document.querySelector('input[name="numBeds"]').addEventListener('input', function() {
+        this.value = this.value.replace(/[^\d]/g, '');
+    });
+
     priceInput.forEach(input =>{
         input.addEventListener("input", e =>{
             let minPrice = parseInt(priceInput[0].value),
@@ -326,4 +334,22 @@
     closeFilterButton.addEventListener('click', function() {
         filterMenu.classList.remove('rooms-filter__on');
     });
+
+    document.getElementById('resetFiltersButton').addEventListener('click', function() {
+    document.querySelector('input[name="smoke"]').checked = false;
+    document.querySelector('input[name="fitness"]').checked = false;
+    document.querySelector('input[name="animals"]').checked = false;
+    document.querySelector('input[name="bathroom"]').checked = false;
+    document.querySelector('input[name="parking"]').checked = false;
+    document.querySelector('input[name="guests"]').checked = false;
+    document.querySelector('input[name="fullfood"]').checked = false;
+    document.querySelector('input[name="desk"]').checked = false;
+    document.querySelector('input[name="tv"]').checked = false;
+    document.querySelector('input[name="internet"]').checked = false;
+    document.querySelector('input[name="conditioner"]').checked = false;
+    document.querySelector('input[name="swimming"]').checked = false;
+    document.querySelector('input[name="stars"]').value = '';
+
+    document.getElementById('filterForm').submit();
+});
 </script>
