@@ -61,5 +61,8 @@
             <p>Не найдено ни одного заказа!</p>
         <% } %>        
     </div>
+    <% if (messages.error) { %>
+        <div style="text-align: center;"><%- messages.error %></div>
+    <% } %>
 </div>
 </main>

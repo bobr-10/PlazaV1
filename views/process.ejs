@@ -1,0 +1,110 @@
+<main>
+    <div class="process">
+        <div class="process__info">
+            <h2>Название отеля</h2>
+            <p style="margin-top: 10px;">Адрес отеля</p>
+            <div class="process__hotel">
+                <div style="margin-top: 10px;" class="hotel__specs">
+                    <ul>
+                        <li>Преимущество 1</li>
+                        <li>Преимущество 2</li>
+                        <li>Преимущество 3</li>
+                        <li>Преимущество 4</li>
+                        <li>Преимущество 5</li>
+                        <li>Преимущество 6</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 10px;" class="process__user">
+            <h2>Контактная информация</h2>
+            <p style="margin-top: 10px;">Имя: </p>
+            <p style="margin-top: 10px;">Электронная почта: </p>
+        </div>
+        <div class="process__payment">
+
+            <div class="payment__info">
+                <form class="check-form">
+                    <h2>Информация о заказе:</h2>
+                    <div class="check-form__item">
+                        <div class="check-form__item-group">
+                            <h3 class="check-form__number" style="margin-right: 15px;">
+                                <span class="check-form__number-icon">№</span>
+                                
+                            </h3>
+                            <div class="check-form__price-default"><b class="check-form__price-text">₽</b> в сутки</div>
+                        </div>
+                    </div>
+                    <div class="check-form__item check-form__item_with-calendar">
+                        <div class="check-form__group-field">
+                            <div class="check-form__field check-form__field_type-from">
+                                <div class="field field_type_dropdown">
+                                    <label class="field__label">
+                                        <div class="field__title">Прибытие</div>
+                                    </label>
+                                    <input class="field__input" value="" readonly="">
+                                </div>
+                            </div>
+                            <div class="check-form__field check-form__field_type-to">
+                                <div class="field field_type_dropdown">
+                                    <label class="field__label">
+                                        <div class="field__title">Выезд</div>
+                                    </label>
+                                    <input class="field__input" value="" readonly="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="check-form__item check-form__item_with-guests">
+                        <div class="field field_type_dropdown">
+                            <label class="field__label">
+                                <div class="field__title">Кол-во кроватей</div>
+                            </label>
+                            <input class="field__input" value="" readonly="">
+                        </div>
+                    </div>
+                    <div class="check-form__item">
+                        <div class="check-form__conclusion"><span class="check-form__text"> суток</span><span class="check-form__text">₽</span></div>
+                        <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text">₽</span></div>
+                    </div>
+                    <div class="check-form__item">
+                        <div class="check-form__final-price">
+                            <div class="check-form__item-group">
+                                <div class="check-form__final-price-text">Итого</div>
+                                <div class="check-form__price-line"></div>
+                                <div class="check-form__final-price-value">₽</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal">
+                <form class="form">
+                    <div class="card-info">
+                        <div class="input_container">
+                            <label class="input_label">Имя держателя карты</label>
+                            <input class="input_field" type="text" placeholder="Имя">
+                        </div>
+                        <div class="input_container">
+                            <label class="input_label">Номер карты</label>
+                            <input class="input_field" type="number" placeholder="0000 0000 0000 0000">
+                        </div>
+                        <div class="input_container">
+                            <label class="input_label">Срок действия / CVV</label>
+                            <div class="split">
+                                <input class="input_field" style="width: 250px;" type="text" placeholder="01/23">
+                                <input class="input_field" style="width: 110px;" type="number" placeholder="CVV">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="checkout" style="cursor: pointer;">
+                        <span>Оплатить</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</main>

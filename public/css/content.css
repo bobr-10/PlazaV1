@@ -212,6 +212,12 @@
     justify-content: center;
 }
 
+
+@media screen and (max-width: 35rem) {
+    
+}
+
+
 /* sign_up */
 
 
@@ -231,6 +237,20 @@
 
 .sign-in__wrapper {
     min-width: 22.8571rem;
+}
+
+@media screen and (max-width: 35rem) {
+    .sign-in__wrapper {
+        min-width: 80%;
+    }
+
+    .sign-in {
+        padding: 1.5rem;
+    }
+
+    .sign-in__question a {
+        margin-left: 15px;
+    }
 }
 
 .sign-in__title {
@@ -1774,3 +1794,194 @@
 }
 
 /* order_info */
+
+
+/* process */
+
+.process {
+    padding: 40px 20px;
+}
+
+.process__info {
+    padding: 25px;
+    margin: 0px auto;
+    max-width: 500px;
+    box-shadow: 0px 17px 25px rgba(224, 223, 223, 0.01), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px 0px 3px rgba(0, 0, 0, 0.09), 0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.process__user {
+    padding: 25px;
+    margin: 40px auto;
+    max-width: 500px;
+    box-shadow: 0px 17px 25px rgba(224, 223, 223, 0.01), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px 0px 3px rgba(0, 0, 0, 0.09), 0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+}
+
+.process__payment {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.modal {
+    background: #FFFFFF;
+    box-shadow: 0px 17px 25px rgba(224, 223, 223, 0.01), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px 0px 3px rgba(0, 0, 0, 0.09), 0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    max-width: 450px;
+    margin-left: 30px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input_container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.split {
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    gap: 15px;
+}
+
+.split input {
+    width: 100%;
+}
+
+.input_label {
+    font-size: 12px;
+    color: #8B8E98;
+    font-weight: 600;
+}
+
+.input_field {
+    width: auto;
+    height: 40px;
+    padding: 0 0 0 16px;
+    border-radius: 9px;
+    outline: none;
+    background-color: #F2F2F2;
+    border: 1px solid #e5e5e500;
+    transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.input_field:focus {
+    border: 1px solid transparent;
+    box-shadow: 0px 0px 0px 2px #242424;
+    background-color: transparent;
+}
+
+/* Reset input number styles */
+.input_field::-webkit-outer-spin-button,
+.input_field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.checkout {
+    position: relative;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    border-radius: 0.8em;
+    border: none;
+    background: #302b63;
+    color: ghostwhite;
+    overflow: hidden;
+}
+
+.checkout span {
+    position: relative;
+    transition: color 0.6s;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.8em 1.2em 0.8em 1.05em;
+}
+
+.checkout::before,
+.checkout::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.checkout::before {
+    content: "";
+    background: #000;
+    width: 120%;
+    left: -10%;
+    transform: skew(30deg);
+    transition: transform 0.5s cubic-bezier(0.3, 1, 0.8, 1);
+}
+
+.checkout:hover::before {
+    transform: translate3d(100%, 0, 0);
+}
+
+.checkout:active {
+    transform: scale(0.95);
+}
+
+@media screen and (max-width: 48rem) {
+    .process__payment {
+        flex-direction: column;
+    }
+
+    .modal {
+        margin: 30px 0;
+        padding: 10px;
+        max-width: 90%;
+    }
+
+    .split {
+        grid-template-columns: 1fr;
+    }
+
+    .split input {
+        width: 100%;
+    }
+
+    .checkout {
+        font-size: 1rem;
+        padding: 0.6em 1em;
+    }
+}
+
+@media screen and (max-width: 30rem) {
+    .modal {
+        margin: 30px 0;
+        padding: 5px;
+        max-width: 100%;
+    }
+
+    .split {
+        gap: 10px;
+    }
+
+    .checkout {
+        font-size: 0.875rem;
+        padding: 0.5em 0.8em;
+    }
+}
+
+/* process */
