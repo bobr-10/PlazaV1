@@ -156,7 +156,7 @@
                     <p class="page-room__cancel-text">Бесплатная отмена в течение 48 ч. После этого при отмене не позднее чем за 5 дн. до прибытия вы получите полный возврат за вычетом сбора за услуги.</p>
                 </div>
             </div>
-            <form class="check-form" method="post" action="/order">
+            <form class="check-form" action="/order/<%= roomInfo._id %>" method="get">
                 <div class="check-form__item">
                     <div class="check-form__item-group">
                         <h3 class="check-form__number" style="margin-right: 15px;">
@@ -220,17 +220,15 @@
                     </div>
          
                 <% } else { %>
-            
-                    <button class="btn btn_theme_gradient btn_with-arrow" id="makeOrder" type="submit">Оформить заказ
+                    <button class="btn btn_theme_gradient btn_with-arrow" type="submit" id="makeOrder">Оформить заказ
                         <svg class="btn_with-arrow__svg" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 0.984375L17.0156 9L9 17.0156L7.59375 15.6094L13.1719 9.98438H0.984375V8.01562H13.1719L7.59375 2.39062L9 0.984375Z"></path>
                         </svg>
                     </button>
-            
                 <% } %>
 
-                <div class="order-info">
-                    <form method="post" action="/order">
+                <!-- <div class="order-info">
+                    <form method="post" action="/order:id">
                         <input type="hidden" name="roomNumId" value="<%= roomInfo.RoomID %>">
                         <input type="hidden" name="roomID" value="<%= roomInfo._id %>">
                         <input type="hidden" name="pricePerDay" value="<%= roomInfo.RoomPrice %>">
@@ -241,7 +239,7 @@
                         <input type="hidden" name="dateTo" value="<%= locals.departureDate %>">
                         <input type="hidden" name="numBeds" value="<%= locals.numberOfGuests %>">
                     </form>
-                </div>
+                </div> -->
             </form>
         </div>
         <div class="success-container" id="modal">
@@ -255,22 +253,22 @@
 </main>
 
 <script>
-    const modal = document.querySelector(".success-container");
-    const orderButton = document.getElementById("makeOrder");
+    // const modal = document.querySelector(".success-container");
+    // const orderButton = document.getElementById("makeOrder");
    
-    orderButton.addEventListener('click', function() {
-        const isAuth = '<%= locals.isAuth %>'
+    // orderButton.addEventListener('click', function() {
+    //     const isAuth = ''
 
-        if (isAuth) {
-            setTimeout(() => { 
-                modal.classList.toggle('success-container__on');
-            }, 1000);
-        }
+    //     if (isAuth) {
+    //         setTimeout(() => { 
+    //             modal.classList.toggle('success-container__on');
+    //         }, 1000);
+    //     }
 
-    });
+    // });
 
-    document.querySelector('input[name="numBeds"]').addEventListener('input', function() {
-        this.value = this.value.replace(/[^\d]/g, '');
-    });
+    // document.querySelector('input[name="numBeds"]').addEventListener('input', function() {
+    //     this.value = this.value.replace(/[^\d]/g, '');
+    // });
 
 </script>

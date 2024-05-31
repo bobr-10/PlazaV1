@@ -4,7 +4,7 @@
             <h2>Название отеля</h2>
             <p style="margin-top: 10px;">Адрес отеля</p>
             <div class="process__hotel">
-                <div style="margin-top: 10px;" class="hotel__specs">
+                <div class="hotel__specs">
                     <ul>
                         <li>Преимущество 1</li>
                         <li>Преимущество 2</li>
@@ -14,25 +14,32 @@
                         <li>Преимущество 6</li>
                     </ul>
                 </div>
+                <div>
+                    <img class="hotel__img" src=" /img/room-img/room_2/room_2_intro.jpg " alt="фото">
+                </div>
             </div>
         </div>
         <div style="margin-top: 10px;" class="process__user">
             <h2>Контактная информация</h2>
-            <p style="margin-top: 10px;">Имя: </p>
-            <p style="margin-top: 10px;">Электронная почта: </p>
+            <p style="margin-top: 10px;">Имя: <b><%= locals.user.FirstName %></b></p>
+            <p style="margin-top: 10px;">Электронная почта: <b><%= locals.user.Email %></b></p>
         </div>
         <div class="process__payment">
 
             <div class="payment__info">
-                <form class="check-form">
-                    <h2>Информация о заказе:</h2>
+                <form class="check-form" method="post" action="/order">
                     <div class="check-form__item">
                         <div class="check-form__item-group">
                             <h3 class="check-form__number" style="margin-right: 15px;">
                                 <span class="check-form__number-icon">№</span>
-                                
+                                <%= roomInfo.RoomID %>
                             </h3>
-                            <div class="check-form__price-default"><b class="check-form__price-text">₽</b> в сутки</div>
+                            <% if (roomInfo.RoomStars === 5) { %>
+                                <a class="btn btn_theme_link btn_theme_lux">Люкс</a>
+                            <% } else { %>
+                                <a class="btn btn_theme_link">Стандарт</a>
+                            <% } %>
+                            <div class="check-form__price-default"><b class="check-form__price-text"><%= roomInfo.RoomPrice %>₽</b> в сутки</div>
                         </div>
                     </div>
                     <div class="check-form__item check-form__item_with-calendar">
@@ -42,7 +49,7 @@
                                     <label class="field__label">
                                         <div class="field__title">Прибытие</div>
                                     </label>
-                                    <input class="field__input" value="" readonly="">
+                                    <input class="field__input" value="<%= locals.arrivalDate %>" readonly="">
                                 </div>
                             </div>
                             <div class="check-form__field check-form__field_type-to">
@@ -50,7 +57,7 @@
                                     <label class="field__label">
                                         <div class="field__title">Выезд</div>
                                     </label>
-                                    <input class="field__input" value="" readonly="">
+                                    <input class="field__input" value="<%= locals.departureDate %>" readonly="">
                                 </div>
                             </div>
                         </div>
@@ -60,21 +67,34 @@
                             <label class="field__label">
                                 <div class="field__title">Кол-во кроватей</div>
                             </label>
-                            <input class="field__input" value="" readonly="">
+                            <input class="field__input" value="<%= locals.numberOfGuests %>" readonly="">
                         </div>
                     </div>
                     <div class="check-form__item">
-                        <div class="check-form__conclusion"><span class="check-form__text"> суток</span><span class="check-form__text">₽</span></div>
-                        <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text">₽</span></div>
+                        <div class="check-form__conclusion"><span class="check-form__text"><%= roomInfo.RoomPrice %>₽ х <%= locals.daysToPay %> суток</span><span class="check-form__text"><%= locals.daysToPay * roomInfo.RoomPrice %>₽</span></div>
+                        <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text"><%= 300 * locals.numberOfGuests %>₽</span></div>
                     </div>
                     <div class="check-form__item">
                         <div class="check-form__final-price">
                             <div class="check-form__item-group">
                                 <div class="check-form__final-price-text">Итого</div>
                                 <div class="check-form__price-line"></div>
-                                <div class="check-form__final-price-value">₽</div>
+                                <div class="check-form__final-price-value"><%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>₽</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="order-info">
+                        <form method="post" action="/order">
+                            <input type="hidden" name="roomNumId" value="<%= roomInfo.RoomID %>">
+                            <input type="hidden" name="roomID" value="<%= roomInfo._id %>">
+                            <input type="hidden" name="pricePerDay" value="<%= roomInfo.RoomPrice %>">
+                            <input type="hidden" name="daysToPay" value="<%= locals.daysToPay %>">
+                            <input type="hidden" name="additionalServicesCost" value="<%= 300 * locals.numberOfGuests %>">
+                            <input type="hidden" name="finalPrice" value="<%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>">
+                            <input type="hidden" name="dateFrom" value="<%= locals.arrivalDate %>">
+                            <input type="hidden" name="dateTo" value="<%= locals.departureDate %>">
+                            <input type="hidden" name="numBeds" value="<%= locals.numberOfGuests %>">
+                        </form>
                     </div>
                 </form>
             </div>

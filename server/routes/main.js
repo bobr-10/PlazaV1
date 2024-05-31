@@ -72,7 +72,7 @@ router.get('/', reqireAuth, (req, res) => {
         userGender: res.locals.userGender
     }
 
-    res.render('process', { locals });
+    res.render('home', { locals });
 });
 
 router.get('/sign_in', reqireAuth, (req, res) => {
@@ -119,7 +119,6 @@ router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
         const { dateFrom, dateTo, numBeds, priceMin, priceMax, stars, smoke, fitness, animals, bathroom,
             parking, guests, fullfood, desk, tv, internet, conditioner, swimming } = req.session.searchParams;
 
-        // Основной фильтр по цене и количеству звезд
         let mainFilterQuery = {
             $and: []
         };
@@ -141,7 +140,6 @@ router.get('/search-rooms/page/:page', reqireAuth, async (req, res) => {
         const initialRooms = await Room.find(mainFilterQuery);
         console.log('Initial Rooms:', initialRooms.length);
 
-        // Дополнительные фильтры по чекбоксам
         const additionalFilters = [];
 
         if (smoke) additionalFilters.push({ isSmoke: true });
@@ -354,60 +352,94 @@ router.get('/profile/order/:id', reqireAuth, async(req, res) => {
     }
 });
 
-router.post('/order', reqireAuth, async (req, res) => {
-    const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
+router.get('/order/:id', reqireAuth, async (req, res) => {
+    const { dateFrom, dateTo, numBeds } = req.session.searchParams;
+    
+
+    // const locals = {
+    //     title: "Оформление номера",
+    //     isAuth: res.locals.isAuth,
+    //     userGender: res.locals.userGender
+    // }
+
+    // if (!locals.isAuth) {
+    //     req.flash('error', "<b>Авторизуйтесь</b> для оформления заказа");
+    //     return res.redirect('sign_in');
+    // } else {
+    //     const token = req.cookies.token;
+    //     const decodeToken = jwt.verify(token, jwtSecret);
+    //     const userId = decodeToken.userId;
+
+    //     const room = await Room.findOne({ _id: roomID });
+    //     if (room.RoomIsBooked) {
+    //         req.flash('error', "Этот номер уже забронирован.");
+    //         return res.redirect('back');
+    //     }
+
+    //     const existingBooking = await UserOrder.findOne({ userID: userId, roomID: roomID });
+    //     if (existingBooking) {
+    //         req.flash('error', 'Вы уже забронировали эту комнату.');
+    //         return res.redirect('/profile');
+    //     }
+
+    //     setTimeout(async () => {
+    //         const newOrder = new UserOrder({
+    //             userID: userId,
+    //             roomNum: roomNumId,
+    //             roomID: roomID,
+    //             arrivalDate: dateFrom,
+    //             departureDate: dateTo,
+    //             numberOfGuests: numBeds,
+    //             roomPricePerDay: pricePerDay,
+    //             roomDays: daysToPay,
+    //             serviceCost: additionalServicesCost,
+    //             totalPrice: finalPrice
+    //         });
+
+    //         await newOrder.save();
+
+    //         const updateBooking = await Room.findOneAndUpdate (
+    //             {_id: roomID},
+    //             {RoomIsBooked: true},
+    //             {new: true}
+    //         );
+    
+    //         res.redirect('/profile');
+    
+    //     }, 4000);
+    // }
+    const token = req.cookies.token;
+    const decodeToken = jwt.verify(token, jwtSecret);
+    const userId = decodeToken.userId;
+
+    const user = await User.findById(userId);
+
+    const arrivalDate = new Date(dateFrom);
+    const departureDate = new Date(dateTo);
+
+    const differenceMs = departureDate - arrivalDate;
+    const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
 
     const locals = {
         title: "Оформление номера",
         isAuth: res.locals.isAuth,
-        userGender: res.locals.userGender
+        userGender: res.locals.userGender,
+        arrivalDate: dateFrom,
+        departureDate: dateTo,
+        numberOfGuests: numBeds,
+        daysToPay: differenceDays,
+        user: user
     }
 
-    if (!locals.isAuth) {
-        req.flash('error', "<b>Авторизуйтесь</b> для оформления заказа");
-        return res.redirect('sign_in');
-    } else {
-        const token = req.cookies.token;
-        const decodeToken = jwt.verify(token, jwtSecret);
-        const userId = decodeToken.userId;
+    try {
+        const ID = req.params.id;
+        const data = await Info.findOne({roomId: ID});
+        const roomInfo = await Room.findOne({_id: ID});
 
-        const room = await Room.findOne({ _id: roomID });
-        if (room.RoomIsBooked) {
-            req.flash('error', "Этот номер уже забронирован.");
-            return res.redirect('back');
-        }
-
-        const existingBooking = await UserOrder.findOne({ userID: userId, roomID: roomID });
-        if (existingBooking) {
-            req.flash('error', 'Вы уже забронировали эту комнату.');
-            return res.redirect('/profile');
-        }
-
-        setTimeout(async () => {
-            const newOrder = new UserOrder({
-                userID: userId,
-                roomNum: roomNumId,
-                roomID: roomID,
-                arrivalDate: dateFrom,
-                departureDate: dateTo,
-                numberOfGuests: numBeds,
-                roomPricePerDay: pricePerDay,
-                roomDays: daysToPay,
-                serviceCost: additionalServicesCost,
-                totalPrice: finalPrice
-            });
-
-            await newOrder.save();
-
-            const updateBooking = await Room.findOneAndUpdate (
-                {_id: roomID},
-                {RoomIsBooked: true},
-                {new: true}
-            );
-    
-            res.redirect('/profile');
-    
-        }, 4000);
+        res.render('process', {data, locals, roomInfo});
+        
+    } catch (error) {
+        console.log(error);
     }
 });
 

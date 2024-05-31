@@ -1805,7 +1805,7 @@
 .process__info {
     padding: 25px;
     margin: 0px auto;
-    max-width: 500px;
+    max-width: 600px;
     box-shadow: 0px 17px 25px rgba(224, 223, 223, 0.01), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px 0px 3px rgba(0, 0, 0, 0.09), 0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
@@ -1813,7 +1813,7 @@
 .process__user {
     padding: 25px;
     margin: 40px auto;
-    max-width: 500px;
+    max-width: 600px;
     box-shadow: 0px 17px 25px rgba(224, 223, 223, 0.01), 0px 5px 5px rgba(0, 0, 0, 0.05), 0px 0px 3px rgba(0, 0, 0, 0.09), 0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 
@@ -1824,6 +1824,21 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+}
+
+.process__hotel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    gap: 20px;
+}
+
+.hotel__img {
+    max-width: 100%;
+    width: 300px;
+    border-radius: 10px;
 }
 
 .modal {
@@ -1964,6 +1979,10 @@
     .checkout {
         font-size: 1rem;
         padding: 0.6em 1em;
+    }
+
+    .process__hotel {
+        flex-direction: column;
     }
 }
 
