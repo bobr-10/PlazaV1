@@ -1164,6 +1164,9 @@
 
 .advantages {
     padding: 0;
+    overflow-y: scroll;
+    height: 220px;
+    width: 290px;
 }
 
 .advantages__item {
@@ -1594,6 +1597,7 @@
 
 .page-room__reviews {
     grid-column: 1/-1;
+    margin-top: 40px;
 }
 
 .page-room__info-value {

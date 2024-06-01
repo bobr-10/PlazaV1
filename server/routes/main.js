@@ -314,7 +314,11 @@ router.get('/room/:id', reqireAuth, checkBooking, async (req, res) => {
         const roomReview = await Review.find({roomId: ID});
         const reviewCount = roomReview.length;
 
-        res.render('room_info', {data, locals, roomInfo, roomReview, reviewCount});
+        const totalReviewScore = roomReview.reduce((sum, review) => sum + review.reviewRate, 0);
+        const averageReviewScore = reviewCount > 0 ? (totalReviewScore / reviewCount).toFixed(1) : 0;
+
+
+        res.render('room_info', {data, locals, roomInfo, roomReview, reviewCount, averageReviewScore});
         
     } catch (error) {
         console.log(error);
