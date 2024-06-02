@@ -1,7 +1,7 @@
 <main class="index">
     <div class="index__container">
         <div class="find-room">
-            <h1 class="find-room__title">Найдём номера под ваши пожелания</h1>
+            <h1 class="find-room__title">Найдём отели под ваши пожелания</h1>
             <form class="find-room__form" method="post" action="/search-rooms/page/1">
                 <div class="find-room__item find-room__item_with-calendar">
                     <div class="find-room__group-field">
@@ -27,11 +27,20 @@
                     <div class="find-room__guests">
                         <div class="field field_type_dropdown">
                             <label class="field__label">
-                                <div class="field__title">Кол-во спальных мест (макc. 5)</div>
+                                <div class="field__title">Кол-во гостей (макc. 5)</div>
                             </label>
                             <input class="field__input" type="number" value="1" name="numBeds" max="5" min="1" oninput="checkNumValue(this)">
                         </div>
                     </div>
+                </div>
+                <div class="find-room__item">
+                    <label class="field__label">
+                        <div class="field__title">Город</div>
+                        <select class="field__input" name="town">
+                            <option value="moscow">Москва</option>
+                            <option value="spb">Санкт-Петербург</option>
+                        </select>
+                    </label>
                 </div>
                 <div class="find-room__btn">
                     <button class="btn btn_theme_gradient btn_with-arrow" type="submit">Подобрать номер
