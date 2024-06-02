@@ -169,26 +169,26 @@
                         <div class="rooms-item">
                             <a class="rooms-item__link" href="/room/<%= hotel._id %>?dateFrom=<%= locals.arrivalDate %>&dateTo=<%= locals.departureDate %>&numBeds=<%= locals.numberOfGuests %>"></a>
 
-                            <% if (hotel.RoomIsBooked == true) { %>
+                            <% if (hotel.IsBooked == true) { %>
                                 <div class="img__booked">
-                                    <img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
+                                    <img class="rooms-item__img" src="<%= hotel.HotelURL %>" alt="Фотография номера">
                                 </div>
                             <% } else { %>
-                                <img class="rooms-item__img" src="<%= hotel.RoomURL %>" alt="Фотография номера">
+                                <img class="rooms-item__img" src="<%= hotel.HotelURL %>" alt="Фотография номера">
                             <% } %>
 
                             <div class="rooms-item__wrapper">
                                 <div class="rooms-item__info">
                                     <h2 class="rooms-item__num">
                                         <span class="rooms-item__num-ico">№</span>
-                                        <span><%= hotel.RoomID %></span>
+                                        <span><%= hotel.HotelID %></span>
                                     </h2>
                                      
-                                    <p class="rooms-item__price"><b class="rooms-item__price-text"><%= hotel.RoomPrice %></b> руб в сутки</p>
+                                    <p class="rooms-item__price"><b class="rooms-item__price-text"><%= hotel.HotelPrice %></b> руб в сутки</p>
                                 </div>
                                 <div class="rooms-item__rating">
                                     <div class="rate">
-                                        <% for( let i = 0; i < hotel.RoomStars; i++ ) { %>
+                                        <% for( let i = 0; i < hotel.HotelStars; i++ ) { %>
                                             <span class="rate__star rate__star_selected">
                                                 <svg class="rate__svg" width="21" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M10.264 15.749l-6.188 3.75 1.64-7.031L.28 7.732l7.172-.61L10.264.515l2.812 6.61 7.172.61-5.438 4.733 1.641 7.032-6.187-3.75z"></path>
@@ -206,7 +206,7 @@
                                     <p class="rooms-item__reviews"><b class="rooms-item__reviews-text">145</b> Отзывов</p>
                                 </div>
         
-                                <% if (hotel.RoomStars === 5) { %>
+                                <% if (hotel.HotelStars === 5) { %>
                                     <a class="btn btn_theme_link btn_theme_lux" href="#!">Люкс</a>
                                 <% } else { %>
                                     <a class="btn btn_theme_link" href="#!">Стандарт</a>

@@ -1,28 +1,33 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const RoomSchema = new Schema({
-    RoomID: {
+const HotelSchema = new Schema({
+    HotelID: {
         type: Number,
         require: true
     },
 
-    RoomPrice: {
+    HotelPrice: {
         type: Number,
         require: true
     },
 
-    RoomURL: {
+    HotelGeo: {
         type: String,
         require: true
     },
 
-    RoomStars: {
+    HotelURL: {
+        type: String,
+        require: true
+    },
+
+    HotelStars: {
         type: Number,
         require: true
     },
 
-    RoomIsBooked: {
+    IsBooked: {
         type: Boolean,
         require: true
     },
@@ -89,53 +94,53 @@ const RoomSchema = new Schema({
 });
 
 
-const RoomInfo = new Schema({
-    roomId: {
+const HotelInfo = new Schema({
+    HotelId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room',
         require: true
     },
 
-    imageURLs: [{
+    ImageURLs: [{
         type: String
     }]
 });
 
-const RoomReview = new Schema({
-    roomId: {
+const HotelReview = new Schema({
+    HotelId: {
         type: String,
         require: true
     },
 
-    reviewText: {
+    ReviewText: {
         type: String,
         require: true
     },
 
-    reviewRate: {
+    ReviewRate: {
         type: Number,
         require: true
     },
 
-    reviewAuthorName: {
+    ReviewAuthorName: {
         type: String,
         require: true
     },
 
-    reviewAuthorMale: {
+    ReviewAuthorMale: {
         type: String,
         require: true
     },
 
-    reviewDate: {
+    ReviewDate: {
         type: Date,
         require: true
     }
 });
 
 
-const Room = mongoose.model('Room', RoomSchema);
-const Review = mongoose.model('RoomReview', RoomReview);
-const Info = mongoose.model('RoomInfo', RoomInfo);
+const Room = mongoose.model('Room', HotelSchema);
+const Review = mongoose.model('RoomReview', HotelReview);
+const Info = mongoose.model('RoomInfo', HotelInfo);
 
 module.exports = {Room, Info, Review};

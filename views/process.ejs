@@ -27,19 +27,19 @@
         <div class="process__payment">
 
             <div class="payment__info">
-                <form class="check-form" method="post" action="/order">
+                <form class="check-form">
                     <div class="check-form__item">
                         <div class="check-form__item-group">
                             <h3 class="check-form__number" style="margin-right: 15px;">
                                 <span class="check-form__number-icon">№</span>
-                                <%= roomInfo.RoomID %>
+                                <%= roomInfo.HotelID %>
                             </h3>
-                            <% if (roomInfo.RoomStars === 5) { %>
+                            <% if (roomInfo.HotelStars === 5) { %>
                                 <a class="btn btn_theme_link btn_theme_lux">Люкс</a>
                             <% } else { %>
                                 <a class="btn btn_theme_link">Стандарт</a>
                             <% } %>
-                            <div class="check-form__price-default"><b class="check-form__price-text"><%= roomInfo.RoomPrice %>₽</b> в сутки</div>
+                            <div class="check-form__price-default"><b class="check-form__price-text"><%= roomInfo.HotelPrice %>₽</b> в сутки</div>
                         </div>
                     </div>
                     <div class="check-form__item check-form__item_with-calendar">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="check-form__item">
-                        <div class="check-form__conclusion"><span class="check-form__text"><%= roomInfo.RoomPrice %>₽ х <%= locals.daysToPay %> суток</span><span class="check-form__text"><%= locals.daysToPay * roomInfo.RoomPrice %>₽</span></div>
+                        <div class="check-form__conclusion"><span class="check-form__text"><%= roomInfo.HotelPrice %>₽ х <%= locals.daysToPay %> суток</span><span class="check-form__text"><%= locals.daysToPay * roomInfo.HotelPrice %>₽</span></div>
                         <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text"><%= 300 * locals.numberOfGuests %>₽</span></div>
                     </div>
                     <div class="check-form__item">
@@ -79,52 +79,126 @@
                             <div class="check-form__item-group">
                                 <div class="check-form__final-price-text">Итого</div>
                                 <div class="check-form__price-line"></div>
-                                <div class="check-form__final-price-value"><%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>₽</div>
+                                <div class="check-form__final-price-value"><%= (locals.daysToPay * roomInfo.HotelPrice) + (300 * locals.numberOfGuests)%>₽</div>
                             </div>
                         </div>
                     </div>
                     <div class="order-info">
-                        <form method="post" action="/order">
-                            <input type="hidden" name="roomNumId" value="<%= roomInfo.RoomID %>">
+                        <form method="post" action="/payment">
+                            <input type="hidden" name="roomNumId" value="<%= roomInfo.HotelID %>">
                             <input type="hidden" name="roomID" value="<%= roomInfo._id %>">
-                            <input type="hidden" name="pricePerDay" value="<%= roomInfo.RoomPrice %>">
+                            <input type="hidden" name="pricePerDay" value="<%= roomInfo.HotelPrice %>">
                             <input type="hidden" name="daysToPay" value="<%= locals.daysToPay %>">
                             <input type="hidden" name="additionalServicesCost" value="<%= 300 * locals.numberOfGuests %>">
-                            <input type="hidden" name="finalPrice" value="<%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>">
+                            <input type="hidden" name="finalPrice" value="<%= (locals.daysToPay * roomInfo.HotelPrice) + (300 * locals.numberOfGuests)%>">
                             <input type="hidden" name="dateFrom" value="<%= locals.arrivalDate %>">
                             <input type="hidden" name="dateTo" value="<%= locals.departureDate %>">
                             <input type="hidden" name="numBeds" value="<%= locals.numberOfGuests %>">
                         </form>
                     </div>
                 </form>
+                <div class="success-container" id="modal">
+                    <div class="success-content">
+                        <img src="/img/svg/check-pay.svg" alt="check" width="50" height="50">
+                        <h2>Аренда успешно оформлена!</h2>
+                        <p>Информация о заказе появится в профиле.</p>
+                    </div>
+                </div>
             </div>
             
             <div class="modal">
-                <form class="form">
+                <form class="form" id="paymentForm" method="post" action="/payment">
                     <div class="card-info">
                         <div class="input_container">
                             <label class="input_label">Имя держателя карты</label>
-                            <input class="input_field" type="text" placeholder="Имя">
+                            <input class="input_field" maxlength="20" type="text" placeholder="Имя" id="cardName" required>
                         </div>
                         <div class="input_container">
                             <label class="input_label">Номер карты</label>
-                            <input class="input_field" type="number" placeholder="0000 0000 0000 0000">
+                            <input class="input_field" type="text" placeholder="0000 0000 0000 0000" id="cardNumber" oninput="formatCardNumber(this)" required>
                         </div>
                         <div class="input_container">
                             <label class="input_label">Срок действия / CVV</label>
                             <div class="split">
-                                <input class="input_field" style="width: 250px;" type="text" placeholder="01/23">
-                                <input class="input_field" style="width: 110px;" type="number" placeholder="CVV">
+                                <input class="input_field" style="width: 250px;" type="text" placeholder="01/23" id="expiryDate" oninput="formatExpiryDate(this)" required>
+                                <input class="input_field" style="width: 110px;" type="text" placeholder="CVV" id="cvv" oninput="formatCVV(this)" required>
                             </div>
                         </div>
                     </div>
-                    <button class="checkout" style="cursor: pointer;">
+                    <button class="checkout" id="makeOrder" style="cursor: pointer;" type="submit">
                         <span>Оплатить</span>
                     </button>
+                    <div class="order-info" method="post" action="/payment">
+                        <input type="hidden" name="roomNumId" value="<%= roomInfo.HotelID %>">
+                        <input type="hidden" name="roomID" value="<%= roomInfo._id %>">
+                        <input type="hidden" name="pricePerDay" value="<%= roomInfo.HotelPrice %>">
+                        <input type="hidden" name="daysToPay" value="<%= locals.daysToPay %>">
+                        <input type="hidden" name="additionalServicesCost" value="<%= 300 * locals.numberOfGuests %>">
+                        <input type="hidden" name="finalPrice" value="<%= (locals.daysToPay * roomInfo.HotelPrice) + (300 * locals.numberOfGuests)%>">
+                        <input type="hidden" name="dateFrom" value="<%= locals.arrivalDate %>">
+                        <input type="hidden" name="dateTo" value="<%= locals.departureDate %>">
+                        <input type="hidden" name="numBeds" value="<%= locals.numberOfGuests %>">
+                    </div>
                 </form>
             </div>
+            <% if (messages.error) { %>
+                <div style="text-align: center;"><%- messages.error %></div>
+            <% } %>
         </div>
 
 
     </div>
 </main>
+
+<script>
+    const modal = document.querySelector(".success-container");
+    const orderButton = document.getElementById("makeOrder");
+   
+    orderButton.addEventListener('click', function() {
+        const isAuth = ''
+
+        if (isAuth) {
+            setTimeout(() => { 
+                modal.classList.toggle('success-container__on');
+            }, 1000);
+        }
+
+    });
+
+    document.querySelector('input[name="numBeds"]').addEventListener('input', function() {
+        this.value = this.value.replace(/[^\d]/g, '');
+    });
+
+
+    function formatCardNumber(input) {
+        const value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        const matches = value.match(/\d{4,16}/g);
+        const match = matches ? matches[0] : '';
+        const parts = [];
+
+        for (let i = 0, len = match.length; i < len; i += 4) {
+            parts.push(match.substring(i, i + 4));
+        }
+
+        if (parts.length) {
+            input.value = parts.join(' ');
+        } else {
+            input.value = value;
+        }
+    }
+
+    function formatExpiryDate(input) {
+        const value = input.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            input.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        } else {
+            input.value = value;
+        }
+    }
+
+    function formatCVV(input) {
+        const value = input.value.replace(/\D/g, '');
+        input.value = value.slice(0, 3);
+    }
+
+</script>

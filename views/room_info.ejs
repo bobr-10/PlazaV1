@@ -18,7 +18,7 @@
     <div class="page-room__gallery">
         <div class="gallery">
 
-            <% data.imageURLs.forEach(imageURL => { %>
+            <% data.ImageURLs.forEach(imageURL => { %>
                 <figure class="gallery__item"><img class="gallery__img" src=" <%= imageURL %> " alt="Фотография номера"></figure>
             <% }) %>
 
@@ -137,8 +137,13 @@
                         <div class="donut__circle">
                             <svg class="donut__svg" width="100%" height="100%">
                                 <g class="donut__text">
-                                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="24px"><%= averageReviewScore %></text>
-                                    <text x="50%" y="70%" text-anchor="middle" dominant-baseline="middle" font-size="14px">Ср. оценка</text>
+
+                                    <% if (averageReviewScore == 0) { %>
+                                        <text x="50%" y="70%" text-anchor="middle" dominant-baseline="middle" font-size="14px">Нет оценок</text>
+                                    <% } else { %>
+                                        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="24px"><%= averageReviewScore %></text>
+                                        <text x="50%" y="70%" text-anchor="middle" dominant-baseline="middle" font-size="14px">Ср. оценка</text>
+                                    <% } %>
                                 </g>
                             </svg>
                         </div>
@@ -149,10 +154,10 @@
                             <% let goodReviews = 0; %>
                             <% let averageReviews = 0; %>
                             <% let badReviews = 0; %>
-                            <% roomReview.forEach(review => { %>
-                                <% if (review.reviewRate >= 4) { %>
+                            <% hotelReview.forEach(review => { %>
+                                <% if (review.ReviewRate >= 4) { %>
                                     <% goodReviews++; %>
-                                <% } else if (review.reviewRate >= 3) { %>
+                                <% } else if (review.ReviewRate >= 3) { %>
                                     <% averageReviews++; %>
                                 <% } else { %>
                                     <% badReviews++; %>
@@ -180,22 +185,22 @@
                         <h2 class="page-room__info-title">Отзывы посетителей номера</h2><span class="page-room__info-value"><b class="page-room__count">Кол-во отзывов:</b><%= reviewCount %></span>
                     </div>
                     <ul class="reviews">
-                        <% if (roomReview.length > 0) { %>
+                        <% if (hotelReview.length > 0) { %>
                             <% for (const review of roomReview) { %>
                                 <li class="reviews__item">
                                     <div class="reviews__dynamics">
-                                        <% if (review.reviewAuthorMale == "female") { %>
+                                        <% if (review.ReviewAuthorMale == "female") { %>
                                             <img class="reviews__avatar" src="/img/svg/women-avatar.svg" width="45">
                                         <% } else { %>
                                             <img class="reviews__avatar" src="/img/svg/man-avatar.svg" width="45">
                                         <% } %>        
                                         
                                         <div class="reviews__likes">
-                                            <% if (review.reviewRate >= 4)  { %>
+                                            <% if (review.ReviewRate >= 4)  { %>
                                                 <div class="reviews__likes">
                                                     <img src="/img/svg/smile.svg" alt="smile" width="35">
                                                 </div>
-                                            <% } else if (review.reviewRate >= 3) { %>
+                                            <% } else if (review.ReviewRate >= 3) { %>
                                                 <div class="reviews__likes">
                                                     <img src="/img/svg/normal.svg" alt="smile" width="35">
                                                 </div>
@@ -208,9 +213,9 @@
                                     </div>
                                     <div class="reviews__comment">
                                         
-                                        <b class="reviews__author"><%= review.reviewAuthorName %></b> (<%= getTimeDifference(review.reviewDate) %>)
-                                        <p style="margin-bottom: 8px;">Оценка: <%= review.reviewRate %></p>
-                                        <div class="reviews__text"><%= review.reviewText %></div>
+                                        <b class="reviews__author"><%= review.ReviewAuthorName %></b> (<%= getTimeDifference(review.ReviewDate) %>)
+                                        <p style="margin-bottom: 8px;">Оценка: <%= review.ReviewRate %></p>
+                                        <div class="reviews__text"><%= review.ReviewText %></div>
                                     </div>
                                 </li>
                             <% } %>
@@ -237,14 +242,14 @@
                     <div class="check-form__item-group">
                         <h3 class="check-form__number" style="margin-right: 15px;">
                             <span class="check-form__number-icon">№</span>
-                            <%= roomInfo.RoomID %>
+                            <%= roomInfo.HotelID %>
                         </h3>
-                        <% if (roomInfo.RoomStars === 5) { %>
+                        <% if (roomInfo.HotelStars === 5) { %>
                             <a class="btn btn_theme_link btn_theme_lux">Люкс</a>
                         <% } else { %>
                             <a class="btn btn_theme_link">Стандарт</a>
                         <% } %>
-                        <div class="check-form__price-default"><b class="check-form__price-text"><%= roomInfo.RoomPrice %>₽</b> в сутки</div>
+                        <div class="check-form__price-default"><b class="check-form__price-text"><%= roomInfo.HotelPrice %>₽</b> в сутки</div>
                     </div>
                 </div>
                 <div class="check-form__item check-form__item_with-calendar">
@@ -276,7 +281,7 @@
                     </div>
                 </div>
                 <div class="check-form__item">
-                    <div class="check-form__conclusion"><span class="check-form__text"><%= roomInfo.RoomPrice %>₽ х <%= locals.daysToPay %> суток</span><span class="check-form__text"><%= locals.daysToPay * roomInfo.RoomPrice %>₽</span></div>
+                    <div class="check-form__conclusion"><span class="check-form__text"><%= roomInfo.HotelPrice %>₽ х <%= locals.daysToPay %> суток</span><span class="check-form__text"><%= locals.daysToPay * roomInfo.HotelPrice %>₽</span></div>
                     <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text"><%= 300 * locals.numberOfGuests %>₽</span></div>
                 </div>
                 <div class="check-form__item">
@@ -284,12 +289,12 @@
                         <div class="check-form__item-group">
                             <div class="check-form__final-price-text">Итого</div>
                             <div class="check-form__price-line"></div>
-                            <div class="check-form__final-price-value"><%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>₽</div>
+                            <div class="check-form__final-price-value"><%= (locals.daysToPay * roomInfo.HotelPrice) + (300 * locals.numberOfGuests)%>₽</div>
                         </div>
                     </div>
                 </div>
 
-                <% if (roomInfo.RoomIsBooked == true) { %>
+                <% if (roomInfo.IsBooked == true) { %>
 
                     <div class="bookingInfo">
                         <h3 style="text-align: center;">Данный номер уже забронирован</h3>
@@ -302,49 +307,7 @@
                         </svg>
                     </button>
                 <% } %>
-
-                <!-- <div class="order-info">
-                    <form method="post" action="/order:id">
-                        <input type="hidden" name="roomNumId" value="<%= roomInfo.RoomID %>">
-                        <input type="hidden" name="roomID" value="<%= roomInfo._id %>">
-                        <input type="hidden" name="pricePerDay" value="<%= roomInfo.RoomPrice %>">
-                        <input type="hidden" name="daysToPay" value="<%= locals.daysToPay %>">
-                        <input type="hidden" name="additionalServicesCost" value="<%= 300 * locals.numberOfGuests %>">
-                        <input type="hidden" name="finalPrice" value="<%= (locals.daysToPay * roomInfo.RoomPrice) + (300 * locals.numberOfGuests)%>">
-                        <input type="hidden" name="dateFrom" value="<%= locals.arrivalDate %>">
-                        <input type="hidden" name="dateTo" value="<%= locals.departureDate %>">
-                        <input type="hidden" name="numBeds" value="<%= locals.numberOfGuests %>">
-                    </form>
-                </div> -->
             </form>
-        </div>
-        <div class="success-container" id="modal">
-            <div class="success-content">
-                <img src="/img/svg/check-pay.svg" alt="check" width="50" height="50">
-                <h2>Аренда успешно оформлена!</h2>
-                <p>Информация о заказе появится в профиле.</p>
-            </div>
         </div>
     </div>
 </main>
-
-<script>
-    // const modal = document.querySelector(".success-container");
-    // const orderButton = document.getElementById("makeOrder");
-   
-    // orderButton.addEventListener('click', function() {
-    //     const isAuth = ''
-
-    //     if (isAuth) {
-    //         setTimeout(() => { 
-    //             modal.classList.toggle('success-container__on');
-    //         }, 1000);
-    //     }
-
-    // });
-
-    // document.querySelector('input[name="numBeds"]').addEventListener('input', function() {
-    //     this.value = this.value.replace(/[^\d]/g, '');
-    // });
-
-</script>

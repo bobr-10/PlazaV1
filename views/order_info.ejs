@@ -1,6 +1,10 @@
 <% function formatDate(date) {
     const userDateOfBirth = new Date(date);
-    const formattedDate = `${userDateOfBirth.getDate()}.${userDateOfBirth.getMonth() + 1}.${userDateOfBirth.getFullYear()}`;
+    const formattedDate = userDateOfBirth.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    }).replace(/\//g, '.');
     return formattedDate;
 } %>
 
@@ -14,9 +18,9 @@
                     <div class="check-form__item-group">
                         <h3 class="check-form__number" style="margin-right: 15px;">
                             <span class="check-form__number-icon">№</span>
-                            <%= data.roomNum %>
+                            <%= data.HotelNum %>
                         </h3>
-                        <div class="check-form__price-default"><b class="check-form__price-text"><%= data.roomPricePerDay %>₽</b> в сутки</div>
+                        <div class="check-form__price-default"><b class="check-form__price-text"><%= data.HotelPricePerDay %>₽</b> в сутки</div>
                     </div>
                 </div>
                 <div class="check-form__item check-form__item_with-calendar">
@@ -26,7 +30,7 @@
                                 <label class="field__label">
                                     <div class="field__title">Прибытие</div>
                                 </label>
-                                <input class="field__input" value="<%= formatDate(data.arrivalDate) %>" readonly="">
+                                <input class="field__input" value="<%= formatDate(data.ArrivalDate) %>" readonly="">
                             </div>
                         </div>
                         <div class="check-form__field check-form__field_type-to">
@@ -34,7 +38,7 @@
                                 <label class="field__label">
                                     <div class="field__title">Выезд</div>
                                 </label>
-                                <input class="field__input" value="<%= formatDate(data.departureDate) %>" readonly="">
+                                <input class="field__input" value="<%= formatDate(data.DepartureDate) %>" readonly="">
                             </div>
                         </div>
                     </div>
@@ -44,19 +48,19 @@
                         <label class="field__label">
                             <div class="field__title">Кол-во кроватей</div>
                         </label>
-                        <input class="field__input" value="<%= data.numberOfGuests %>" readonly="">
+                        <input class="field__input" value="<%= data.NumberOfGuests %>" readonly="">
                     </div>
                 </div>
                 <div class="check-form__item">
-                    <div class="check-form__conclusion"><span class="check-form__text"><%= data.roomPricePerDay %>₽ х <%= data.roomDays %> суток</span><span class="check-form__text"><%= data.roomDays * data.roomPricePerDay %>₽</span></div>
-                    <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text"><%= data.serviceCost %>₽</span></div>
+                    <div class="check-form__conclusion"><span class="check-form__text"><%= data.HotelPricePerDay %>₽ х <%= data.HotelDays %> суток</span><span class="check-form__text"><%= data.HotelDays * data.HotelPricePerDay %>₽</span></div>
+                    <div class="check-form__conclusion"><span class="check-form__text check-form__text_with-info">Сбор за дополнительные услуги</span><span class="check-form__text"><%= data.ServiceCost %>₽</span></div>
                 </div>
                 <div class="check-form__item">
                     <div class="check-form__final-price">
                         <div class="check-form__item-group">
                             <div class="check-form__final-price-text">Итого</div>
                             <div class="check-form__price-line"></div>
-                            <div class="check-form__final-price-value"><%= data.totalPrice %>₽</div>
+                            <div class="check-form__final-price-value"><%= data.TotalPrice %>₽</div>
                         </div>
                     </div>
                 </div>
@@ -67,8 +71,8 @@
                 <div>
                     <h2>Ваш отзыв:</h2>
                     <div class="review__existing">
-                        <p><strong>Оценка:</strong> <%= locals.review.reviewRate %></p>
-                        <p><strong>Отзыв:</strong> <%= locals.review.reviewText %></p>
+                        <p><strong>Оценка:</strong> <%= locals.review.ReviewRate %></p>
+                        <p><strong>Отзыв:</strong> <%= locals.review.ReviewText %></p>
                     </div>
                 </div>
             <% } else { %>

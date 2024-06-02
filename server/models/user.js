@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -35,53 +36,58 @@ const UserSchema = new Schema({
 
 
 const OrderSchema = new Schema ({
-    userID: {
+    UserID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         require: true
     },
 
-    roomID: {
+    HotelName: {
+        type: String,
+        require: true
+    },
+
+    HotelID: {
         type: String, 
         require: true
     },
 
-    roomNum: {
+    HotelNum: {
         type: Number,
         require: true
     },
 
-    arrivalDate: {
+    ArrivalDate: {
         type: Date,
         require: true
     },
 
-    departureDate: {
+    DepartureDate: {
         type: Date,
         require: true
     },
 
-    numberOfGuests: {
+    NumberOfGuests: {
         type: Number,
         require: true
     },
 
-    roomPricePerDay: {
+    HotelPricePerDay: {
         type: Number,
         require: true
     },
 
-    roomDays: {
+    HotelDays: {
         type: Number,
         require: true
     },
 
-    serviceCost: {
+    ServiceCost: {
         type: Number,
         require: true
     },
 
-    totalPrice: {
+    TotalPrice: {
         type: Number,
         require: true
     }

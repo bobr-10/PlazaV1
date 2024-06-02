@@ -41,16 +41,16 @@
             <% for (const orderWithRoomImage of locals.ordersWithRoomImages) { %>
                 <div class="order-item">
                     <div class="rooms-item">
-                        <a class="rooms-item__link" href="/profile/order/<%= orderWithRoomImage.order.roomNum %>"></a>
+                        <a class="rooms-item__link" href="/profile/order/<%= orderWithRoomImage.order.HotelNum %>"></a>
                         <img class="rooms-item__img" src="<%= orderWithRoomImage.roomImageURL %>" alt="Фотография номера">
                         <div class="rooms-item__wrapper">
                             <div class="rooms-item__info">
                                 <h2 class="rooms-item__num">
                                     <span class="rooms-item__num-ico">№</span>
-                                    <span><%= orderWithRoomImage.order.roomNum %></span>
+                                    <span><%= orderWithRoomImage.order.HotelNum %></span>
                                 </h2>
                                 <p class="rooms-item__price">
-                                    <b class="rooms-item__price-text"><%= orderWithRoomImage.order.roomPricePerDay %> ₽</b>
+                                    <b class="rooms-item__price-text"><%= orderWithRoomImage.order.HotelPricePerDay %> ₽</b>
                                 </p>
                             </div>
                         </div>
