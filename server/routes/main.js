@@ -341,12 +341,14 @@ router.get('/profile/order/:id', reqireAuth, async(req, res) => {
         const userId = decodeToken.userId;
         
         const data = await UserOrder.findOne({HotelNum: roomNum, UserID: userId});
+        console.log(data);
 
         if (!data) {
             return res.status(404).send('<h1>Не найдено (404)</h1>');
         }
 
         const review = await Review.findOne({ HotelId: data.HotelID});
+        console.log(review);
         locals.review = review;
 
         res.render('order_info', {locals, data});
@@ -396,7 +398,7 @@ router.get('/order/:id', reqireAuth, async (req, res) => {
 
 
 router.post('/payment', reqireAuth, async (req, res) => {
-    const { cardName, cardNumber, expiryDate, cvv, roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
+    const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
     
     let hasErrors = false;
 
@@ -451,21 +453,6 @@ router.post('/payment', reqireAuth, async (req, res) => {
                     {IsBooked: true},
                     {new: true}
                 );
-
-                if (!/^\d{16}$/.test(cardNumber.replace(/\s+/g, ''))) {
-                    req.flash('error', 'Пожалуйста, введите корректный номер карты (16 цифр).');
-                    hasErrors = true;
-                }
-            
-                if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
-                    req.flash('error', 'Пожалуйста, введите корректный срок действия карты (MM/YY).');
-                    hasErrors = true;
-                }
-            
-                if (!/^\d{3}$/.test(cvv)) {
-                    req.flash('error', 'Пожалуйста, введите корректный CVV (3 цифры).');
-                    hasErrors = true;
-                }
             
                 if (hasErrors) {
                     return res.redirect('back');
@@ -626,7 +613,7 @@ router.post('/review', reqireAuth, async(req, res) => {
     const userOrders = await UserOrder.findOne({ UserID: userId });
 
     const newReview = new Review({
-        HotelId: userOrders.roomID,
+        HotelId: userOrders.HotelID,
         ReviewText: rateText,
         ReviewRate: rateNum,
         ReviewAuthorName: user.FirstName,
