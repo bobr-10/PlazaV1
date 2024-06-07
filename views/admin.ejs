@@ -1,0 +1,163 @@
+<% function formatDate(date) {
+    const userDateOfBirth = new Date(date);
+    const formattedDate = userDateOfBirth.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    }).replace(/\//g, '.');
+    return formattedDate;
+} %>
+
+
+<main>
+
+    <div class="admin-panel">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Rentals')">Аренды</button>
+            <button class="tablinks" onclick="openTab(event, 'OtherInfo')">Добавить отель</button>
+        </div>
+    
+        <div id="Rentals" class="tabcontent">
+            <h3>Аренды</h3>
+            <div class="table-container">
+                <table id="rentalsTable">
+                    <thead>
+                        <tr>
+                            <th>ID Пользователя</th>
+                            <th>Номер отеля</th>
+                            <th>ID отеля</th>
+                            <th>Дата заезда</th>
+                            <th>Дата выезда</th>
+                            <th>Количество гостей</th>
+                            <th>Стоимость за день</th>
+                            <th>Дней для оплаты</th>
+                            <th>Стоимость доп. услуг</th>
+                            <th>Итоговая цена</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <% orders.forEach(order => { %>
+                                <tr>
+                                    <td><%= order.UserID %></td>
+                                    <td><%= order.HotelNum %></td>
+                                    <td><%= order.HotelID %></td>
+                                    <td><%= formatDate(order.ArrivalDate) %></td>
+                                    <td><%= formatDate(order.DepartureDate) %></td>
+                                    <td><%= order.NumberOfGuests %></td>
+                                    <td><%= order.HotelPricePerDay %></td>
+                                    <td><%= order.HotelDays %></td>
+                                    <td><%= order.ServiceCost %></td>
+                                    <td><%= order.TotalPrice %></td>
+                                    <td data-label="Действия">
+                                        <button class="delete-button" data-id="<%= order._id %>">Удалить</button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div id="OtherInfo" class="tabcontent">
+            <h3>Добавить отель</h3>
+            <form id="addHotelForm" class="hotel-form">
+                <div class="form-group">
+                    <label for="hotelName">Название отеля:</label>
+                    <input type="text" id="hotelName" name="hotelName" placeholder="Название отеля" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotelPrice">Цена за ночь:</label>
+                    <input type="number" id="hotelPrice" name="hotelPrice" placeholder="Цена за ночь" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotelGeo">Географическое расположение:</label>
+                    <input type="text" id="hotelGeo" name="hotelGeo" placeholder="Географическое расположение" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotelURL">Ссылка на сайт отеля:</label>
+                    <input type="url" id="hotelURL" name="hotelURL" placeholder="Ссылка на сайт отеля" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotelStars">Количество звезд:</label>
+                    <input type="number" id="hotelStars" name="hotelStars" min="1" max="5" placeholder="Количество звезд" required>
+                </div>
+                <div class="form-group">
+                    <label for="imageFiles">Выберите изображения:</label>
+                    <input type="file" id="imageFiles" name="imageFiles" multiple required max="3" accept=".png,.jgp">
+                </div>
+                <!-- Add checkboxes for amenities -->
+                <div class="form-group">
+                    <label for="isSmoke">Разрешено курение:</label>
+                    <input type="checkbox" id="isSmoke" name="isSmoke">
+                </div>
+                <div class="form-group">
+                    <label for="isFitness">Фитнес-зал:</label>
+                    <input type="checkbox" id="isFitness" name="isFitness">
+                </div>
+                <div class="form-group">
+                    <label for="isAnimals">Можно с животными:</label>
+                    <input type="checkbox" id="isAnimals" name="isAnimals">
+                </div>
+                <div class="form-group">
+                    <label for="isBathroom">Ванная комната:</label>
+                    <input type="checkbox" id="isBathroom" name="isBathroom">
+                </div>
+                <div class="form-group">
+                    <label for="isParking">Парковка:</label>
+                    <input type="checkbox" id="isParking" name="isParking">
+                </div>
+                <div class="form-group">
+                    <label for="isGuests">Принимаются гости:</label>
+                    <input type="checkbox" id="isGuests" name="isGuests">
+                </div>
+                <div class="form-group">
+                    <label for="isFullFood">Полный пансион:</label>
+                    <input type="checkbox" id="isFullFood" name="isFullFood">
+                </div>
+                <div class="form-group">
+                    <label for="isDesk">Письменный стол:</label>
+                    <input type="checkbox" id="isDesk" name="isDesk">
+                </div>
+                <div class="form-group">
+                    <label for="isTV">Телевизор:</label>
+                    <input type="checkbox" id="isTV" name="isTV">
+                </div>
+                <div class="form-group">
+                    <label for="isInternet">Интернет:</label>
+                    <input type="checkbox" id="isInternet" name="isInternet">
+                </div>
+                <div class="form-group">
+                    <label for="isConditioner">Кондиционер:</label>
+                    <input type="checkbox" id="isConditioner" name="isConditioner">
+                </div>
+                <div class="form-group">
+                    <label for="isSwimming">Бассейн:</label>
+                    <input type="checkbox" id="isSwimming" name="isSwimming">
+                </div>
+                <button type="submit">Добавить отель</button>
+            </form>
+        </div>        
+    </div>
+</main>
+
+<script>
+    function openTab(evt, tabName) {
+        const tabcontent = document.getElementsByClassName("tabcontent");
+        for (let i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        const tablinks = document.getElementsByClassName("tablinks");
+        for (let i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.tablinks').click();
+    });
+</script>

@@ -2017,3 +2017,171 @@
 }
 
 /* process */
+
+
+/* admin */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+    text-align: left;
+}
+
+table thead th {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    padding: 10px;
+}
+
+table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.admin-panel {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 100px 20px;
+    overflow-x: auto;
+}
+
+.tab {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: background-color 0.3s;
+    font-size: 17px;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+.tabcontent {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.hotel-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hotel-form .form-group {
+    margin-bottom: 15px;
+}
+
+.hotel-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.hotel-form input[type="text"],
+.hotel-form input[type="number"],
+.hotel-form input[type="url"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.hotel-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.hotel-form button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.hotel-form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.tabcontent {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.tablinks {
+    background-color: #f1f1f1;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    transition: background-color 0.3s;
+}
+
+.tablinks:hover {
+    background-color: #ddd;
+}
+
+.tablinks.active {
+    background-color: #ccc;
+}
+
+@media (max-width: 768px) {
+    .hotel-form {
+        padding: 15px;
+    }
+
+    .hotel-form input[type="text"],
+    .hotel-form input[type="number"],
+    .hotel-form input[type="url"] {
+        width: calc(100% - 10px);
+        padding: 8px;
+    }
+
+    .hotel-form button[type="submit"] {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+/* admin */

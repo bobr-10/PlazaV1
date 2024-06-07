@@ -6,6 +6,7 @@ const { User, UserOrder } = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
+const admin = process.env.Admin_ID;
 
 const ITEMS_PER_PAGE = 9;
 
@@ -517,7 +518,7 @@ router.post('/sign_up', reqireAuth, async (req, res) =>{
     }
 });
 
-router.post('/sign_in', reqireAuth, async (req, res) => {
+router.post('/sign_in', async (req, res) => {
     try {
         const locals = {
             title: "Профиль",
@@ -529,24 +530,55 @@ router.post('/sign_in', reqireAuth, async (req, res) => {
         const existingUser = await User.findOne({ Email: email });
 
         if (!existingUser) {
-            req.flash('error', 'Данный Email не <b>зарегистрирован!</b>')
+            req.flash('error', 'Данный Email не <b>зарегистрирован!</b>');
             return res.redirect('back');
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.Password);
 
         if (!isPasswordCorrect) {
-            req.flash('error', '<b>Неверный</b> пароль!')
+            req.flash('error', '<b>Неверный</b> пароль!');
             return res.redirect('back');
         }
 
         const token = genToken(existingUser._id);
-        res.cookie('token', token, {httpOnly: true});
-        
-        res.redirect('profile');
-        
+        res.cookie('token', token, { httpOnly: true });
+
+        if (existingUser._id.toString() === admin) {
+            return res.redirect('/admin');
+        } else {
+            return res.redirect('/profile');
+        }
+                
     } catch (error) {
         console.error(error);
+        req.flash('error', 'Произошла ошибка при входе. Пожалуйста, попробуйте еще раз.');
+        return res.redirect('back');
+    }
+});
+
+router.get('/admin', reqireAuth, async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        const decodeToken = jwt.verify(token, jwtSecret);
+        const userId = decodeToken.userId;
+        
+        if (userId !== admin) {
+            req.flash('error', 'У вас нет прав для доступа к этой странице.');
+            return res.redirect('/');
+        }
+        
+        const orders = await UserOrder.find();
+        
+        res.render('admin', {
+            title: 'Административная панель',
+            userId: userId,
+            orders: orders
+        });
+    } catch (error) {
+        console.error('Ошибка при получении заказов:', error);
+        req.flash('error', 'Произошла ошибка при получении данных заказов.');
+        res.redirect('/');
     }
 });
 
