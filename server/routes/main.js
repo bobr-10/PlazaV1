@@ -351,7 +351,7 @@ router.get('/profile/order/:id', reqireAuth, async(req, res) => {
         console.log(review);
         locals.review = review;
 
-        res.render('order_info', {locals, data});
+        res.render('order_info', {locals, data, roomNum});
 
     } catch (error) {
         console.log(error);
@@ -592,7 +592,7 @@ router.get('/profile', reqireAuth, async (req, res) => {
 
 
 router.post('/review', reqireAuth, async(req, res) => {
-    const {rateNum, rateText} = req.body;
+    const {rateNum, rateText, roomNumId} = req.body;
 
     if (!rateText || rateText.trim() === "") {
         req.flash('error', "Текст отзыва не может быть пустым!");
@@ -610,7 +610,7 @@ router.post('/review', reqireAuth, async(req, res) => {
     const today = new Date();
 
     const user = await User.findById(userId);
-    const userOrders = await UserOrder.findOne({ UserID: userId });
+    const userOrders = await UserOrder.findOne({ UserID: userId, HotelNum: roomNumId});
 
     const newReview = new Review({
         HotelId: userOrders.HotelID,

@@ -1253,6 +1253,11 @@
     margin-left: 0.1429rem;
 }
 
+.reviews__text {
+    max-width: 600px;
+    word-wrap: break-word;
+}
+
 .reviews__author {
     color: rgba(31, 32, 65, 0.75);
     line-height: 2.1429rem;
@@ -1267,6 +1272,10 @@
     line-height: 1.7143rem;
     margin-top: 0.9286rem;
     padding-right: 0.7143rem;
+}
+
+.review__existing {
+    word-wrap: break-word;
 }
 
 .reviews__avatar {
