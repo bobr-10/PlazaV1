@@ -41,7 +41,15 @@ app.use((req, res, next) => {
 app.set('layout', './layouts/main');
 app.set('view engine', 'ejs');
 
-app.use('/', require('./server/routes/main'));
+const homeRoutes = require('./server/routes/home');
+const authRoutes = require('./server/routes/auth');
+const searchRoutes = require('./server/routes/search');
+const profileRoutes = require('./server/routes/profile');
+
+app.use('/', homeRoutes);
+app.use('/', authRoutes);
+app.use('/', searchRoutes);
+app.use('/', profileRoutes);
 
 app.use((req, res, next) => {
     res.status(404).send('Извините, такой страницы не существует.');
