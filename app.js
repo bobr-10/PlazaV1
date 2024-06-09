@@ -45,11 +45,13 @@ const homeRoutes = require('./server/routes/home');
 const authRoutes = require('./server/routes/auth');
 const searchRoutes = require('./server/routes/search');
 const profileRoutes = require('./server/routes/profile');
+const navigationRoutes = require('./server/routes/navigation')
 
 app.use('/', homeRoutes);
 app.use('/', authRoutes);
 app.use('/', searchRoutes);
 app.use('/', profileRoutes);
+app.use('/', navigationRoutes);
 
 app.use((req, res, next) => {
     res.status(404).send('Извините, такой страницы не существует.');

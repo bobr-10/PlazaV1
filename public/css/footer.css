@@ -170,6 +170,8 @@
     -webkit-transition: 0.25s;
     -o-transition: 0.25s;
     transition: 0.25s;
+    width: 25px;
+    height: 25px;
 }
   
 .footer__soc-ico:hover {
