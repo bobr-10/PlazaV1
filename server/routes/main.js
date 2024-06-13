@@ -398,8 +398,14 @@ router.get('/order/:id', reqireAuth, async (req, res) => {
 });
 
 
-router.post('/payment', reqireAuth, checkBooking, async (req, res) => {
+router.post('/payment', reqireAuth, async (req, res) => {
     const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
+    const token = req.cookies.token;
+
+    if (!token) {
+        req.flash('error', "<b>Авторизуйтесь</b> для оформления заказа");
+        return res.redirect('/sign_in');
+    }
     
     let hasErrors = false;
 
