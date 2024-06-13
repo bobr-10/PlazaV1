@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const Schema = mongoose.Schema;
 const HotelSchema = new Schema({
@@ -9,6 +10,11 @@ const HotelSchema = new Schema({
 
     HotelPrice: {
         type: Number,
+        require: true
+    },
+
+    HotelName: {
+        type: String,
         require: true
     },
 

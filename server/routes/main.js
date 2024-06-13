@@ -738,6 +738,7 @@ module.exports = router;
 //             {
 //                 HotelID: 1,
 //                 HotelPrice: 3266,
+//                 HotelName: "AKYAN",
 //                 HotelGeo: "Москва",
 //                 HotelURL: "/img/room-img/room_1/room_1_intro.jpg",
 //                 HotelStars: 3,
@@ -758,6 +759,7 @@ module.exports = router;
 //             {
 //                 HotelID: 2,
 //                 HotelPrice: 7856,
+//                 HotelName: "Welton Club Hotel & Apartments",
 //                 HotelGeo: "Санкт-Петербург",
 //                 HotelURL: "/img/room-img/room_2/room_2_intro.jpg",
 //                 HotelStars: 5,
@@ -778,7 +780,8 @@ module.exports = router;
 //             {
 //                 HotelID: 3,
 //                 HotelPrice: 5689,
-//                 HotelGeo: "Москва",
+//                 HotelName: "Valo Soul",
+//                 HotelGeo: "Санкт-Петербург",
 //                 HotelURL: "/img/room-img/room_3/room_3_intro.jpg",
 //                 HotelStars: 4,
 //                 IsBooked: false,

@@ -2,20 +2,111 @@
     <div class="process">
         <div class="process__info">
             <h2>Название отеля</h2>
-            <p style="margin-top: 10px;">Адрес отеля</p>
+            <p style="margin: 20px 0px 30px 0px;">Адрес отеля</p>
             <div class="process__hotel">
                 <div class="hotel__specs">
-                    <ul>
-                        <li>Преимущество 1</li>
-                        <li>Преимущество 2</li>
-                        <li>Преимущество 3</li>
-                        <li>Преимущество 4</li>
-                        <li>Преимущество 5</li>
-                        <li>Преимущество 6</li>
+                    <ul class="advantages">
+
+                        <% if (roomInfo.isSmoke) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">smoking_rooms</i>
+                                <div class="advantages__content"><b class="advantages__title">Курение</b>
+                                    <p class="advantages__text">Есть помещения для<br>курения</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isFitness) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">fitness_center</i>
+                                <div class="advantages__content"><b class="advantages__title">Фитнес</b>
+                                    <p class="advantages__text">Зал для упражнений<br>рядом с номером</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isAnimals) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">pets</i>
+                                <div class="advantages__content"><b class="advantages__title">Животные</b>
+                                    <p class="advantages__text">В номер можно с<br>животными</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isBathroom) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">bathtub</i>
+                                <div class="advantages__content"><b class="advantages__title">Ванная</b>
+                                    <p class="advantages__text">Наличие ванной комнаты</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isParking) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">local_parking</i>
+                                <div class="advantages__content"><b class="advantages__title">Парковка</b>
+                                    <p class="advantages__text">Удобная парковка рядом</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isGuests) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">groups</i>
+                                <div class="advantages__content"><b class="advantages__title">Гости</b>
+                                    <p class="advantages__text">В номер можно позвать несколько гостей</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isFullFood) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">restaurant</i>
+                                <div class="advantages__content"><b class="advantages__title">Питание</b>
+                                    <p class="advantages__text">Комплексный завтрак,<br>обед и ужин</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isDesk) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">desk</i>
+                                <div class="advantages__content"><b class="advantages__title">Письменный стол</b>
+                                    <p class="advantages__text">Столик для вашего удобства</p>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (roomInfo.isTV) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">live_tv</i>
+                                <div class="advantages__content"><b class="advantages__title">Телевизор</b>
+                                    <p class="advantages__text">Любые телеканалы на выбор</p>
+                                </div>
+                            </li>
+                        <% } %>
+                            
+                        <% if (roomInfo.isInternet) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">language</i>
+                                <div class="advantages__content"><b class="advantages__title">Интернет</b>
+                                    <p class="advantages__text">Доступ в интернет без ограничений</p>
+                                </div>
+                            </li>
+                        <% } %>
+                       
+                        <% if (roomInfo.isConditioner) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">ac_unit</i>
+                                <div class="advantages__content"><b class="advantages__title">Кондиционер</b>
+                                    <p class="advantages__text">Жарко точно не будет!</p>
+                                </div>
+                            </li>
+                        <% } %>
+                       
+                        <% if (roomInfo.isSwimming) { %>
+                            <li class="advantages__item"><i class="material-icons advantages__icon">pool</i>
+                                <div class="advantages__content"><b class="advantages__title">Бассейн</b>
+                                    <p class="advantages__text">Отдельный комплекс с бассейном рядом</p>
+                                </div>
+                            </li>
+                        <% } %>
+
                     </ul>
                 </div>
                 <div>
-                    <img class="hotel__img" src=" /img/room-img/room_2/room_2_intro.jpg " alt="фото">
+                    <img class="hotel__img" src=" <%= roomInfo.HotelURL %> " alt="фото">
                 </div>
             </div>
         </div>
@@ -155,13 +246,9 @@
     const orderButton = document.getElementById("makeOrder");
    
     orderButton.addEventListener('click', function() {
-        const isAuth = ''
-
-        if (isAuth) {
-            setTimeout(() => { 
-                modal.classList.toggle('success-container__on');
-            }, 1000);
-        }
+        setTimeout(() => { 
+            modal.classList.toggle('success-container__on');
+        }, 1000);
 
     });
 
