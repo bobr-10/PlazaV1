@@ -289,7 +289,7 @@ router.post('/reset-filters', reqireAuth, async (req, res) => {
     res.redirect('/search-rooms/page/1');
 });
 
-router.get('/room/:id', reqireAuth, checkBooking, async (req, res) => {
+router.get('/room/:id', reqireAuth, async (req, res) => {
     const { dateFrom, dateTo, numBeds } = req.session.searchParams;
 
     const arrivalDate = new Date(dateFrom);
