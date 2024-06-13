@@ -398,7 +398,7 @@ router.get('/order/:id', reqireAuth, async (req, res) => {
 });
 
 
-router.post('/payment', reqireAuth, async (req, res) => {
+router.post('/payment', reqireAuth, checkBooking, async (req, res) => {
     const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
     
     let hasErrors = false;
