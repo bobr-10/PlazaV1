@@ -361,8 +361,14 @@ router.get('/profile/order/:id', reqireAuth, async(req, res) => {
 
 router.get('/order/:id', reqireAuth, async (req, res) => {
     const { dateFrom, dateTo, numBeds } = req.session.searchParams;
-    
+
     const token = req.cookies.token;
+
+    if (!token) {
+        req.flash('error', "<b>Авторизуйтесь</b> для оформления заказа");
+        return res.redirect('/sign_in');
+    }
+    
     const decodeToken = jwt.verify(token, jwtSecret);
     const userId = decodeToken.userId;
 
@@ -400,13 +406,7 @@ router.get('/order/:id', reqireAuth, async (req, res) => {
 
 router.post('/payment', reqireAuth, async (req, res) => {
     const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
-    const token = req.cookies.token;
 
-    if (!token) {
-        req.flash('error', "<b>Авторизуйтесь</b> для оформления заказа");
-        return res.redirect('/sign_in');
-    }
-    
     let hasErrors = false;
 
     const locals = {
