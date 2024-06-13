@@ -108,8 +108,22 @@
     padding: 2.8571rem 2.1429rem 2.1429rem 2.1429rem;
 }
 
+.sign-up__question a {
+    margin-left: 15px;
+}
+
 .sign-up__wrapper {
-    min-width: 22.8571rem;
+    min-width: 18.8571rem;
+}
+
+@media screen and (max-width: 35rem) {
+    .sign-up__wrapper {
+        min-width: 80%;
+    }
+
+    .sign-up {
+        padding: 1.5rem;
+    }
 }
 
 .sign-up__title {
@@ -815,6 +829,10 @@
     display: none;
 }
 
+#resetFiltersButton {
+    margin-top: 25px
+}
+
 @media screen and (max-width: 65rem) {
     .rooms-filter {
         width: 100%;
@@ -842,10 +860,16 @@
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
     }
 
     .filters-close {
         display: block;
+    }
+
+    #resetFiltersButton {
+        margin-top: 0px;
     }
 }
 
