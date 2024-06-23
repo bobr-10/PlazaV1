@@ -208,8 +208,10 @@
         
                                 <% if (hotel.HotelStars === 5) { %>
                                     <a class="btn btn_theme_link btn_theme_lux" href="#!">Люкс</a>
+                                <% } else if (hotel.HotelStars === 4) { %>
+                                    <a class="btn btn_theme_link" href="#!">Стандарт<sub class="btn_theme_lux"> Люкс</sub></a>
                                 <% } else { %>
-                                    <a class="btn btn_theme_link" href="#!">Стандарт</a>
+                                <a class="btn btn_theme_link" href="#!">Стандарт</a>
                                 <% } %>
                             </div>
                         </div>

@@ -404,6 +404,17 @@ router.get('/order/:id', reqireAuth, async (req, res) => {
 });
 
 
+router.delete('/order/:id', async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        await UserOrder.findByIdAndDelete(orderId);
+        res.status(200).send({ message: 'Заказ удален' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Ошибка при удалении заказа' });
+    }
+});
+
 router.post('/payment', reqireAuth, async (req, res) => {
     const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
 
