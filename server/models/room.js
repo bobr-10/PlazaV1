@@ -118,6 +118,48 @@ const HotelReview = new Schema({
         require: true
     },
 
+    OrderId: {
+        type: String,
+        require: true
+    },
+
+    ReviewText: {
+        type: String,
+        require: true
+    },
+
+    ReviewRate: {
+        type: Number,
+        require: true
+    },
+
+    ReviewAuthorName: {
+        type: String,
+        require: true
+    },
+
+    ReviewAuthorMale: {
+        type: String,
+        require: true
+    },
+
+    ReviewDate: {
+        type: Date,
+        require: true
+    }
+});
+
+const RoomReviews = new Schema({
+    HotelId: {
+        type: String,
+        require: true
+    },
+
+    OrderId: {
+        type: String,
+        require: true
+    },
+
     ReviewText: {
         type: String,
         require: true
@@ -148,5 +190,6 @@ const HotelReview = new Schema({
 const Room = mongoose.model('Room', HotelSchema);
 const Review = mongoose.model('RoomReview', HotelReview);
 const Info = mongoose.model('RoomInfo', HotelInfo);
+const Reviews = mongoose.model('Reviews', RoomReviews);
 
-module.exports = {Room, Info, Review};
+module.exports = {Room, Info, Review, Reviews};

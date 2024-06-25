@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Room, Info, Review} = require('../models/room');
+const { Room, Info, Review, Reviews} = require('../models/room');
 const { User, UserOrder } = require('../models/user');
 
 const bcrypt = require('bcrypt');
@@ -312,7 +312,7 @@ router.get('/room/:id', reqireAuth, async (req, res) => {
         const ID = req.params.id;
         const data = await Info.findOne({HotelId: ID});
         const roomInfo = await Room.findOne({_id: ID});
-        const hotelReview = await Review.find({HotelId: ID});
+        const hotelReview = await Reviews.find({HotelId: ID});
         const reviewCount = hotelReview.length;
 
         const totalReviewScore = hotelReview.reduce((sum, review) => sum + review.ReviewRate, 0);
@@ -407,14 +407,22 @@ router.get('/order/:id', reqireAuth, async (req, res) => {
 router.delete('/order/:id', async (req, res) => {
     try {
         const orderId = req.params.id;
-        await UserOrder.findByIdAndDelete(orderId);
-        res.status(200).send({ message: 'Заказ удален' });
+        
+        const order = await UserOrder.findByIdAndDelete(orderId);
+        if (!order) {
+            return res.status(404).send({ message: 'Заказ не найден' });
+        }
+
+        await Room.updateOne({ HotelID: order.HotelNum }, { $set: { IsBooked: false } });
+
+        await Review.deleteOne({ HotelId: order.HotelID });
+
+        res.status(200).send({ message: 'Заказ, флаг брони и отзыв удалены' });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Ошибка при удалении заказа' });
     }
 });
-
 router.post('/payment', reqireAuth, async (req, res) => {
     const { roomNumId, roomID, pricePerDay, daysToPay, additionalServicesCost, finalPrice, dateFrom, dateTo, numBeds} = req.body;
 
@@ -663,12 +671,25 @@ router.post('/review', reqireAuth, async(req, res) => {
 
     const newReview = new Review({
         HotelId: userOrders.HotelID,
+        OrderId: userOrders._id,
         ReviewText: rateText,
         ReviewRate: rateNum,
         ReviewAuthorName: user.FirstName,
         ReviewAuthorMale: user.Gender,
         ReviewDate: today
     });
+
+    const newReviews = new Reviews({
+        HotelId: userOrders.HotelID,
+        OrderId: userOrders._id,
+        ReviewText: rateText,
+        ReviewRate: rateNum,
+        ReviewAuthorName: user.FirstName,
+        ReviewAuthorMale: user.Gender,
+        ReviewDate: today
+    });
+
+    await newReviews.save();
 
     await newReview.save();
     res.redirect('/profile');
