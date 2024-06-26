@@ -244,9 +244,11 @@
                             <%= roomInfo.HotelID %>
                         </h3>
                         <% if (roomInfo.HotelStars === 5) { %>
-                            <a class="btn btn_theme_link btn_theme_lux">Люкс</a>
+                            <a class="btn btn_theme_link btn_theme_lux" href="#!">Люкс</a>
+                        <% } else if (roomInfo.HotelStars === 4) { %>
+                            <a class="btn btn_theme_link" href="#!">Стандарт<sub class="btn_theme_lux"> Люкс</sub></a>
                         <% } else { %>
-                            <a class="btn btn_theme_link">Стандарт</a>
+                        <a class="btn btn_theme_link" href="#!">Стандарт</a>
                         <% } %>
                         <div class="check-form__price-default"><b class="check-form__price-text"><%= roomInfo.HotelPrice %>₽</b> в сутки</div>
                     </div>
